@@ -15,6 +15,35 @@ void	lst_add_token(t_token **tokens, t_token *token)
 	}
 }
 
+static void	get_token_val(t_token **tokens, t_token *token, char *str, int i)
+{
+	if (token)
+	{
+		token->val = malloc(sizeof(char) * (i));
+		if (token->val == NULL)
+		{
+			lst_clear_tokens(tokens);
+			exit(EXIT_FAILURE);
+		}
+		ft_strncpy(token->val, str, i);
+		token->val[i] = '\0';
+	}
+}
+
+static void get_token_type(t_token *token, char *str)
+{
+	// | < > << >>
+	if (str)
+	{
+		if (*str == '|' || *str == '<' || *str == '>'
+		|| (*str == '>' && *(str + 1) == '>')
+		|| (*str == '<' && *(str + 1) == '<'))
+			token->type = OPERATOR;
+		else
+			token->type = COMMAND;
+	}
+}
+
 int	add_token(t_token **tokens, t_token *token, char *str)
 {
 	int		i;
@@ -40,14 +69,8 @@ int	add_token(t_token **tokens, t_token *token, char *str)
 		}
 		i++;
 	}
-	token->val = malloc(sizeof(char) * (i));
-	if (token->val == NULL)
-	{
-		lst_clear_tokens(tokens);
-		exit(EXIT_FAILURE);
-	}
-	ft_strncpy(token->val, str, i);
-	token->val[i] = '\0';
+	get_token_val(tokens, token, str, i);
+	get_token_type(token, str);
 	lst_add_token(tokens, token);
 	return (i);
 }
