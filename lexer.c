@@ -1,19 +1,21 @@
 #include "minishell.h"
 
-void	lst_add_token(t_token *tokens, t_token *token)
+void	lst_add_token(t_token **tokens, t_token *token)
 {
 	t_token	*cur;
 
-	cur = tokens;
-	while (cur)
+	if (*tokens == NULL)
+		*tokens = token;
+	else
 	{
-		if (!cur->next)
-			cur->next = token;
-		cur = cur->next;
+		cur = *tokens;
+		while (cur->next)
+			cur = cur->next;
+		cur->next = token;
 	}
 }
 
-int	add_token(t_token *tokens, t_token *token, char *str)
+int	add_token(t_token **tokens, t_token *token, char *str)
 {
 	int		i;
 
@@ -22,6 +24,7 @@ int	add_token(t_token *tokens, t_token *token, char *str)
 	{
 		if (str[i] == '"')
 		{
+			i++;
 			while (str[i])
 			{
 				if (str[i] == '"')
@@ -29,7 +32,11 @@ int	add_token(t_token *tokens, t_token *token, char *str)
 				i++;
 			}
 			if (str[i] != '"')
-				ft_putstr_fd("Error : double quote not closed", STDERR_FILENO);
+			{
+				ft_putstr_fd("Error : double quote not closed\n", STDERR_FILENO);
+				lst_clear_tokens(tokens);
+				exit(EXIT_FAILURE);
+			}
 		}
 		i++;
 	}
@@ -39,18 +46,18 @@ int	add_token(t_token *tokens, t_token *token, char *str)
 		lst_clear_tokens(tokens);
 		exit(EXIT_FAILURE);
 	}
-	ft_strncpy(token->val, str, i - 1);
+	ft_strncpy(token->val, str, i);
 	token->val[i] = '\0';
 	lst_add_token(tokens, token);
 	return (i);
 }
 
-void	lst_clear_tokens(t_token *tokens)
+void	lst_clear_tokens(t_token **tokens)
 {
 	t_token	*cur;
 	t_token	*tmp;
 
-	cur = tokens;
+	cur = *tokens;
 	while (cur)
 	{
 		if (cur->val)
@@ -59,14 +66,19 @@ void	lst_clear_tokens(t_token *tokens)
 		free(cur);
 		cur = tmp;
 	}
+	if (tokens)
+		free (tokens);
 }
 
-void	lst_print_tokens(t_token *token)
+void	lst_print_tokens(t_token **token)
 {
-	while (token)
+	t_token *tmp;
+
+	tmp = *token;
+	while (tmp)
 	{
-		printf("val: %s, type: %d\n", token->val, (int)token->type);
-		token = token->next;
+		printf("val: %s, type: %d, next %p, actual address %p\n", tmp->val, (int)tmp->type, tmp->next, tmp);
+		tmp = tmp->next;
 	}
 }
 
@@ -84,16 +96,19 @@ t_token	*new_token()
 	return (token);
 }
 
-t_token	*lexer(char *line)
+t_token	**lexer(char *line)
 {
 	int		i;
 	t_token *token;
-	t_token *tokens;
+	t_token	**tokens;
 
 	if (!line)
 		return (NULL);
+	tokens = malloc(sizeof(t_token *));
+	if (!tokens)
+		return (NULL);
 	i = 0;
-	tokens = NULL;
+	*tokens = NULL;
 	while (line[i])
 	{
 		if (line[i] != ' ')

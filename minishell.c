@@ -25,7 +25,7 @@ typedef struct	s_ast_node
 int main()
 {
 	char	*line;
-	t_token	*tokens;
+	t_token	**tokens;
 
 	while (1)
 	{
