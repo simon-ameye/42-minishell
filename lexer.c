@@ -8,7 +8,10 @@ void	lst_add_token(t_token *tokens, t_token *token)
 	while (cur)
 	{
 		if (!cur->next)
+		{
 			cur->next = token;
+			break;
+		}
 		cur = cur->next;
 	}
 }
@@ -33,16 +36,16 @@ int	add_token(t_token *tokens, t_token *token, char *str)
 		}
 		i++;
 	}
-	token->val = malloc(sizeof(char) * (i));
+	token->val = malloc(sizeof(char) * (i + 1));
 	if (token->val == NULL)
 	{
 		lst_clear_tokens(tokens);
 		exit(EXIT_FAILURE);
 	}
-	ft_strncpy(token->val, str, i - 1);
-	token->val[i] = '\0';
+	ft_strncpy(token->val, str, i);
+	token->val[i + 1] = '\0';
 	lst_add_token(tokens, token);
-	return (i);
+	return (i + 1);
 }
 
 void	lst_clear_tokens(t_token *tokens)

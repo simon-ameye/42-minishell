@@ -31,7 +31,7 @@ clean:
 	rm -rf $(OBJS)
 
 fclean: clean
-	$(MAKE) fclean --no-print-directory -C $(LIBFT_DIR)
+#$(MAKE) fclean --no-print-directory -C $(LIBFT_DIR)
 	rm -rf $(NAME)
 
 re: fclean all
