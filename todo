@@ -1,0 +1,34 @@
+Expliquer a simon le truc des fds
+Evaluer si on fait un AST
+Coder la fonction EXPAND
+Evaluer sur l'etat de l'art sur la question : "les double quotes forment un token + remplacement des $ ou plusieurs"
+Evaluer le tableau dynamique VS la liste chainée pour les token
+
+1 expand
+2 ouvrir les fichiers creer fd
+3 ouvrir les pipes faire les redirectons
+4 parsing
+
+TESTS
+
+cat | cat | ls
+cat < Makefile > out | grep all
+cd / | cd /
+
+
+digraph G {
+
+    a [label="SUBSTITUTION :\nreplace $text by value in env\nexcept in simple quotes\nexcept if direct following char is double quote"]
+    b [label="TOKENISATIONS :\ncreate tokens (nb of pipes + 1)\nset splitted string in token values (ft_split(|))"]
+    c [label="FUNCTION_DETECTION : \ndetect function (first token value word)\n set a number : 0 for execve, 1 for echo...\n and remode function from string \n set the function path in token, if execve"]
+    d [label="FILE_OPENING : \nParse chevrons + files names\n Open all files, set FDs in tokens\n remove files names + chevrons"]
+    e [label="CREATE_CHILDREN : \n fork(), set dup2() according to fds"]
+    f [label="LAUNCH_PROCESSES (CHILDS) : \nWARNING ; ne pas forker si pas de pipe seulemen t pour les buildin\n close les fd"]
+    g [label="ENDING : \n wait PIDS, free mem, return errors...\n close les fds"]
+
+    token [label="TOKEN\n string\n path (as requested by execve)\n func_type\n function args (as requested by execve)\n input stream\n output stream\n USEFUL DATA (env...)"]
+
+
+     b-> a -> c -> d -> e -> f -> g
+
+}

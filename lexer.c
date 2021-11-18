@@ -100,7 +100,7 @@ void	lst_print_tokens(t_token **token)
 	tmp = *token;
 	while (tmp)
 	{
-		printf("val: %s, type: %d, next %p, actual address %p\n", tmp->val, (int)tmp->type, tmp->next, tmp);
+		printf("val: %s, type: %d, next: %p, address: %p\n", tmp->val, (int)tmp->type, tmp->next, tmp);
 		tmp = tmp->next;
 	}
 }

@@ -7,6 +7,7 @@
 
 #include "lexer.h"
 #include "libft.h"
+#include "substitution.h"
 
 
 # endif
