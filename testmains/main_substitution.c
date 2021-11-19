@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 10:05:54 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/19 15:55:02 by sameye           ###   ########.fr       */
+/*   Updated: 2021/11/19 19:02:21 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ void	test(char *str, char * expec, char **envp)
 
 	(void)expec;
 	res = NULL;
-	printf("input  : '%s'\n",str);
+	printf("input  : [%s]\n",str);
 	res = substitution(str, envp);
-	printf("result : '%s'\n", res);
-	printf("ref    : '");
+	printf("result : [%s]\n", res);
+	printf("ref    : [");
 	fflush(stdout);
 	system(str);
 	if (!strcmp(res, expec))
@@ -64,5 +64,5 @@ int	main(int ac, char **av, char **envp)
 	test("''\"'\"$TESTVAR\"'\"''''\"", "''\"'\"/cust/path\"'\"''''\"", envp);
 	test(" \"'' ' ' aa$TESTVAR '$TESTVAR\" ' ' ' ", " \"'' ' ' aa/cust/path '/cust/path\" ' ' ' ", envp);
 	test(" \"'' ' '' aa$TESTVAR '$TESTVAR\" ' ' '' ", " \"'' ' '' aa/cust/path '/cust/path\" ' ' '' ", envp);
-	test(" \"'' ' '' aa$TESTVAR '$TESTVAR\" ' ' '' ", " \"'' ' '' aa/cust/path '/cust/path\" ' ' '' ", envp);
+
 }
