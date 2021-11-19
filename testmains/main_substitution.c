@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 10:05:54 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/19 13:07:46 by sameye           ###   ########.fr       */
+/*   Updated: 2021/11/19 15:55:02 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	test(char *str, char * expec, char **envp)
 	else
 		printf("'\n\033[0;31mNOT OK\033[0m\n\n");
 	fflush(stdout);
+	free(res);
 }
 
 int	main(int ac, char **av, char **envp)

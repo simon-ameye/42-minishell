@@ -3,7 +3,7 @@
 /*
 **This version os ft_strjoin is able to join a str to (null)
 */
-char	*ft_strjoincustom(char const *s1, char const *s2)
+char	*ft_strjoincustomfree(char *s1, char *s2)
 {
 	char	*str;
 	int		i;
@@ -13,6 +13,8 @@ char	*ft_strjoincustom(char const *s1, char const *s2)
 	j = 0;
 	if (!s1)
 		return (NULL);
+	if (!s2)
+		return (s1);
 	str = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!(str))
 		return (NULL);
@@ -31,40 +33,24 @@ char	*ft_strjoincustom(char const *s1, char const *s2)
 		}
 	}
 	str[i] = '\0';
+	if (s1)
+		free(s1);
+	if (s2)
+		free(s2);
 	return (str);
 }
 
-
-char	*strinsertion(char *base, char *add, int pos, int size)
+char	*joincharfree(char *str, char c)
 {
-	char *begin;
-	char *ending;
 	char *res;
-	char *tmp;
 
-	//	printf("STRINSERTION : base %s, add %s, pos %i, size %i\n", base, add, pos, size);
-	//	fflush(stdout);
-	begin = ft_substr(base, 0, pos);
-	//	printf("begin %s\n", begin);
-	//	fflush(stdout);
-	ending = ft_substr(base, pos + size, ft_strlen(base));
-	//	printf("ending $%s$\n", ending);
-	//	fflush(stdout);
-	tmp = ft_strjoincustom(begin, add);
-	//	printf("tmp %s\n", tmp);
-	//	fflush(stdout);
-	res = ft_strjoincustom(tmp, ending);
-	//	printf("res %s\n", res);
-	//	fflush(stdout);
-	if (begin)
-		free(begin);
-	if (ending)
-		free(ending);
-	if (tmp)
-		free(tmp);
-	
-	//printf("result of strinsertion $%s$\n", res);
-	//	fflush(stdout);
+	if (!str)
+		return (NULL);
+	res = malloc(sizeof(char) * (ft_strlen(str) + 2));
+	ft_strcpy(res, str);
+	res[ft_strlen(str)] = c;
+	res[ft_strlen(str) + 1] = '\0';
+	free(str);
 	return (res);
 }
 
@@ -74,9 +60,14 @@ char	*substitution(char *str, char *const *env)
 	int j;
 	char *varname;
 	char *varval;
-	char *tmp;
 	int indbquotes;
+	char *res;
 
+	if (!str || !env)
+		return (NULL);
+	if (!*env)
+		return (ft_strdup(str));
+	res = ft_strdup("");
 	i = 0;
 	indbquotes = 0;
 	while (str[i])
@@ -85,28 +76,41 @@ char	*substitution(char *str, char *const *env)
 		//ft_putstr_fd(str, 2);
 		//ft_putstr_fd("\n", 2);
 		if (str[i] == '"')
-			indbquotes = 1 - indbquotes;
-		if (str[i] == '\'' && !indbquotes)
 		{
+			indbquotes = 1 - indbquotes;
+			res = joincharfree(res, str[i]);
+			i++;
+		}
+		else if (str[i] == '\'' && !indbquotes)
+		{
+			res = joincharfree(res, str[i]);
 			i++;
 			while(str[i] && str[i] != '\'')
+			{
+				res = joincharfree(res, str[i]);
 				i++;
+			}
 			if (!str[i])
 			{
 				ft_putstr_fd("Error : simple quote not closed\n", STDERR_FILENO);
 				//free + exit
 			}
+			else
+			{
+				res = joincharfree(res, str[i]);
+				i++;
+			}
 		}
-		if (str[i] == '$')
+		else if (str[i] == '$')
 		{
 			//ft_putstr_fd("dollar found\n", 2);
-			//i++;
+			i++;
 			j = 0;
-			while (str[j + i + 1] && ft_isalnum(str[j + i + 1]))
+			while (str[j + i] && ft_isalnum(str[j + i]))
 				j++;
 			//printf("i : %d, j : %d, str : %s\n", i, j, str);
 			//fflush(stdout);
-			varname = ft_substr(str, i + 1, j);
+			varname = ft_substr(str, i, j);
 			//printf("varname : '%s'\n", varname);
 			//fflush(stdout);
 			varval = find_var(varname, env);
@@ -115,22 +119,29 @@ char	*substitution(char *str, char *const *env)
 			if (varname)
 				free(varname);
 			//if (varval)
-			tmp = strinsertion(str, varval, i, j + 1);
+			//tmp = strinsertion(str, varval, i, j + 1);
 			/*
 			ft_putstr_fd("before free pb\n", 2);
 			if (str)
 				free(str);
 			ft_putstr_fd("after free pb\n", 2);
 			*/
-			str = tmp;
-			i = i + j + 1;
+			res = ft_strjoincustomfree(res, varval);
+			//free(res);
+			//res = tmp;
+			//str = tmp;
+			i = i + j;
 		}
-		i++;
+		else
+		{
+			res = joincharfree(res, str[i]);
+			i++;
+		}
 	}
 	if (indbquotes)
 		ft_putstr_fd("Error : unexpected EOF while looking for matching `\"\n", STDERR_FILENO);
 		//free + exit
-	return (str);
+	return (res);
 }
 
 char	*find_var(char *str, char *const *env)
