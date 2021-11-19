@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 //	HOW TO USE :
-//	make -C libft/ && gcc -Wall -Wextra -Werror testmains/main_substitution.c substitution.c -I libft/ -L libft/ -l ft -I. -o main_substitution
+//	make -C libft/ && gcc -Wall -Wextra -Werror testmains/main_substitution.c substitution.c substitution_utils.c -I libft/ -L libft/ -l ft -I. -o main_substitution
 //	export TESTVAR=/cust/path in your shell
 //	./main_substitution
 
