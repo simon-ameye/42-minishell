@@ -61,7 +61,7 @@ CC = gcc -Wall -Wextra -Werror
 
 all: $(NAME)
 
-$(NAME) : ${DIROBJS}
+$(NAME) : ${OBJS_DIR} ${DIROBJS}
 	ar rcs ${NAME} ${DIROBJS}
 
 ${DIROBJS}: ${OBJS_DIR}%.o: %.c
