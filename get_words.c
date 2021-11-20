@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 11:08:48 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/20 13:07:31 by sameye           ###   ########.fr       */
+/*   Updated: 2021/11/20 16:28:48 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,62 +14,59 @@
 
 char	**get_str_words(char *str)
 {
-	int		sgquote;
-	int		dbquote;
+	int		dbq;
+	int		sgq;
 	int		len;
 	char	**tab;
 	int		i;
+	int		j;
 	int		inword;
 
 	len = ft_strlen(str);
 	tab = malloc(sizeof(char *) * (len + 1));
-	sgquote = 0;
-	dbquote = 0;
+	sgq = 0;
+	dbq = 0;
 	inword = 0;
 
-	str[i] = malloc(sizeof(char));
-	while (str[i])
+	i = -1;
+	j = 0;
+	while (*str)
 	{
-		if (ft_isblank(str[i]) && sgquote == 0 && dbquote == 0)
+		if (ft_isblank(*str) && !sgq && !dbq)
 		{
 			if (inword == 1)
 				inword = 0;
-			i++;
 		}
-		else if (str[i] == '"' && sgquote == 0)
-		{
-			dbquote = 1 - dbquote;
-			i++;
-		}
-		else if (str[i] == '\'' && dbquote == 0)
-		{
-			sgquote = 1 - sgquote;
-			i++;
-		}
+		else if (*str == '"' && !sgq)
+			dbq = 1 - dbq;
+		else if (*str == '\'' && !dbq)
+			sgq = 1 - sgq;
 		else
 		{
-			inword = 1 - inword;
-
+			if (inword)
+			{
+				tab[i] = join_char_free(tab[i], *str);
+			}
+			else if (!inword)
+			{
+				i++;
+				j = 0;
+				tab[i] = malloc(sizeof(char));
+				tab[i][j] = '\0';
+				tab[i] = join_char_free(tab[i], *str);
+				inword = 1;
+			}
 		}
+		str++;
 	}
-
-
-	join_char_free()
-	
-
+	i++;
+	tab[i] = NULL;
+	return (tab);
 }
 
 void	get_words(t_token **tokens)
 {
-	char **tab;
-	int i;
-
-	tab = get_str_words("  echo blabla 'yooo sdsf' \"echo lool\"");
-	i = 0;
-	while(tab[i])
-	{
-		printf(tab[i]);
-	}
+	(void)tokens;
 }
 
 //  hsdhbsdhjcb 'axasx' "dwedw edd"
