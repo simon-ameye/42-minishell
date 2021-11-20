@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 16:18:04 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/20 10:57:05 by sameye           ###   ########.fr       */
+/*   Updated: 2021/11/20 12:24:09 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	expand_iteration(char **str, char **res,
 	}
 }
 
-char	*dollar_expand(char *str, char *const *env)
+char	*dollar_expand_str(char *str, char *const *env)
 {
 	int		indbquotes;
 	int		insgquotes;
@@ -94,4 +94,22 @@ char	*dollar_expand(char *str, char *const *env)
 		//	free + exit
 	}
 	return (res);
+}
+
+void	dollar_expand(t_token *tokens, char *const *env)
+{
+	int		i;
+	char	*expand;
+
+	i = 0;
+	if (tokens)
+	{
+		while(!tokens[i].is_last)
+		{
+			expand = dollar_expand_str(tokens[i].str, env);
+			free(tokens[i].str);
+			tokens[i].str = expand;
+			i++;
+		}
+	}
 }

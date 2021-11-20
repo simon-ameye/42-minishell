@@ -1,7 +1,7 @@
 NAME = minishell
 INC = minishell.h
 
-SRCS = minishell.c lexer.c
+SRCS = minishell.c tokenisation.c dollar_expand.c dollar_expand_utils.c
 
 OBJS_DIR = obj
 OBJS = $(addprefix $(OBJS_DIR)/,$(SRCS:.c=.o))

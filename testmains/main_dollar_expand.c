@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 10:05:54 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/20 10:49:48 by sameye           ###   ########.fr       */
+/*   Updated: 2021/11/20 12:13:16 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	test(char *str, char * expec, char **envp)
 	(void)expec;
 	res = NULL;
 	printf("input  : [%s]\n",str);
-	res = dollar_expand(str, envp);
+	res = dollar_expand_str(str, envp);
 	printf("result : [%s]\n", res);
 	printf("ref    : [");
 	fflush(stdout);

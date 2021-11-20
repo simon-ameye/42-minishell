@@ -64,10 +64,10 @@ all: $(NAME)
 $(NAME) : ${DIROBJS}
 	ar rcs ${NAME} ${DIROBJS}
 
-${DIROBJS}: ${OBJS_DIR}%.o: %.c ${OBJS_DIR}
+${DIROBJS}: ${OBJS_DIR}%.o: %.c
 	${CC} -I ${INCS_DIR} -c $< -o $@
 
-${BONUS_DIROBJS}: ${OBJS_DIR}%.o: %.c ${OBJS_DIR}
+${BONUS_DIROBJS}: ${OBJS_DIR}%.o: %.c
 	${CC} -I ${INCS_DIR} -c $< -o $@
 
 ${OBJS_DIR}:
