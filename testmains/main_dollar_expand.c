@@ -1,21 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main_substitution.c                                :+:      :+:    :+:   */
+/*   main_dollar_expand.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 10:05:54 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/19 19:02:21 by sameye           ###   ########.fr       */
+/*   Updated: 2021/11/20 10:49:48 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 //	HOW TO USE :
-//	make -C libft/ && gcc -Wall -Wextra -Werror testmains/main_substitution.c substitution.c substitution_utils.c -I libft/ -L libft/ -l ft -I. -o main_substitution
+//	make -C libft/ && gcc -Wall -Wextra -Werror testmains/main_dollar_expand.c dollar_expand.c dollar_expand_utils.c -I libft/ -L libft/ -l ft -I. -o main_dollar_expand
 //	export TESTVAR=/cust/path in your shell
-//	./main_substitution
-
-
+//	valgrind ./main_dollar_expand
 
 #include "minishell.h"
 
@@ -25,7 +23,7 @@ void	test(char *str, char * expec, char **envp)
 	(void)expec;
 	res = NULL;
 	printf("input  : [%s]\n",str);
-	res = substitution(str, envp);
+	res = dollar_expand(str, envp);
 	printf("result : [%s]\n", res);
 	printf("ref    : [");
 	fflush(stdout);
@@ -42,8 +40,6 @@ int	main(int ac, char **av, char **envp)
 {
 	(void)ac;
 	(void)av;
-
-	//setenv("TESTVAR", "/cust/path", 1);
 
 	test("", "", envp);
 	test("aaaaaaaa", "aaaaaaaa", envp);
@@ -64,5 +60,4 @@ int	main(int ac, char **av, char **envp)
 	test("''\"'\"$TESTVAR\"'\"''''\"", "''\"'\"/cust/path\"'\"''''\"", envp);
 	test(" \"'' ' ' aa$TESTVAR '$TESTVAR\" ' ' ' ", " \"'' ' ' aa/cust/path '/cust/path\" ' ' ' ", envp);
 	test(" \"'' ' '' aa$TESTVAR '$TESTVAR\" ' ' '' ", " \"'' ' '' aa/cust/path '/cust/path\" ' ' '' ", envp);
-
 }

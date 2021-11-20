@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   substitution_utils.c                               :+:      :+:    :+:   */
+/*   dollar_expand_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 17:30:28 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/19 17:30:31 by sameye           ###   ########.fr       */
+/*   Updated: 2021/11/20 10:57:59 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*ft_strjoinfree(char *s1, char *s2)
 	return (str);
 }
 
-char	*joincharfree(char *str, char c)
+char	*join_char_free(char *str, char c)
 {
 	char	*res;
 

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   substitution.c                                     :+:      :+:    :+:   */
+/*   dollar_expand.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 16:18:04 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/19 19:01:54 by sameye           ###   ########.fr       */
+/*   Updated: 2021/11/20 10:57:05 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*find_var(char *str, char *const *env)
 	return (ret);
 }
 
-void	insertenvvar(char **str, char **res, char *const *env)
+void	insert_env_var(char **str, char **res, char *const *env)
 {
 	int		len;
 	char	*varname;
@@ -49,31 +49,31 @@ void	insertenvvar(char **str, char **res, char *const *env)
 	*str += len;
 }
 
-void	substitutiteration(char **str, char **res,
+void	expand_iteration(char **str, char **res,
 	char *const *env, int *indbquotes, int *insgquotes)
 {
 	if (**str == '"' && *insgquotes == 0)
 	{
 		*indbquotes = 1 - *indbquotes;
-		*res = joincharfree(*res, **str);
+		*res = join_char_free(*res, **str);
 		(*str)++;
 	}
 	else if (**str == '\'' && *indbquotes == 0)
 	{
 		*insgquotes = 1 - *insgquotes;
-		*res = joincharfree(*res, **str);
+		*res = join_char_free(*res, **str);
 		(*str)++;
 	}
 	else if (**str == '$' && *insgquotes == 0)
-		insertenvvar(str, res, env);
+		insert_env_var(str, res, env);
 	else
 	{
-		*res = joincharfree(*res, **str);
+		*res = join_char_free(*res, **str);
 		(*str)++;
 	}
 }
 
-char	*substitution(char *str, char *const *env)
+char	*dollar_expand(char *str, char *const *env)
 {
 	int		indbquotes;
 	int		insgquotes;
@@ -87,7 +87,7 @@ char	*substitution(char *str, char *const *env)
 	indbquotes = 0;
 	insgquotes = 0;
 	while (*str)
-		substitutiteration(&str, &res, env, &indbquotes, &insgquotes);
+		expand_iteration(&str, &res, env, &indbquotes, &insgquotes);
 	if (indbquotes)
 	{
 		ft_putstr_fd("Error : double quote not closed\n", STDERR_FILENO);
