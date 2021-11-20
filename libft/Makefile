@@ -1,87 +1,87 @@
-OBJS_DIR = obj/
-INCS_DIR = include/
-INC = libft.h
-NAME = libft.a
+OBJS_DIR		=	obj/
+INCS_DIR		= 	include/
+INC 			= 	libft.h
+NAME 			= 	libft.a
 
-SRCS += ft_atoi.c
-SRCS += ft_isascii.c
-SRCS += ft_memccpy.c
-SRCS += ft_memset.c 
-SRCS += ft_putstr_fd.c
-SRCS += ft_strjoin.c
-SRCS += ft_strncmp.c
-SRCS += ft_substr.c
-SRCS += ft_bzero.c
-SRCS += ft_isblank.c
-SRCS += ft_memchr.c 
-SRCS += ft_split.c
-SRCS += ft_strlcat.c
-SRCS += ft_strncpy.c
-SRCS += ft_tolower.c
-SRCS += ft_calloc.c 
-SRCS += ft_isdigit.c
-SRCS += ft_memcmp.c 
-SRCS += ft_putchar_fd.c 
-SRCS += ft_strchr.c 
-SRCS += ft_strlcpy.c
-SRCS += ft_strnstr.c
-SRCS += ft_toupper.c
-SRCS += ft_isalnum.c
-SRCS += ft_isprint.c
-SRCS += ft_memcpy.c 
-SRCS += ft_putendl_fd.c 
-SRCS += ft_strcpy.c 
-SRCS += ft_strlen.c 
-SRCS += ft_strrchr.c
-SRCS += ft_isalpha.c
-SRCS += ft_itoa.c
-SRCS += ft_memmove.c
-SRCS += ft_putnbr_fd.c
-SRCS += ft_strdup.c 
-SRCS += ft_strmapi.c
-SRCS += ft_strtrim.c
+SRCS			= 	ft_atoi.c \
+					ft_isascii.c \
+					ft_memccpy.c \
+					ft_memset.c  \
+					ft_putstr_fd.c \
+					ft_strjoin.c \
+					ft_strncmp.c \
+					ft_substr.c \
+					ft_bzero.c \
+					ft_isblank.c \
+					ft_memchr.c  \
+					ft_split.c \
+					ft_strlcat.c \
+					ft_strncpy.c \
+					ft_tolower.c \
+					ft_calloc.c  \
+					ft_isdigit.c \
+					ft_memcmp.c  \
+					ft_putchar_fd.c  \
+					ft_strchr.c  \
+					ft_strlcpy.c \
+					ft_strnstr.c \
+					ft_toupper.c \
+					ft_isalnum.c \
+					ft_isprint.c \
+					ft_memcpy.c  \
+					ft_putendl_fd.c  \
+					ft_strcpy.c  \
+					ft_strlen.c  \
+					ft_strrchr.c \
+					ft_isalpha.c \
+					ft_itoa.c \
+					ft_memmove.c \
+					ft_putnbr_fd.c \
+					ft_strdup.c  \
+					ft_strmapi.c \
+					ft_strtrim.c
 
-BONUS_SRCS += ft_lstnew.c
-BONUS_SRCS += ft_lstadd_front.c
-BONUS_SRCS += ft_lstsize.c
-BONUS_SRCS += ft_lstlast.c
-BONUS_SRCS += ft_lstadd_back.c
-BONUS_SRCS += ft_lstdelone.c
-BONUS_SRCS += ft_lstclear.c
-BONUS_SRCS += ft_lstiter.c
-BONUS_SRCS += ft_lstmap.c
+BONUS_SRC		 = 	ft_lstnew.c \
+					ft_lstadd_front.c \
+					ft_lstsize.c \
+					ft_lstlast.c \
+					ft_lstadd_back.c \
+					ft_lstdelone.c \
+					ft_lstclear.c \
+					ft_lstiter.c \
+					ft_lstmap.c
 
-OBJS = ${SRCS:.c=.o}
-BONUS_OBJS	= ${BONUS_SRCS:.c=.o}
+OBJS			=	$(SRCS:.c=.o)
+BONUS_OBJS		=	$(BONUS_SRCS:.c=.o)
 
-DIROBJS = $(addprefix ${OBJS_DIR},${OBJS})
-BONUS_DIROBJS = $(addprefix ${OBJS_DIR},${BONUS_OBJS})
+DIROBJS			=	$(addprefix $(OBJS_DIR),$(OBJS))
+BONUS_DIROBJS	=	$(addprefix $(OBJS_DIR),$(BONUS_OBJS))
 
-CC = gcc -Wall -Wextra -Werror
+CC				=	gcc -Wall -Wextra -Werror
 
-all: $(NAME)
+all:				$(NAME)
 
-$(NAME) : ${OBJS_DIR} ${DIROBJS}
-	ar rcs ${NAME} ${DIROBJS}
+$(NAME):			$(OBJS_DIR) $(DIROBJS)
+					ar rcs $(NAME) $(DIROBJS)
 
-${DIROBJS}: ${OBJS_DIR}%.o: %.c
-	${CC} -I ${INCS_DIR} -c $< -o $@
+$(DIROBJS):			$(OBJS_DIR)%.o: %.c
+					$(CC) -c $< -o $@
 
-${BONUS_DIROBJS}: ${OBJS_DIR}%.o: %.c
-	${CC} -I ${INCS_DIR} -c $< -o $@
+$(BONUS_DIROBJS):	$(OBJS_DIR)%.o: %.c
+					$(CC) -c $< -o $@
 
-${OBJS_DIR}:
-	mkdir $@
+$(OBJS_DIR):
+					mkdir $@
 
 clean:
-	rm -rf ${DIROBJS} ${BONUS_DIROBJS}
+					rm -rf $(DIROBJS) $(BONUS_DIROBJS)
 
-fclean: clean
-	rm -rf ${NAME}
+fclean:				clean
+					rm -rf $(NAME)
 
-re: fclean all
+re:					fclean all
 
-bonus:	${DIROBJS} ${BONUS_DIROBJS}
-		ar rcs ${NAME} ${DIROBJS} ${BONUS_DIROBJS} ${NAME}
+bonus:				$(DIROBJS) $(BONUS_DIROBJS)
+					ar rcs $(NAME) $(DIROBJS) $(BONUS_DIROBJS) $(NAME)
 
-.PHONY: all clean fclean re bonus
+.PHONY:				all clean fclean re bonus

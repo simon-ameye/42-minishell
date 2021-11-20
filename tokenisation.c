@@ -27,7 +27,11 @@ char	*ft_strndup(char *s, int n)
 	{
 		ret = malloc(sizeof(char) * (n + 1));
 		if (ret)
-			custom_ft_strncpy(ret, s, n);
+		{
+			ft_strncpy(ret, s, n);
+			ret[n] = '\0';
+			//custom_ft_strncpy(ret, s, n);
+		}
 	}
 	return (ret);
 }
