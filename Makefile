@@ -17,7 +17,8 @@ INCLUDE		=		-I libft/
 SRCS		=		minishell.c \
 					tokenisation.c \
 					dollar_expand.c \
-					dollar_expand_utils.c
+					dollar_expand_utils.c \
+					get_words.c
 
 #################	OBJECT FILES	#################
 

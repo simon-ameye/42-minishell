@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 11:09:17 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/20 17:37:25 by sameye           ###   ########.fr       */
+/*   Updated: 2021/11/20 18:51:46 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,30 +18,14 @@
 
 void    print_tab(char **tab)
 {
-    int i;
+	int i;
 
 	i = 0;
 	while(tab[i])
 	{
-		printf("[%s] ", tab[i]);
-        i++;
+		printf("[%s]", tab[i]);
+		i++;
 	}
-}
-
-void    freetab(char **tab)
-{
-    int i;
-
-	i = 0;
-    if (tab)
-    {
-        while (tab[i])
-        {
-            free(tab[i]);
-            i++;
-        }
-        free(tab);
-    }
 }
 
 void	test(char *str, char * expec)
@@ -51,27 +35,18 @@ void	test(char *str, char * expec)
 	tab = NULL;
 	printf("input  : [%s]\n",str);
 	tab = get_str_words(str);
-	printf("result   : [");
-    print_tab(tab);
-	printf("]\n");
-	printf("expected : [%s]\n\n", expec);
-    freetab(tab);
-    fflush(stdout);
-
-    /*
-	if (!strcmp(res, expec))
-		printf("'\n\033[0;32mOK\033[0m\n\n");
-	else
-		printf("'\n\033[0;31mNOT OK\033[0m\n\n");
+	printf("result   : ");
+	print_tab(tab);
+	printf("\n");
+	printf("expected : %s\n\n", expec);
+	free_words(tab);
 	fflush(stdout);
-	*/
-
 }
 
 int main(void)
 {
-	test("  echo \"o\"blabla 'y\"o\"oo sdsf' \"echo lool\"", "[echo] [oblabla] [y\"o\"oo sdsf] [echo lool] ");
+	test("  echo \"o\"blabla 'y\"o\"oo sdsf' \"echo lool\"", "[echo][oblabla][y\"o\"oo sdsf][echo lool]");
 	test("", "");
-	test(" ' ' \" \" h \"p '\" p \" 'p\" \"'\" f ' f ' ", "[ ] [ ] [h] [p '] [p] [ 'p] ['] [f] [ f ] ");
+	test(" ' ' \" \" h \"p '\" p \" 'p\" \"'\" f ' f ' ", "[ ][ ][h][p '][p][ 'p]['][f][ f ]");
 
 }

@@ -58,7 +58,10 @@ void	free_tokens(t_token *tokens)
 		while(!tokens[i].is_last)
 		{
 			if (tokens[i].str)
+			{
 				free(tokens[i].str);
+				free_words(tokens[i].words);
+			}
 			i++;
 		}
 		free(tokens);
@@ -112,6 +115,7 @@ void	create_token(t_token *tokens, char *line, int index, char *const *env)
 void	print_tokens(t_token *tokens)
 {
 	int	i;
+	int j;
 
 	i = 0;
 	if (tokens)
@@ -119,7 +123,17 @@ void	print_tokens(t_token *tokens)
 		while(!tokens[i].is_last)
 		{
 			if (tokens[i].str)
-				printf("process %d : %s\n", i, tokens[i].str);
+			{
+				//printf("process %d : %s\n", i, tokens[i].str);
+				printf("process %d : args : ", i);
+				j = 0;
+				while(tokens[i].words[j])
+				{
+					printf("[%s]", tokens[i].words[j]);
+					j++;
+				}
+				printf("\n");
+			}
 			i++;
 		}
 	}

@@ -25,6 +25,7 @@ typedef struct	s_token
 	char			*str;
 	char			*path;
 	char			**args;
+	char			**words;
 	char *const		*env;
 	t_function_type	ftype;
 	int				input;

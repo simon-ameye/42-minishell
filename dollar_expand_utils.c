@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 17:30:28 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/20 10:57:59 by sameye           ###   ########.fr       */
+/*   Updated: 2021/11/20 18:00:55 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,11 @@ char	*join_char_free(char *str, char c)
 	if (!str)
 		return (NULL);
 	res = malloc(sizeof(char) * (ft_strlen(str) + 2));
+	if (res == NULL)
+	{
+		free(str);
+		return (NULL);
+	}
 	ft_strcpy(res, str);
 	res[ft_strlen(str)] = c;
 	res[ft_strlen(str) + 1] = '\0';
