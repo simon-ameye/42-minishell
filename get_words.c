@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 11:08:48 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/20 16:28:48 by sameye           ###   ########.fr       */
+/*   Updated: 2021/11/20 17:31:07 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,25 +16,23 @@ char	**get_str_words(char *str)
 {
 	int		dbq;
 	int		sgq;
-	int		len;
 	char	**tab;
 	int		i;
-	int		j;
 	int		inword;
 
-	len = ft_strlen(str);
-	tab = malloc(sizeof(char *) * (len + 1));
+	if (!str)
+		return (NULL);
+	tab = malloc(sizeof(char *) * (ft_strlen(str) + 1));
 	sgq = 0;
 	dbq = 0;
 	inword = 0;
 
 	i = -1;
-	j = 0;
 	while (*str)
 	{
 		if (ft_isblank(*str) && !sgq && !dbq)
 		{
-			if (inword == 1)
+			if (inword)
 				inword = 0;
 		}
 		else if (*str == '"' && !sgq)
@@ -43,19 +41,14 @@ char	**get_str_words(char *str)
 			sgq = 1 - sgq;
 		else
 		{
-			if (inword)
-			{
-				tab[i] = join_char_free(tab[i], *str);
-			}
-			else if (!inword)
+			if (!inword)
 			{
 				i++;
-				j = 0;
 				tab[i] = malloc(sizeof(char));
-				tab[i][j] = '\0';
-				tab[i] = join_char_free(tab[i], *str);
+				tab[i][0] = '\0';
 				inword = 1;
 			}
+			tab[i] = join_char_free(tab[i], *str);
 		}
 		str++;
 	}
