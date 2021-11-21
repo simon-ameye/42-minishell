@@ -1,14 +1,48 @@
 #include "minishell.h"
 
 /*
- *	Usage
- *
- *	make -C libft && \
- *	gcc -Wall -Wextra -Werror testmains/main_tokenisation.c tokenisation.c -I . -I libft/ -L libft/ -l ft -o main_tokenisation
- *
+ *	see 'test_tokenisation' target in Makefile
  */
 
-void	test(char *line)
+static void	free_tokens_str(t_token *tokens)
+{
+	int	i;
+
+	i = 0;
+	if (tokens)
+	{
+		while(!tokens[i].is_last)
+		{
+			if (tokens[i].str)
+			{
+				free(tokens[i].str);
+			}
+			i++;
+		}
+		free(tokens);
+	}
+}
+
+static void	print_tokens_str(t_token *tokens)
+{
+	int	i;
+
+	i = 0;
+	if (tokens)
+	{
+		while(!tokens[i].is_last)
+		{
+			if (tokens[i].str)
+			{
+				//printf("process %d : %s\n", i, tokens[i].str);
+				printf("process %d : args : ", i);
+			}
+			i++;
+		}
+	}
+}
+
+static void	test(char *line)
 {
 	t_token *tokens;
 
@@ -17,8 +51,8 @@ void	test(char *line)
 	if (tokens)
 	{
 		printf("minishell>[%s]\n", line);
-		print_tokens(tokens);
-		free_tokens(tokens);
+		print_tokens_str(tokens);
+		free_tokens_str(tokens);
 	}
 }
 

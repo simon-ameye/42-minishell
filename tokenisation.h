@@ -1,8 +1,6 @@
 #ifndef TOKENISATION_H
 # define TOKENISATION_H
 
-# include "minishell.h"
-
 char	*custom_ft_strncpy(char *dst, char *src, int len);
 char	*ft_strndup(char *s, int n);
 void	init_token(t_token *token, char *const *env);
