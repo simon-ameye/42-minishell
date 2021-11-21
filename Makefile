@@ -4,16 +4,20 @@ CC			=		gcc -Wall -Wextra -Werror
 
 ################	DIRECTORIES		#################
 
-OBJS_DIR	=		obj/
+SRCS_DIR	=		src
 
-LIBFT_DIR	=		libft/
+OBJS_DIR	=		obj
 
-TESTS_DIR	=		testmains/
+LIBFT_DIR	=		libft
+
+TESTS_DIR	=		testmains
+
+INCLUDE_DIR	=		include
 
 #################	HEADER FILES	#################
 
-INCLUDE		=		-I . \
-					-I libft/
+INCLUDE		=		-I include \
+					-I libft
 
 #################	SOURCE FILES	#################
 
@@ -23,9 +27,13 @@ SRCS		=		minishell.c \
 					dollar_expand_utils.c \
 					get_words.c
 
+SOURCES		=		$(addprefix $(SRCS_DIR)/,$(SRCS))
+
 #################	OBJECT FILES	#################
 
-OBJS		=		$(addprefix $(OBJS_DIR)/,$(SRCS:.c=.o))
+OBJS		=		$(addsuffix .o, $(basename $(SRCS)))
+
+OBJECTS		=		$(addprefix $(OBJS_DIR)/,$(OBJS))
 
 ################	BINARIES		#################
 
@@ -33,62 +41,66 @@ NAME		=		minishell
 
 ################	LIBFT			#################
 
-LIBFT		=		$(LIBFT_DIR)libft.a
+LIBFT		=		$(LIBFT_DIR)/libft.a
 LINK		=		-L $(LIBFT_DIR) -l ft
 
 ################	TESTS			#################
 
 #RELINK!
 test_tokenisation:	$(LIBFT)
-					@$(CC) $(TESTS_DIR)main_tokenisation.c \
-					tokenisation.c get_words.c dollar_expand_utils.c \
+					@$(CC) $(TESTS_DIR)/main_tokenisation.c \
+					src/tokenisation.c src/get_words.c src/dollar_expand_utils.c \
 					$(INCLUDE) $(LINK) -o main_tokenisation
 					@valgrind ./main_tokenisation
 
 #UNUSABLE!			UNABLE TO ADD ENV VAR
 test_expand:		$(LIBFT)
-					@$(CC) $(TESTS_DIR)main_dollar_expand.c \
-					dollar_expand.c dollar_expand_utils.c \
+					@$(CC) $(TESTS_DIR)/main_dollar_expand.c \
+					src/dollar_expand.c src/dollar_expand_utils.c \
 					$(INCLUDE) $(LINK) -o main_dollar_expand
 					$(shell export TESTVAR=/cust/path) # HERE
 					@valgrind ./main_dollar_expand
 
 #RELINK!
 test_get_words:		$(LIBFT)
-					@$(CC) $(TESTS_DIR)main_get_words.c \
-					get_words.c dollar_expand_utils.c \
+					@$(CC) $(TESTS_DIR)/main_get_words.c \
+					src/get_words.c src/dollar_expand_utils.c \
 					$(INCLUDE) $(LINK) -o main_get_words
 					@valgrind ./main_get_words
 
 ################	TARGETS			#################
 
-all:				$(OBJS_DIR) $(NAME)
+debug:
+					$(info $(SRCS))
+					$(info $(OBJS))
+					$(info $(SOURCES))
+					$(info $(OBJECTS))
+
+all:				$(NAME)
 
 $(OBJS_DIR):
-					mkdir -p $(OBJS_DIR)
+					@mkdir -p $@
 
-$(NAME):			$(LIBFT) $(OBJS)
-					#echo Building minishell...
-					$(CC) $(INCLUDE) $(OBJS) -o $(NAME) $(LINK) -lreadline
+$(OBJS_DIR)/%.o:	$(SRCS_DIR)/%.c $(OBJS_DIR)
+					@$(CC) $(INCLUDE) -c $< -o $@
 
-$(OBJS_DIR)/%.o:	%.c
-					#@echo "compiling $<"
-					$(CC) -c $< -o $@ $(INCLUDE) $(LINK)
+$(NAME):			$(LIBFT) $(OBJECTS)
+					@echo Building minishell...
+					@$(CC) $(INCLUDE) $(OBJECTS) -o $(NAME) $(LINK) -lreadline
 
 $(LIBFT):
-					#echo Building libft...
-					$(MAKE) --no-print-directory -C $(LIBFT_DIR)
+					@echo Building libft...
+					@$(MAKE) --no-print-directory -C $(LIBFT_DIR)
 
 clean:
-					#echo Cleaning objects...
-					rm -rf $(OBJS)
+					@echo Cleaning minishell objects...
+					@rm -f $(OBJECTS)
 
 fclean:				clean
-					#echo Cleaning binaries...
-					$(MAKE) fclean --no-print-directory -C $(LIBFT_DIR)
-					rm -rf $(NAME)
+					@echo Cleaning minishell binary...
+					@$(MAKE) fclean --no-print-directory -C $(LIBFT_DIR)
+					@rm -f $(NAME)
 
 re:					fclean all
 
-
-.PHONY:				all clean fclean re
+.PHONY:				all clean fclean re debug test_tokenisation test_expand test_get_words

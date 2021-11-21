@@ -39,4 +39,6 @@ typedef struct	s_token
 #include "dollar_expand.h"
 #include "get_words.h"
 
+//int	main(int ac, char **av, char *const *env);
+
 # endif

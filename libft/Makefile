@@ -62,26 +62,30 @@ CC				=	gcc -Wall -Wextra -Werror
 all:				$(NAME)
 
 $(NAME):			$(OBJS_DIR) $(DIROBJS)
-					ar rcs $(NAME) $(DIROBJS)
+					@echo Building mandatory libft...
+					@ar rcs $(NAME) $(DIROBJS)
 
 $(DIROBJS):			$(OBJS_DIR)%.o: %.c
-					$(CC) -c $< -o $@
+					@$(CC) -c $< -o $@
 
 $(BONUS_DIROBJS):	$(OBJS_DIR)%.o: %.c
-					$(CC) -c $< -o $@
+					@$(CC) -c $< -o $@
 
 $(OBJS_DIR):
-					mkdir $@
+					@mkdir $@
 
 clean:
-					rm -rf $(DIROBJS) $(BONUS_DIROBJS)
+					@echo Cleaning libft objects...
+					@rm -rf $(DIROBJS) $(BONUS_DIROBJS)
 
 fclean:				clean
-					rm -rf $(NAME)
+					@echo Cleaning libft library...
+					@rm -rf $(NAME)
 
 re:					fclean all
 
 bonus:				$(DIROBJS) $(BONUS_DIROBJS)
-					ar rcs $(NAME) $(DIROBJS) $(BONUS_DIROBJS) $(NAME)
+					@echo Building bonus libft...
+					@ar rcs $(NAME) $(DIROBJS) $(BONUS_DIROBJS) $(NAME)
 
 .PHONY:				all clean fclean re bonus
