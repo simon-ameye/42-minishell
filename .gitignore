@@ -2,3 +2,4 @@
 .nfs*
 obj/*
 libft/obj/*
+*.a

@@ -17,7 +17,7 @@ cd / | cd /
 
 Warning ! ouble auotes from env expand should be kept, ex :
 arg='"hello"'
-<echo hello> should return  <"hello">
+<echo $arg> should return  <"hello">
 I hope that : execve(ECHOPATH, {["arg"], [], []}) returns "hello"
 <asxsax asx as sx| dkmsc | sx |> bugue !!
 
