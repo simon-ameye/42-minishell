@@ -26,7 +26,6 @@ typedef struct	s_token
 	char			*path;
 	char			**args;
 	char			**words;
-	char *const		*env;
 	t_ftype			ftype;
 	int				input;
 	int				output;
@@ -39,7 +38,9 @@ typedef struct	s_token
 #include "dollar_expand.h"
 #include "get_words.h"
 #include "get_ftype.h"
+#include "get_path.h"
 
-//int	main(int ac, char **av, char *const *env);
+
+void	free_str_tab(char **tab);
 
 # endif

@@ -23,7 +23,8 @@ void	print_tokens(t_token *tokens)
 				}
 				printf("\n");
 				printf("	ftype : %i\n", tokens[i].ftype);
-
+				if (tokens[i].path)
+					printf("	path : %s\n", tokens[i].path);
 			}
 			i++;
 		}

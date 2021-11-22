@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 11:15:23 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/22 17:19:11 by sameye           ###   ########.fr       */
+/*   Updated: 2021/11/22 18:24:00 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	get_ftype(t_token *tokens)
 	{
 		while(!tokens[i].is_last)
 		{
-			fflush(stdout);
 			if (tokens[i].words)
 			{
 				if (tokens[i].words[0])

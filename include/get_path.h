@@ -1,19 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_words.h                                        :+:      :+:    :+:   */
+/*   get_path.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/20 11:08:52 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/22 18:39:34 by sameye           ###   ########.fr       */
+/*   Created: 2021/11/22 18:19:15 by sameye            #+#    #+#             */
+/*   Updated: 2021/11/22 18:45:56 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_WORDS_H
-# define GET_WORDS_H
+#ifndef GET_PATH_H
+# define GET_PATH_H
 
-void    get_words(t_token *tokens);
-char	**get_str_words(char *str);
+void    get_path(t_token *tokens, char *const *env);
+char	*get_path_iter(char *fnct, char *const *env);
+char	**find_paths(char *const *env);
 
 #endif

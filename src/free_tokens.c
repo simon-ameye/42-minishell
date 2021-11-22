@@ -12,8 +12,10 @@ void	free_tokens(t_token *tokens)
 			if (tokens[i].str)
 			{
 				free(tokens[i].str);
-				free_words(tokens[i].words);
+				free_str_tab(tokens[i].words);
 			}
+			if (tokens[i].path)
+				free(tokens[i].path);
 			i++;
 		}
 		free(tokens);

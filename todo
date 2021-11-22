@@ -20,12 +20,11 @@ arg='"hello"'
 <echo $arg> should return  <"hello">
 I hope that : execve(ECHOPATH, {["arg"], [], []}) returns "hello"
 <asxsax asx as sx| dkmsc | sx |> bugue !!
-
 digraph G {
 
     a [label="TOKENISATIONS :\ncreate tokens (nb of pipes + 1)\n"]
-    b [label="SUBSTITUTION :\nreplace $text by value in env\nexcept in simple quotes\n"]
-    c [label="CLEANING : \nremove both useless whitespaces and quotes"]
+    c [label="SUBSTITUTION :\nreplace $text by value in env\nexcept in simple quotes\n"]
+    b [label="GET_WORDS : \nDetect words"]
     d [label="FUNCTION_DETECTION : \ndetect function (first token value word)\n set a number : 0 for execve, 1 for echo...\n and remode function from string \n set the function path in token, if execve"]
     e [label="FILE_OPENING : \nParse chevrons + files names\n Open all files, set FDs in tokens\n remove files names + chevrons"]
     f [label="CREATE_CHILDREN : \n fork(), set dup2() according to fds"]

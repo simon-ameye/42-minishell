@@ -13,10 +13,11 @@ int main(int ac, char **av, char *const *env)
 		line = readline("minishell> ");
 		if (!line)
 			break ;
-		tokens = tokenisation(line, env);
+		tokens = tokenisation(line);
 		get_words(tokens);
 		dollar_expand(tokens, env);
 		get_ftype(tokens);
+		get_path(tokens, env);
 		print_tokens(tokens);
 		free_tokens(tokens);
 		free(line);

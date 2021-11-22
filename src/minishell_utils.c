@@ -1,19 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_words.h                                        :+:      :+:    :+:   */
+/*   minishell_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/20 11:08:52 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/22 18:39:34 by sameye           ###   ########.fr       */
+/*   Created: 2021/11/22 18:37:41 by sameye            #+#    #+#             */
+/*   Updated: 2021/11/22 18:41:28 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_WORDS_H
-# define GET_WORDS_H
+#include "minishell.h"
 
-void    get_words(t_token *tokens);
-char	**get_str_words(char *str);
+void	free_str_tab(char **tab)
+{
+	int i;
 
-#endif
+	i = 0;
+	if (tab)
+	{
+		while (tab[i])
+		{
+			free(tab[i]);
+			i++;
+		}
+		free(tab);
+	}
+}

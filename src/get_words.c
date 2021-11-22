@@ -6,27 +6,11 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 11:08:48 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/21 19:05:31 by trobin           ###   ########.fr       */
+/*   Updated: 2021/11/22 18:40:39 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	free_words(char **tab)
-{
-	int i;
-
-	i = 0;
-	if (tab)
-	{
-		while (tab[i])
-		{
-			free(tab[i]);
-			i++;
-		}
-		free(tab);
-	}
-}
 
 /*
 IMPOSSIBLE DE RACCOURCIR LA FONCTION PROPREMENT !!

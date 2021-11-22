@@ -36,12 +36,11 @@ char	*ft_strndup(char *s, int n)
 	return (ret);
 }
 
-void	init_token(t_token *token, char *const *env)
+void	init_token(t_token *token)
 {
 	token->str = NULL;
 	token->path = NULL;
 	token->args = NULL;
-	token->env = env;
 	token->ftype = 0; // ?
 	token->input = -1;
 	token->output = -1;
@@ -82,9 +81,9 @@ char	*get_token_str(char *line, int token_index)
 	return (ft_strndup(&line[lo], hi - lo));
 }
 
-void	create_token(t_token *tokens, char *line, int index, char *const *env)
+void	create_token(t_token *tokens, char *line, int index)
 {
-	init_token(&tokens[index], env);
+	init_token(&tokens[index]);
 
 	tokens[index].str = NULL;
 	tokens[index].str = get_token_str(line, index);
@@ -125,7 +124,7 @@ int	get_nb_tokens(char *line)
 	return (ret);
 }
 
-t_token	*tokenisation(char *line, char *const *env)
+t_token	*tokenisation(char *line)
 {
 	t_token *tokens;
 	int		nb_tokens;
@@ -141,7 +140,7 @@ t_token	*tokenisation(char *line, char *const *env)
 	i = 0;
 	while (i < nb_tokens)
 	{
-		create_token(tokens, line, i, env);
+		create_token(tokens, line, i);
 		i++;
 	}
 	// overrides default 'false'
