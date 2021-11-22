@@ -48,26 +48,6 @@ void	init_token(t_token *token, char *const *env)
 	token->is_last = 0;
 }
 
-void	free_tokens(t_token *tokens)
-{
-	int	i;
-
-	i = 0;
-	if (tokens)
-	{
-		while(!tokens[i].is_last)
-		{
-			if (tokens[i].str)
-			{
-				free(tokens[i].str);
-				free_words(tokens[i].words);
-			}
-			i++;
-		}
-		free(tokens);
-	}
-}
-
 char	*get_token_str(char *line, int token_index)
 {
 	int		lo;
@@ -110,33 +90,6 @@ void	create_token(t_token *tokens, char *line, int index, char *const *env)
 	tokens[index].str = get_token_str(line, index);
 	if (tokens[index].str == NULL)
 		return (free_tokens(tokens));
-}
-
-void	print_tokens(t_token *tokens)
-{
-	int	i;
-	int j;
-
-	i = 0;
-	if (tokens)
-	{
-		while(!tokens[i].is_last)
-		{
-			if (tokens[i].str)
-			{
-				//printf("process %d : %s\n", i, tokens[i].str);
-				printf("process %d : args : ", i);
-				j = 0;
-				while(tokens[i].words[j])
-				{
-					printf("[%s]", tokens[i].words[j]);
-					j++;
-				}
-				printf("\n");
-			}
-			i++;
-		}
-	}
 }
 
 int	get_nb_tokens(char *line)

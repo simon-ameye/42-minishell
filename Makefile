@@ -25,6 +25,8 @@ SRCS		=		minishell.c \
 					tokenisation.c \
 					dollar_expand.c \
 					dollar_expand_utils.c \
+					print_tokens.c \
+					free_tokens.c \
 					get_words.c
 
 SOURCES		=		$(addprefix $(SRCS_DIR)/,$(SRCS))
@@ -58,7 +60,8 @@ test_expand:		$(LIBFT)
 					@$(CC) $(TESTS_DIR)/main_dollar_expand.c \
 					src/dollar_expand.c src/dollar_expand_utils.c \
 					$(INCLUDE) $(LINK) -o main_dollar_expand
-					$(shell export TESTVAR=/cust/path) # HERE
+					@echo Please do 'export TESTVAR=/cust/path'
+#					$(shell export TESTVAR=/cust/path) # HERE
 					@valgrind ./main_dollar_expand
 
 #RELINK!
