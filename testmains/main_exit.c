@@ -23,12 +23,32 @@ void	test(char *s)
 
 int main()
 {
-	test("exit 42");
+//	test("exit");
+//	test("exit 42");
+
+	/*
+	 *
+	 *	undefined (cf. man exit)
+	 *	exit value arbitrary set 42
+	 *
+	 */
 //	test("exit -1");
-//	test("exit 9999999999999999999999");
+//	test("exit 256");
+
+	/*
+	 *
+	 * too many arguments
+	 *
+	 */
 //	test("exit 100 ls");
 //	test("exit 100 42");
+
+	/*
+	 *
+	 *	numeric argument required
+	 *
+	 */
 //	test("exit echo ls");
-//	test("exit");
+
 	return (0);
 }
