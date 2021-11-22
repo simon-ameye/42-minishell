@@ -14,8 +14,8 @@ int main(int ac, char **av, char *const *env)
 		if (!line)
 			break ;
 		tokens = tokenisation(line, env);
-		dollar_expand(tokens, env);
 		get_words(tokens);
+		dollar_expand(tokens, env);
 		get_ftype(tokens);
 		print_tokens(tokens);
 		free_tokens(tokens);

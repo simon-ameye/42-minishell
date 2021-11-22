@@ -12,16 +12,17 @@ void	print_tokens(t_token *tokens)
 		{
 			if (tokens[i].str)
 			{
-				//printf("process %d : %s\n", i, tokens[i].str);
-				printf("process %d : args : ", i);
+				printf("process: %d\n", i);
+				printf("	words : ");
 				j = 0;
 				while(tokens[i].words[j])
 				{
 					printf("[%s]", tokens[i].words[j]);
 					j++;
 				}
-				printf(" ftype : %i", tokens[i].ftype);
 				printf("\n");
+				printf("	ftype : %i", tokens[i].ftype);
+				printf("	str: %s\n", tokens[i].str);
 			}
 			i++;
 		}
