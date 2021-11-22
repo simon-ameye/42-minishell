@@ -31,6 +31,7 @@ SRCS		=		minishell.c \
 					get_ftype.c \
 					get_path.c \
 					minishell_utils.c \
+					builtin_exit.c
 
 SOURCES		=		$(addprefix $(SRCS_DIR)/,$(SRCS))
 
@@ -73,6 +74,15 @@ test_get_words:		$(LIBFT)
 					src/get_words.c src/dollar_expand_utils.c \
 					$(INCLUDE) $(LINK) -o main_get_words
 					@valgrind ./main_get_words
+
+test_exit:			$(LIBFT)
+					@$(CC) $(TESTS_DIR)/main_exit.c \
+					src/builtin_exit.c src/tokenisation.c \
+					src/free_tokens.c src/get_words.c \
+					src/minishell_utils.c \
+					src/dollar_expand_utils.c\
+					$(INCLUDE) $(LINK) -o main_exit
+					@valgrind ./main_exit
 
 ################	TARGETS			#################
 

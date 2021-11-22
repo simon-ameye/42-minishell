@@ -41,6 +41,7 @@ void	init_token(t_token *token)
 	token->str = NULL;
 	token->path = NULL;
 	token->args = NULL;
+	token->words = NULL;
 	token->ftype = 0; // ?
 	token->input = -1;
 	token->output = -1;
