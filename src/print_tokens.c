@@ -20,6 +20,7 @@ void	print_tokens(t_token *tokens)
 					printf("[%s]", tokens[i].words[j]);
 					j++;
 				}
+				printf(" ftype : %i", tokens[i].ftype);
 				printf("\n");
 			}
 			i++;

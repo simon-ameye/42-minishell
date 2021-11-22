@@ -16,6 +16,7 @@ int main(int ac, char **av, char *const *env)
 		tokens = tokenisation(line, env);
 		dollar_expand(tokens, env);
 		get_words(tokens);
+		get_ftype(tokens);
 		print_tokens(tokens);
 		free_tokens(tokens);
 		free(line);

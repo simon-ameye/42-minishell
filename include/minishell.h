@@ -8,7 +8,7 @@
 
 #include "libft.h"
 
-typedef enum e_function_type
+typedef enum e_ftype
 {
 	EXECVE,
 	ECHO,
@@ -18,7 +18,7 @@ typedef enum e_function_type
 	UNSET,
 	ENV,
 	EXIT
-}	t_function_type;
+}	t_ftype;
 
 typedef struct	s_token
 {
@@ -27,7 +27,7 @@ typedef struct	s_token
 	char			**args;
 	char			**words;
 	char *const		*env;
-	t_function_type	ftype;
+	t_ftype			ftype;
 	int				input;
 	int				output;
 //	bool			is_child; // `cd /` vs `cd / | cd /`
@@ -38,6 +38,7 @@ typedef struct	s_token
 #include "tokenisation.h"
 #include "dollar_expand.h"
 #include "get_words.h"
+#include "get_ftype.h"
 
 //int	main(int ac, char **av, char *const *env);
 

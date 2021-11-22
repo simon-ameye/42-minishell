@@ -27,7 +27,8 @@ SRCS		=		minishell.c \
 					dollar_expand_utils.c \
 					print_tokens.c \
 					free_tokens.c \
-					get_words.c
+					get_words.c \
+					get_ftype.c \
 
 SOURCES		=		$(addprefix $(SRCS_DIR)/,$(SRCS))
 
