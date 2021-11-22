@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 16:18:04 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/20 18:49:53 by sameye           ###   ########.fr       */
+/*   Updated: 2021/11/22 16:21:46 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,16 +99,21 @@ char	*dollar_expand_str(char *str, char *const *env)
 void	dollar_expand(t_token *tokens, char *const *env)
 {
 	int		i;
-	char	*expand;
+	int		j;
+	char	*tmp;
 
 	i = 0;
 	if (tokens)
 	{
-		while(!tokens[i].is_last)
+		while (!tokens[i].is_last)
 		{
-			expand = dollar_expand_str(tokens[i].str, env);
-			free(tokens[i].str);
-			tokens[i].str = expand;
+			j = 0;
+			while (tokens[i].words[j])
+			{
+				tmp = dollar_expand_str(tokens[i].str, env);
+				free(tokens[i].str);
+				tokens[i].str = tmp;
+			}
 			i++;
 		}
 	}

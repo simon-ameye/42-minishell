@@ -21,7 +21,7 @@ void	print_tokens(t_token *tokens)
 					j++;
 				}
 				printf("\n");
-				printf("	ftype : %i", tokens[i].ftype);
+				printf("	ftype : %i\n", tokens[i].ftype);
 				printf("	str: %s\n", tokens[i].str);
 			}
 			i++;
