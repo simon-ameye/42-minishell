@@ -1,14 +1,8 @@
-Expliquer a simon le truc des fds
-Evaluer si on fait un AST
-Coder la fonction EXPAND
-Evaluer sur l'etat de l'art sur la question : "les double quotes forment un token + remplacement des $ ou plusieurs"
-Evaluer le tableau dynamique VS la liste chainée pour les token
+TODO
 
-1 expand
-2 ouvrir les fichiers creer fd
-3 ouvrir les pipes faire les redirectons
-4 parsing
-
+- historique
+- C-c, C-v, C-\
+____________________________________________
 TESTS
 
 cat | cat | ls
@@ -20,11 +14,7 @@ arg='"hello"'
 <echo $arg> should return  <"hello">
 I hope that : execve(ECHOPATH, {["arg"], [], []}) returns "hello"
 <asxsax asx as sx| dkmsc | sx |> bugue !!
-
-
-
-
-
+____________________________________________
 
 digraph G {
 
@@ -49,11 +39,7 @@ digraph G {
         is_last\n\
         MORE USEFUL DATA"]
 
-
     a -> b -> c -> d -> e -> f -> g -> h -> i
 
 }
-
-
-
-
+____________________________________________

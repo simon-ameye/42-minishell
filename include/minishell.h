@@ -39,7 +39,7 @@ typedef struct	s_token
 #include "get_words.h"
 #include "get_ftype.h"
 #include "get_path.h"
-#include "builtin_exit.h"
+#include "builtins.h"
 
 void	free_str_tab(char **tab);
 
