@@ -14,14 +14,6 @@ static int	length_2d_array(char **s)
 	return (-1);
 }
 
-static int	ft_isspace(int c)
-{
-	if ((char)c == ' ' || (char)c == '\t' || (char)c == '\n'
-	|| (char)c == '\v' || (char)c == '\f' || (char)c == '\r')
-		return (1);
-	return (0);
-}
-
 static int	custom_ft_atoi(const char *s)
 {
 	int		i;
@@ -29,7 +21,7 @@ static int	custom_ft_atoi(const char *s)
 	long	result;
 
 	i = 0;
-	while (ft_isspace(s[i]))
+	while (s[i] == ' ')
 		++i;
 	sign = 1;
 	if (s[i] == '-' || s[i] == '+')
@@ -64,13 +56,15 @@ void	builtin_exit(t_token *tokens, t_token *token)
 	{
 		if (exit_value > -1)
 		{
-			printf("exit\n"); //stderr
+			ft_putstr_fd("exit\n", STDERR_FILENO);
+			ft_putstr_fd("minishell: exit: too many arguments\n", STDERR_FILENO);
 			free_tokens(tokens);
-			printf("minishell: exit: too many arguments\n"); //stderr
 		}
 		else
 		{
-			printf("minishell: exit: %s: numeric argument required\n", token->words[1]);
+			ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
+			ft_putstr_fd(token->words[1], STDERR_FILENO);
+			ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
 			free_tokens(tokens);
 			exit(42);
 		}
@@ -79,13 +73,13 @@ void	builtin_exit(t_token *tokens, t_token *token)
 	{
 		if (exit_value > -1 && exit_value < 256)
 		{
-			printf("exit\n"); //stderr
+			ft_putstr_fd("exit\n", STDERR_FILENO);
 			free_tokens(tokens);
 			exit(exit_value);
 		}
 		else
 		{
-			printf("exit\n"); //stderr
+			ft_putstr_fd("exit\n", STDERR_FILENO);
 			free_tokens(tokens);
 			exit(42); // undefined behavior (cf. man exit)
 		}

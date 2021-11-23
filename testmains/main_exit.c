@@ -18,7 +18,7 @@ void	test(char *s)
 	tokens[1].is_last = 1;
 
 	get_words(tokens);
-	builtin_exit(tokens);
+	builtin_exit(tokens, tokens);
 }
 
 int main()
@@ -37,7 +37,8 @@ int main()
 
 	/*
 	 *
-	 * too many arguments
+	 *	Do not exit.
+	 *	Error message: too many arguments
 	 *
 	 */
 //	test("exit 100 ls");
@@ -45,10 +46,11 @@ int main()
 
 	/*
 	 *
-	 *	numeric argument required
+	 *	Do exit.
+	 *	Error mesage: numeric argument required
 	 *
 	 */
-//	test("exit echo ls");
+	test("exit echo ls");
 
 	return (0);
 }
