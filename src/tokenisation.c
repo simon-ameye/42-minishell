@@ -42,9 +42,9 @@ void	init_token(t_token *token)
 	token->path = NULL;
 	token->args = NULL;
 	token->words = NULL;
-	token->ftype = 0; // ?
-	token->input = -1;
-	token->output = -1;
+	token->ftype = 0;
+	token->fdin = -1;
+	token->fdout = -1;
 	token->is_last = 0;
 }
 

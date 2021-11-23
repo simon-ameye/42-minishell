@@ -27,8 +27,8 @@ typedef struct	s_token
 	char			**args;
 	char			**words;
 	t_ftype			ftype;
-	int				input;
-	int				output;
+	int				fdin;
+	int				fdout;
 //	bool			is_child; // `cd /` vs `cd / | cd /`
 //	pid_t			pid;
 	int				is_last;
