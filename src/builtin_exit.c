@@ -53,7 +53,7 @@ static int	custom_ft_atoi(const char *s)
 	return (result * sign);
 }
 
-void	builtin_exit(t_token *token)
+void	builtin_exit(t_token *tokens, t_token *token)
 {
 	int	exit_args;
 	int	exit_value;
@@ -65,13 +65,13 @@ void	builtin_exit(t_token *token)
 		if (exit_value > -1)
 		{
 			printf("exit\n"); //stderr
-			free_tokens(token);
+			free_tokens(tokens);
 			printf("minishell: exit: too many arguments\n"); //stderr
 		}
 		else
 		{
 			printf("minishell: exit: %s: numeric argument required\n", token->words[1]);
-			free_tokens(token);
+			free_tokens(tokens);
 			exit(42);
 		}
 	}
@@ -80,13 +80,13 @@ void	builtin_exit(t_token *token)
 		if (exit_value > -1 && exit_value < 256)
 		{
 			printf("exit\n"); //stderr
-			free_tokens(token);
+			free_tokens(tokens);
 			exit(exit_value);
 		}
 		else
 		{
 			printf("exit\n"); //stderr
-			free_tokens(token);
+			free_tokens(tokens);
 			exit(42); // undefined behavior (cf. man exit)
 		}
 	}
