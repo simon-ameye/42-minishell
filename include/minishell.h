@@ -41,7 +41,6 @@ typedef struct	s_token
 #include "get_path.h"
 #include "builtin_exit.h"
 
-
 void	free_str_tab(char **tab);
 
 # endif

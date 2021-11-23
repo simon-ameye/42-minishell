@@ -6,12 +6,12 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 10:05:54 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/22 15:03:32 by sameye           ###   ########.fr       */
+/*   Updated: 2021/11/23 12:21:57 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 //	HOW TO USE :
-//	make -C libft/ && gcc -Wall -Wextra -Werror testmains/main_dollar_expand.c dollar_expand.c dollar_expand_utils.c -I libft/ -L libft/ -l ft -I. -o main_dollar_expand
+//	make -C libft/ && gcc -Wall -Wextra -Werror testmains/main_dollar_expand.c src/dollar_expand.c src/dollar_expand_utils.c -I libft/ -L libft/ -l ft -I. -I include -o main_dollar_expand
 //	export TESTVAR=/cust/path in your shell
 //	valgrind ./main_dollar_expand
 
@@ -19,12 +19,15 @@
 
 void	test(char *str, char * expec, char **envp)
 {	char *res;
+	unsigned char	exitval;
 
 	(void)expec;
+	exitval = 42;
 	res = NULL;
-	printf("input  : [%s]\n",str);
-	res = dollar_expand_str(str, envp);
-	printf("result : [%s]\n", res);
+	printf("input  :   [%s]\n",str);
+	res = dollar_expand_str(str, envp, exitval);
+	printf("result :   [%s]\n", res);
+	printf("expected : [%s]\n", expec);
 	printf("ref    : [");
 	fflush(stdout);
 	system(str);
@@ -60,4 +63,7 @@ int	main(int ac, char **av, char **envp)
 	test("''\"'\"$TESTVAR\"'\"''''\"", "''\"'\"/cust/path\"'\"''''\"", envp);
 	test(" \"'' ' ' aa$TESTVAR '$TESTVAR\" ' ' ' ", " \"'' ' ' aa/cust/path '/cust/path\" ' ' ' ", envp);
 	test(" \"'' ' '' aa$TESTVAR '$TESTVAR\" ' ' '' ", " \"'' ' '' aa/cust/path '/cust/path\" ' ' '' ", envp);
+	test(" $ ", " $ ", envp);
+	test(" $? ", " 42 ", envp);
+	test(" aaa$?aaa ", " aaa42aaa ", envp);
 }

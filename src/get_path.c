@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 18:17:57 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/22 18:42:40 by sameye           ###   ########.fr       */
+/*   Updated: 2021/11/23 12:43:23 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	**find_paths(char *const *env)
 	return (NULL);
 }
 
-char	*get_path_iter(char *fnct, char *const *env)
+char	*get_path_env(char *fnct, char *const *env)
 {
 	int		i;
 	char	**paths;
@@ -55,6 +55,27 @@ char	*get_path_iter(char *fnct, char *const *env)
 	ft_putstr_fd("command not found: ", STDERR_FILENO);
 	ft_putstr_fd(fnct, STDERR_FILENO);
 	ft_putstr_fd("\n", STDERR_FILENO);
+	return (NULL);
+}
+
+char	*get_path_iter(char *cmd, char *const *env)
+{
+	if (cmd != NULL)
+	{
+		if (cmd[0] == '/' || cmd[0] == '.' || cmd[0] == '~')
+		{
+			if (access(cmd, F_OK) != 0)
+			{
+				ft_putstr_fd("No such file or directory: ", STDERR_FILENO);
+				ft_putstr_fd(cmd, STDERR_FILENO);
+				ft_putstr_fd("\n", STDERR_FILENO);
+				return (NULL);
+			}
+			return (ft_strdup(cmd));
+		}
+		else
+			return (get_path_env(cmd, env));
+	}
 	return (NULL);
 }
 
