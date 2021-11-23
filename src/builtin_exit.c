@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+// defined also into builtin_pwd.c
 static int	length_2d_array(char **s)
 {
 	int	i;

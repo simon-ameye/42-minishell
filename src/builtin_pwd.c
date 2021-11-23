@@ -1,6 +1,21 @@
 #include "minishell.h"
 
-void	builtin_pwd(t_token *tokens, t_token *token)
+// defined also into builtin_exit.c
+static int	length_2d_array(char **s)
+{
+	int	i;
+
+	if (s)
+	{
+		i = 0;
+		while (s[i])
+			i++;
+		return (i);
+	}
+	return (-1);
+}
+
+void	builtin_pwd(t_token *token)
 {
 	if (length_2d_array(token->words) == 1)
 		ft_putstr_fd(getcwd(NULL, 0), STDOUT_FILENO);
