@@ -25,6 +25,7 @@ void	print_tokens(t_token *tokens)
 				printf("	ftype : %i\n", tokens[i].ftype);
 				if (tokens[i].path)
 					printf("	path : %s\n", tokens[i].path);
+				printf("	fds : in : %d out : %d\n", tokens[i].fdin, tokens[i].fdout);
 			}
 			i++;
 		}

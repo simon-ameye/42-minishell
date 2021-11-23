@@ -1,19 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_ftype.h                                        :+:      :+:    :+:   */
+/*   get_fds.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/22 11:15:20 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/23 17:38:53 by sameye           ###   ########.fr       */
+/*   Created: 2021/11/23 17:36:45 by sameye            #+#    #+#             */
+/*   Updated: 2021/11/23 17:39:15 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_FTYPE_H
-# define GET_FTYPE_H
+#ifndef GET_FDS_H
+# define GET_FDS_H
 
-void    get_ftype(t_token *tokens);
-t_ftype get_words_ftype(char *str);
+void	get_fds(t_token *tokens);
 
 #endif

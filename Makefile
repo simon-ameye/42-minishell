@@ -33,7 +33,8 @@ SRCS		=		minishell.c \
 					minishell_utils.c \
 					builtin_exit.c \
 					builtin_pwd.c \
-					builtin_env.c
+					builtin_env.c \
+					get_fds.c
 
 SOURCES		=		$(addprefix $(SRCS_DIR)/,$(SRCS))
 

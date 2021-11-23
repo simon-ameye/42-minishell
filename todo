@@ -1,7 +1,10 @@
 TODO
 
+- refaire le getwords pour au il divise correctement a>b et cat a > > b
+- poursuivre getfds
 - historique
 - C-c, C-v, C-\
+
 ____________________________________________
 TESTS
 

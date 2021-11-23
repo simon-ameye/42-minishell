@@ -7,6 +7,9 @@
 #include <readline/readline.h>
 
 #include "libft.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 typedef enum e_ftype
 {
@@ -40,6 +43,7 @@ typedef struct	s_token
 #include "get_ftype.h"
 #include "get_path.h"
 #include "builtins.h"
+#include "get_fds.h"
 
 void	free_str_tab(char **tab);
 

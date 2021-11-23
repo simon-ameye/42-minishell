@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 11:08:48 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/22 18:40:39 by sameye           ###   ########.fr       */
+/*   Updated: 2021/11/23 19:24:45 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,13 @@ char	**get_str_words(char *str)
 
 */
 
+/*
+int		is_chevron(char c)
+{
+	return (c == '>' || c == '<');
+}
+*/
+
 char	**get_str_words(char *str)
 {
 	int		dbq;
@@ -114,6 +121,27 @@ char	**get_str_words(char *str)
 			dbq = 1 - dbq;
 		else if (*str == '\'' && !dbq)
 			sgq = 1 - sgq;
+		/*
+		else if (!sgq && !dbq && (*str == '>' || *str == '<')) //if bracket, split words
+		{
+			i++;
+			tab[i] = malloc(sizeof(char));
+			if (tab[i] == NULL)
+				return (NULL);
+			tab[i][0] = '\0';
+			inword = 0;
+			tab[i] = join_char_free(tab[i], *str);
+			if (tab[i] == NULL)
+				return (NULL);
+			if (*str == *(str + 1)) // if double bracket
+			{
+				tab[i] = join_char_free(tab[i], *str);
+				if (tab[i] == NULL)
+					return (NULL);
+				str++;
+			}
+		}
+		*/
 		else
 		{
 			if (!inword)

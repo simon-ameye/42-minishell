@@ -20,6 +20,7 @@ int main(int ac, char **av, char *const *env)
 		dollar_expand(tokens, env, exitval);
 		get_ftype(tokens);
 		get_path(tokens, env);
+		//get_fds(tokens);
 		print_tokens(tokens);
 		//exiting in main for tests
 		if (tokens[0].ftype == EXIT)
