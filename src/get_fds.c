@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 17:36:49 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/23 19:23:09 by sameye           ###   ########.fr       */
+/*   Updated: 2021/11/24 16:25:08 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,3 +95,69 @@ void	get_fds(t_token *tokens)
 		}
 	}
 }
+
+/* ************************************************************************** */
+
+/*
+
+// need substitution a la volee
+
+char	*get_next_word(char *s)
+{
+	char	*word;
+
+	word = NULL;
+	if (s)
+	{
+		// skip blanks
+		while (*s == ' ') // is_blank ?
+			s++;
+		// next word in within quotes
+		if (*s == '\'' || *s == '"')
+		{
+			word = ft_strndup(s + 1, elem_index(s + 1, *s));
+			break ;
+		}
+		// next word is outside of quotes
+		if (*s)
+		{
+			int i = 0;
+			while (!ft_isalnum(s[i]))
+				s++;
+			if (s[i])
+				word = ft_strndup(s, i);
+			else
+				word = ft_strndup(s, ft_strlen(s));
+			break ;
+		}
+	}
+	return (word);
+}
+
+void	get_proc_input_filename(t_token *token)
+{
+	int		i;
+	char	quote;
+
+	if (token)
+	{
+		i = 0;
+		while (token->str[i])
+		{
+			if (line[i] == '\'' || line[i] == '"')
+			{
+				quote = line[i++];
+				while (line[i] && line[i] != quote)
+					i++;
+			}
+			else if (token->str[i] == '<')
+			{
+				token->in.filename = get_next_word(&token->str[i]);
+				//token->in.fd = open(token->in.filename, O_RDONLY);
+			}
+			i++;
+		}
+	}
+}
+
+*/

@@ -13,7 +13,7 @@ void	print_tokens(t_token *tokens)
 			if (tokens[i].str)
 			{
 				printf("process: %d\n", i);
-				printf("	str: %s\n", tokens[i].str);
+				printf("	str: [%s]\n", tokens[i].str);
 				printf("	words : ");
 				j = 0;
 				while(tokens[i].words[j])

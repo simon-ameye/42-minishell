@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 16:18:04 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/23 12:20:21 by sameye           ###   ########.fr       */
+/*   Updated: 2021/11/24 09:41:51 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,9 @@ char	*find_var(char *str, char *const *env)
 
 char	*dollar_expand_str(char *str, char *const *env, unsigned char	exitval)
 {
-	int		indbquotes;
-	int		insgquotes;
+	// unifier la notation avec get_str_words()
+	int		indbquotes; // double_quote
+	int		insgquotes; // single_quote
 	char	*res;
 	int		len;
 	char	*varname;
@@ -43,8 +44,8 @@ char	*dollar_expand_str(char *str, char *const *env, unsigned char	exitval)
 	if (!str || !env)
 		return (NULL);
 	if (!*env)
-		return (ft_strdup(str));
-	res = ft_strdup("");
+		return (ft_strdup(str)); // malloc inside can fail !
+	res = ft_strdup(""); // same
 	indbquotes = 0;
 	insgquotes = 0;
 	while (*str)

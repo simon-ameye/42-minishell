@@ -1,5 +1,13 @@
 #include "minishell.h"
 
+/*
+ *
+ * todo
+ *
+ * event if we dont exit, set global variagble g_exitval ccordingly
+ *
+ */
+
 // defined also into builtin_pwd.c
 static int	length_2d_array(char **s)
 {

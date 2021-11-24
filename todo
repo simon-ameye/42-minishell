@@ -5,6 +5,9 @@ TODO
 - historique
 - C-c, C-v, C-\
 
+- chevron perd siginfication into both s and d quotes
+- dollar  perd signification into s quotes
+
 ____________________________________________
 TESTS
 
@@ -17,6 +20,11 @@ arg='"hello"'
 <echo $arg> should return  <"hello">
 I hope that : execve(ECHOPATH, {["arg"], [], []}) returns "hello"
 <asxsax asx as sx| dkmsc | sx |> bugue !!
+
+var='<'
+echo $var file
+
+cat < bar | echo "<" | cat <  | echo < bar
 ____________________________________________
 
 digraph G {
