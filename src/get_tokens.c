@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 11:08:48 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/25 11:14:34 by trobin           ###   ########.fr       */
+/*   Updated: 2021/11/25 15:21:40 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ static t_token	*get_proc_tokens(char *str)
 	// Distinguer pour la fonction appelante:
 	// - retour pour cause de malloc fail
 	// - retour pour cause de str == NULL
+	// traiter les double quotes nulles ex "" doit pas faire de mot
 	tokens = malloc(sizeof(t_token) * (ft_strlen(str) + 1));
 	sgq = 0;
 	dbq = 0;
@@ -118,37 +119,40 @@ static t_token	*get_proc_tokens(char *str)
 	{
 		if (ft_isblank(*str) && !sgq && !dbq)
 		{
-			if (inword)
-				inword = 0;
+			inword = 0;
 		}
-		else if (*str == '"' && !sgq)
-			dbq = 1 - dbq;
-		else if (*str == '\'' && !dbq)
-			sgq = 1 - sgq;
+		//else if ((*str == '"' || *str == '\'') && *(str + 1) == *str) // skip empty quotes
+		//	str++;
 		/*
 		else if (!sgq && !dbq && (*str == '>' || *str == '<')) //if bracket, split words
 		{
 			i++;
-			tab[i] = malloc(sizeof(char));
-			if (tab[i] == NULL)
+			tokens[i].word = malloc(sizeof(char));
+			if (tokens[i].word == NULL)
 				return (NULL);
-			tab[i][0] = '\0';
+			tokens[i].word[0] = '\0';
 			inword = 0;
-			tab[i] = join_char_free(tab[i], *str);
-			if (tab[i] == NULL)
+			tokens[i].word = join_char_free(tokens[i].word, *str);
+			if (tokens[i].word == NULL)
 				return (NULL);
 			if (*str == *(str + 1)) // if double bracket
 			{
-				tab[i] = join_char_free(tab[i], *str);
-				if (tab[i] == NULL)
+				tokens[i].word = join_char_free(tokens[i].word, *str);
+				if (tokens[i].word == NULL)
 					return (NULL);
 				str++;
 			}
 		}
 		*/
-		else
+
+
+		else //a characher will be appened to result
 		{
-			if (!inword)
+			if (*str == '"' && !sgq)
+				dbq = 1 - dbq;
+			else if (*str == '\'' && !dbq)
+				sgq = 1 - sgq;
+			else if (!inword)
 			{
 				i++;
 				tokens[i].word = malloc(sizeof(char));
