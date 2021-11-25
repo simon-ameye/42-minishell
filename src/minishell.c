@@ -10,7 +10,7 @@ static void	parser(t_proc *procs, char *const *env, unsigned char exitval)
 		while (!procs[i].is_last)
 		{
 			dollar_expand(procs[i], env, exitval);
-			get_ftype(&procs[i]); // merge two funtions
+			get_token_type(&procs[i]); // merge two funtions
 			get_path(&procs[i], env);
 			i++;
 		}

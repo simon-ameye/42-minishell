@@ -22,7 +22,8 @@ void	print_procs(t_proc *procs)
 				while (procs[i].tokens[j].word)
 				{
 					printf("[%s]", procs[i].tokens[j].word);
-					printf("(%d) ", procs[i].tokens[j].expanded);
+					printf("(%d)", procs[i].tokens[j].expanded);
+					printf("{%d} ", procs[i].tokens[j].type);
 					j++;
 				}
 				printf("\n");
@@ -34,6 +35,7 @@ void	print_procs(t_proc *procs)
 				printf("	path : %s\n", procs[i].path);
 			printf("	fds : in : %d out : %d\n", procs[i].fdin, procs[i].fdout);
 			*/
+			fflush(stdout);
 			i++;
 		}
 	}

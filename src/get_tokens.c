@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 11:08:48 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/25 15:21:40 by sameye           ###   ########.fr       */
+/*   Updated: 2021/11/25 18:56:42 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,42 +117,32 @@ static t_token	*get_proc_tokens(char *str)
 	i = -1;
 	while (*str)
 	{
-		if (ft_isblank(*str) && !sgq && !dbq)
-		{
+		if (ft_isblank(*str) && !sgq && !dbq) //skip a character, eventually leave a word
 			inword = 0;
-		}
-		//else if ((*str == '"' || *str == '\'') && *(str + 1) == *str) // skip empty quotes
-		//	str++;
-		/*
-		else if (!sgq && !dbq && (*str == '>' || *str == '<')) //if bracket, split words
+		else if (!sgq && !dbq && (*str == '>' || *str == '<')) //if >, split words
 		{
 			i++;
-			tokens[i].word = malloc(sizeof(char));
+			tokens[i].word = malloc(sizeof(char) * 3);
 			if (tokens[i].word == NULL)
 				return (NULL);
-			tokens[i].word[0] = '\0';
-			inword = 0;
-			tokens[i].word = join_char_free(tokens[i].word, *str);
-			if (tokens[i].word == NULL)
-				return (NULL);
-			if (*str == *(str + 1)) // if double bracket
+			tokens[i].word[0] = *str;
+			tokens[i].word[1] = '\0';
+			if (*str == *(str + 1)) //double bracket
 			{
-				tokens[i].word = join_char_free(tokens[i].word, *str);
-				if (tokens[i].word == NULL)
-					return (NULL);
 				str++;
+				tokens[i].word[1] = *str;
+				tokens[i].word[2] = '\0';
 			}
+			inword = 0;
 		}
-		*/
-
-
+		
 		else //a characher will be appened to result
 		{
 			if (*str == '"' && !sgq)
 				dbq = 1 - dbq;
-			else if (*str == '\'' && !dbq)
+			if (*str == '\'' && !dbq)
 				sgq = 1 - sgq;
-			else if (!inword)
+			if (!inword)
 			{
 				i++;
 				tokens[i].word = malloc(sizeof(char));
@@ -169,6 +159,7 @@ static t_token	*get_proc_tokens(char *str)
 	}
 	i++;
 	tokens[i].word = NULL;
+	fflush(stdout);
 	return (tokens);
 }
 

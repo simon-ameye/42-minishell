@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 16:18:04 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/25 12:41:09 by trobin           ###   ########.fr       */
+/*   Updated: 2021/11/25 17:19:26 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,39 +31,41 @@ static char	*find_var(char *str, char *const *env)
 	return (ret);
 }
 
-static char	*dollar_expand_str(char *str, char *const *env, unsigned char	exitval)
+static char	*dollar_expand_str(char *str, char *const *env, unsigned char	exitval, int *expanded)
 {
 	// unifier la notation avec get_str_words()
-	int		indbquotes; // double_quote
-	int		insgquotes; // single_quote
+	int		dbq; // double_quote
+	int		sgq; // single_quote
 	char	*res;
 	int		len;
 	char	*varname;
 	char	*varval;
 
+	*expanded = 0;
 	if (!str || !env)
 		return (NULL);
 	if (!*env)
 		return (ft_strdup(str)); // malloc inside can fail !
 	res = ft_strdup(""); // same
-	indbquotes = 0;
-	insgquotes = 0;
+	dbq = 0;
+	sgq = 0;
 	while (*str)
 	{
-		if (*str == '"' && insgquotes == 0)
+		if (*str == '"' && sgq == 0)
 		{
-			indbquotes = 1 - indbquotes;
+			dbq = 1 - dbq;
 			res = join_char_free(res, *str);
 			str++;
 		}
-		else if (*str == '\'' && indbquotes == 0)
+		else if (*str == '\'' && dbq == 0)
 		{
-			insgquotes = 1 - insgquotes;
+			sgq = 1 - sgq;
 			res = join_char_free(res, *str);
 			str++;
 		}
-		else if (*str == '$' && insgquotes == 0)
+		else if (*str == '$' && sgq == 0)
 		{
+			*expanded = 1;
 			if (str[1] == '?')
 			{
 				varval = ft_itoa(exitval);
@@ -95,7 +97,7 @@ static char	*dollar_expand_str(char *str, char *const *env, unsigned char	exitva
 			str++;
 		}
 	}
-	if (indbquotes)
+	if (dbq)
 	{
 		ft_putstr_fd("Error : double quote not closed\n", STDERR_FILENO);
 		//	free + exit
@@ -107,15 +109,17 @@ void	dollar_expand(t_proc proc, char *const *env, unsigned char	exitval)
 {
 	int		i;
 	char	*tmp;
+	int		expanded;
 
 	if (proc.tokens)
 	{
 		i = 0;
 		while (proc.tokens[i].word)
 		{
-			tmp = dollar_expand_str(proc.tokens[i].word, env, exitval);
+			tmp = dollar_expand_str(proc.tokens[i].word, env, exitval, &expanded);
 			free(proc.tokens[i].word);
 			proc.tokens[i].word = tmp;
+			proc.tokens[i].expanded = expanded;
 			i++;
 		}
 	}

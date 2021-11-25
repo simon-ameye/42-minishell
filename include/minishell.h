@@ -25,10 +25,25 @@ typedef enum e_ftype
 	EXIT
 }	t_ftype;
 
+typedef enum e_token_type
+{
+    WORD,			//word
+	FUNCTION,		//function
+    FILE_IN,		//'<'
+    HERE_DOC,		//<<'
+    FILE_OUT,		//'>'
+    FILE_OUT_SUR,	//'>>'
+    OPEN_FILE,		// word following '<'
+    LIMITOR,		// word following '<<'
+    EXIT_FILE,		// word following '>'
+    EXIT_FILE_RET	// word following '>>'
+}	t_token_type;
+
 typedef struct	s_token
 {
 	char	*word;
 	int		expanded;
+	int		type;
 }	t_token;
 
 /*
@@ -95,11 +110,11 @@ void	get_fds(t_proc *procs);
 
 /******************************************************************************/
 /*                                                                            */
-/*     get_ftype.c                                                            */
+/*     get_token_type.c                                                            */
 /*                                                                            */
 /******************************************************************************/
 
-void    get_ftype(t_proc *proc);
+void    get_token_type(t_proc *proc);
 
 /******************************************************************************/
 /*                                                                            */

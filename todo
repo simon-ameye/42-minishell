@@ -27,6 +27,7 @@ echo $var file
 cat < bar | echo "<" | cat <  | echo < bar
 ___________________________________________
 
+
 digraph G
 {
 
@@ -43,9 +44,9 @@ digraph G
         label = "PARSER\nIretates upon `procs` and `tokens`";
         
         c [label="DOLLAR_EXPAND :\nreplace $text by value in env\nSet token IS_EXPENDED to avoid redirecting expended <\n"]
+        e [label="GET_TOKEN_TYPE : \ndetect function, or meaning of the token\n set a number : 0 for execve, 1 for echo..., for < \n"]
         d [label="GET_REDIRS :\nParse chevrons + files names\n Open all files, set FDs in tokens\n remove files names + chevrons"]
         dd [label="Remove quotes and reoves empty words (ex : \"\")"]
-        e [label="GET_FTYPE : \ndetect function (first word)\n set a number : 0 for execve, 1 for echo...\n"]
         f [label="GET_PATH : \ndetect function path\n only for 0 execve\n"]
     }
     g [label="CREATE_CHILDREN : \n fork(), set dup2() according to fds"]
@@ -71,7 +72,7 @@ digraph G
 
     a -> b -> c
     f -> g -> h ->i
-    c -> d -> dd -> e -> f
+    c -> e -> d -> dd -> f
     process_data -> tokens
 }
-___________________________________________
+_________________________________

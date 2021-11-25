@@ -28,7 +28,7 @@ SRCS		=		minishell.c \
 					get_tokens.c \
 					string.c \
 					dollar_expand.c \
-					get_ftype.c \
+					get_token_type.c \
 					get_path.c
 				#	builtin_exit.c \
 				#	builtin_pwd.c \

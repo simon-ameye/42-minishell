@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 18:17:57 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/25 12:32:58 by trobin           ###   ########.fr       */
+/*   Updated: 2021/11/25 19:59:18 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,25 @@ static char	*get_proc_path(char *cmd, char *const *env)
 	return (NULL);
 }
 
+// TODO HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 void	get_path(t_proc *proc, char *const *env)
 {
+	int	i;
+
 	if (proc)
 	{
-		if (proc->tokens && proc->ftype == 0)
-			proc->path = get_proc_path(proc->tokens[0].word, env);
+		if (proc->tokens)
+		{
+			i = 0;
+			while (proc->tokens[i].word)
+			{
+				if (proc->tokens[i].type == FUNCTION)
+				{
+					proc->path = get_proc_path(proc->tokens[i].word, env);
+					return ;	
+				}
+				i++;
+			}
+		}
 	}
 }
