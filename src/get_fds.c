@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 17:36:49 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/24 16:25:08 by trobin           ###   ########.fr       */
+/*   Updated: 2021/11/25 10:37:35 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,25 +27,25 @@ static int are_alnums(char *s)
 }
 
 //modifier !!: 
-static void	check_redir_syntax(t_token *tokens)
+static void	check_redir_syntax(t_proc *procs)
 {
 	int		i;
 	int		j;
 
-	if (tokens)
+	if (procs)
 	{
 		i = 0;
-		while(!tokens[i].is_last)
+		while(!procs[i].is_last)
 		{
 			j = 0;
-			while (tokens[i].words[j])
+			while (procs[i].words[j])
 			{
-				if (!ft_strcmp(tokens[i].words[j], ">"))
+				if (!ft_strcmp(procs[i].words[j], ">"))
 				{
-					if (!are_alnums(tokens[i].words[j + 1]))
+					if (!are_alnums(procs[i].words[j + 1]))
 					{
-						ft_putstr_fd("syntax error near unexpected token >\n", STDERR_FILENO);
-						free_tokens(tokens);
+						ft_putstr_fd("syntax error near unexpected proc >\n", STDERR_FILENO);
+						free_procs(procs);
 						exit(42);
 					}
 				}
@@ -68,26 +68,26 @@ static void	remove_two_words(char **words, int j)
 	words[j] = NULL;
 }
 
-void	get_fds(t_token *tokens)
+void	get_fds(t_proc *procs)
 {
 	int		i;
 	int		j;
 
-	check_redir_syntax(tokens);
-	if (tokens)
+	check_redir_syntax(procs);
+	if (procs)
 	{
 		i = 0;
-		while(!tokens[i].is_last)
+		while(!procs[i].is_last)
 		{
 			j = 0;
-			while (tokens[i].words)
+			while (procs[i].words)
 			{
-				if (!ft_strcmp(tokens[i].words[j], ">"))
+				if (!ft_strcmp(procs[i].words[j], ">"))
 				{
-					tokens[i].fdout = open(tokens[i].words[j + 1], O_CREAT | O_RDWR, 0644);
-					if (tokens[i].fdout == -1)
+					procs[i].fdout = open(procs[i].words[j + 1], O_CREAT | O_RDWR, 0644);
+					if (procs[i].fdout == -1)
 						perror("ERROR :");
-					remove_two_words(tokens[i].words, j);
+					remove_two_words(procs[i].words, j);
 				}
 				i--;
 			}
@@ -134,15 +134,15 @@ char	*get_next_word(char *s)
 	return (word);
 }
 
-void	get_proc_input_filename(t_token *token)
+void	get_proc_input_filename(t_proc *proc)
 {
 	int		i;
 	char	quote;
 
-	if (token)
+	if (proc)
 	{
 		i = 0;
-		while (token->str[i])
+		while (proc->str[i])
 		{
 			if (line[i] == '\'' || line[i] == '"')
 			{
@@ -150,10 +150,10 @@ void	get_proc_input_filename(t_token *token)
 				while (line[i] && line[i] != quote)
 					i++;
 			}
-			else if (token->str[i] == '<')
+			else if (proc->str[i] == '<')
 			{
-				token->in.filename = get_next_word(&token->str[i]);
-				//token->in.fd = open(token->in.filename, O_RDONLY);
+				proc->in.filename = get_next_word(&proc->str[i]);
+				//proc->in.fd = open(proc->in.filename, O_RDONLY);
 			}
 			i++;
 		}

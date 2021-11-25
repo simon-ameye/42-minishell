@@ -25,20 +25,25 @@ var='<'
 echo $var file
 
 cat < bar | echo "<" | cat <  | echo < bar
-____________________________________________
+___________________________________________
 
 digraph G
 {
 
-    a [label="GET_PROCESS_DATA :\ncreate PROCESS_DATA tab (nb of pipes + 1)\n"]
-    b [label="LEXER (get_tokens): \nDetect words thx to spaces and quotes \n Do not removes quotes"]
-
-    subgraph cluster_p
+    subgraph cluster_lexer
     {
-        label = "PARSER\nIretates on process_data and on words";
+        label = "LEXER\n";
+        
+        a [label="GET_PROCS :\ncreate `t_proc` array (nb of pipes + 1)\n"]
+        b [label="GET_TOKENS : \nDetect words thx to spaces and quotes \n Do not removes quotes"]
+    }
+
+    subgraph cluster_parser
+    {
+        label = "PARSER\nIretates upon `procs` and `tokens`";
         
         c [label="DOLLAR_EXPAND :\nreplace $text by value in env\nSet token IS_EXPENDED to avoid redirecting expended <\n"]
-        d [label="GET_REDIRS : \nParse chevrons + files names\n Open all files, set FDs in tokens\n remove files names + chevrons"]
+        d [label="GET_REDIRS :\nParse chevrons + files names\n Open all files, set FDs in tokens\n remove files names + chevrons"]
         dd [label="Remove quotes"]
         e [label="GET_FTYPE : \ndetect function (first word)\n set a number : 0 for execve, 1 for echo...\n"]
         f [label="GET_PATH : \ndetect function path\n only for 0 execve\n"]
@@ -58,7 +63,7 @@ digraph G
         MORE USEFUL DATA"]
         
         tokens [label="TOKENS\n\
-        Null terminated pointer tab\n\
+        Null terminated pointer tab\l\
         char    *word\l\
         int     *is_expanded\l\
         \n\
@@ -69,4 +74,4 @@ digraph G
     c -> d -> dd -> e -> f
     process_data -> tokens
 }
-____________________________________________
+___________________________________________

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_words.c                                        :+:      :+:    :+:   */
+/*   get_tokens.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 11:08:48 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/24 16:29:23 by trobin           ###   ########.fr       */
+/*   Updated: 2021/11/25 11:14:34 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,11 +94,11 @@ int		is_chevron(char c)
 }
 */
 
-char	**get_str_words(char *str)
+static t_token	*get_proc_tokens(char *str)
 {
 	int		dbq;
 	int		sgq;
-	char	**tab;
+	t_token	*tokens;
 	int		i;
 	int		inword;
 
@@ -108,7 +108,7 @@ char	**get_str_words(char *str)
 	// Distinguer pour la fonction appelante:
 	// - retour pour cause de malloc fail
 	// - retour pour cause de str == NULL
-	tab = malloc(sizeof(char *) * (ft_strlen(str) + 1));
+	tokens = malloc(sizeof(t_token) * (ft_strlen(str) + 1));
 	sgq = 0;
 	dbq = 0;
 	inword = 0;
@@ -151,35 +151,33 @@ char	**get_str_words(char *str)
 			if (!inword)
 			{
 				i++;
-				tab[i] = malloc(sizeof(char));
-				if (tab[i] == NULL)
+				tokens[i].word = malloc(sizeof(char));
+				if (tokens[i].word == NULL)
 					return (NULL);
-				tab[i][0] = '\0';
+				tokens[i].word[0] = '\0';
 				inword = 1;
 			}
-			tab[i] = join_char_free(tab[i], *str);
-			if (tab[i] == NULL)
+			tokens[i].word = join_char_free(tokens[i].word, *str);
+			if (tokens[i].word == NULL)
 				return (NULL);
 		}
 		str++;
 	}
 	i++;
-	tab[i] = NULL;
-	return (tab);
+	tokens[i].word = NULL;
+	return (tokens);
 }
 
-void	get_words(t_token *tokens)
+void	get_tokens(t_proc *procs)
 {
 	int		i;
-	char	**tmp;
 
-	i = 0;
-	if (tokens)
+	if (procs)
 	{
-		while(!tokens[i].is_last)
+		i = 0;
+		while (!procs[i].is_last)
 		{
-			tmp = get_str_words(tokens[i].str);
-			tokens[i].words = tmp;
+			procs[i].tokens = get_proc_tokens(procs[i].str);
 			i++;
 		}
 	}
@@ -188,7 +186,7 @@ void	get_words(t_token *tokens)
 /* ************************************************************************** */
 
 /*
-//	pass token in arg instead of str ? no nedd to declare **tab
+//	pass proc in arg instead of str ? no nedd to declare **tab
 char	**thomas_get_str_words(char *str)
 {
 //	int		dbq;
@@ -265,22 +263,22 @@ char	**thomas_get_str_words(char *str)
 	return (tab);
 }
 
-void	thomas_get_words(t_token *tokens)
+void	thomas_get_words(t_proc *procs)
 {
 	int		i;
 //	char	**tmp;
 
 	i = 0;
-	if (tokens)
+	if (procs)
 	{
-		while(!tokens[i].is_last)
+		while(!procs[i].is_last)
 		{
-//			tmp = get_str_words(tokens[i].str);
-//			tokens[i].words = tmp;
-			tokens[i].words = get_str_words(tokens[i].str);
-//			if (tokens[i].words == -1)
+//			tmp = get_str_words(procs[i].str);
+//			procs[i].words = tmp;
+			procs[i].words = get_str_words(procs[i].str);
+//			if (procs[i].words == -1)
 //			{
-//				free_tokens(tokens);
+//				free_procs(procs);
 //				ft_putstr_fd("error malloc\n", STDERR_FILENO);
 //				exit (EXIT_FAILURE);
 //			}

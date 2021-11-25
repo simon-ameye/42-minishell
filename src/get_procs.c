@@ -36,28 +36,28 @@ char	*ft_strndup(char *s, int n)
 	return (ret);
 }
 
-void	init_token(t_token *token)
+void	init_proc(t_proc *proc)
 {
-	token->str = NULL;
-	token->path = NULL;
-	token->args = NULL;
-	token->words = NULL;
-	token->ftype = 0;
-	token->fdin = -1;
-	token->fdout = -1;
-	token->is_last = 0;
+	proc->str = NULL;
+	proc->path = NULL;
+	proc->args = NULL;
+	proc->tokens = NULL;
+	proc->ftype = 0;
+	proc->fdin = -1;
+	proc->fdout = -1;
+	proc->is_last = 0;
 }
 
-char	*get_token_str(char *line, int token_index)
+char	*get_proc_str(char *line, int proc_index)
 {
 	int		lo;
 	int		hi;
-	int		current_token_index;
+	int		current_proc_index;
 	char	quote;
 
 	lo = 0;
 	hi = 0;
-	current_token_index = -1;
+	current_proc_index = -1;
 	while (line[hi])
 	{
 		if (line[hi] == '\'' || line[hi] == '"')
@@ -65,14 +65,14 @@ char	*get_token_str(char *line, int token_index)
 			quote = line[hi++];
 			while (line[hi] && line[hi] != quote)
 				hi++;
-			// open quote : already check into 'get_nb_tokens()'
+			// open quote : already check into 'get_nb_procs()'
 			if (!line[hi])
 				return (NULL);
 		}
 		else if (line[hi] == '|')
 		{
-			current_token_index++;
-			if (current_token_index == token_index)
+			current_proc_index++;
+			if (current_proc_index == proc_index)
 				break ;
 			else
 				lo = hi + 1;
@@ -82,17 +82,17 @@ char	*get_token_str(char *line, int token_index)
 	return (ft_strndup(&line[lo], hi - lo));
 }
 
-void	create_token(t_token *tokens, char *line, int index)
+void	create_proc(t_proc *procs, char *line, int index)
 {
-	init_token(&tokens[index]);
+	init_proc(&procs[index]);
 
-	tokens[index].str = NULL;
-	tokens[index].str = get_token_str(line, index);
-	if (tokens[index].str == NULL)
-		return (free_tokens(tokens));
+	procs[index].str = NULL;
+	procs[index].str = get_proc_str(line, index);
+	if (procs[index].str == NULL)
+		return (free_procs(procs));
 }
 
-int	get_nb_tokens(char *line)
+int	get_nb_procs(char *line)
 {
 	int		i;
 	int		ret;
@@ -125,27 +125,27 @@ int	get_nb_tokens(char *line)
 	return (ret);
 }
 
-t_token	*tokenisation(char *line)
+t_proc	*get_procs(char *line)
 {
-	t_token *tokens;
-	int		nb_tokens;
+	t_proc	*procs;
+	int		nb_procs;
 	int		i;
    
-	nb_tokens = get_nb_tokens(line);
-	// malloc all tokens once
-	tokens = 0;
-	tokens = malloc((sizeof(t_token) * (nb_tokens + 1)));
-	if (!tokens)
+	nb_procs = get_nb_procs(line);
+	// malloc all procs once
+	procs = 0;
+	procs = malloc((sizeof(t_proc) * (nb_procs + 1)));
+	if (!procs)
 		exit(EXIT_FAILURE);
-	// fill each token according to line's content
+	// fill each proc according to line's content
 	i = 0;
-	while (i < nb_tokens)
+	while (i < nb_procs)
 	{
-		create_token(tokens, line, i);
+		create_proc(procs, line, i);
 		i++;
 	}
 	// overrides default 'false'
-	tokens[nb_tokens].is_last = 1;
-	// return first token (tokens array)
-	return (tokens);
+	procs[nb_procs].is_last = 1;
+	// return first proc (procs array)
+	return (procs);
 }

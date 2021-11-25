@@ -6,13 +6,13 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 11:15:23 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/22 18:24:00 by sameye           ###   ########.fr       */
+/*   Updated: 2021/11/25 12:32:33 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_ftype	get_words_ftype(char *str)
+static t_ftype	get_words_ftype(char *str)
 {
 	int i;
 	static const char* ftypes[] = { "execve", "echo" , "cd", "pwd", "export", "unset", "env", "exit", NULL};
@@ -27,21 +27,11 @@ t_ftype	get_words_ftype(char *str)
 	return (EXECVE);
 }
 
-void	get_ftype(t_token *tokens)
+void	get_ftype(t_proc *proc)
 {
-	int		i;
-
-	i = 0;
-	if (tokens)
+	if (proc)
 	{
-		while(!tokens[i].is_last)
-		{
-			if (tokens[i].words)
-			{
-				if (tokens[i].words[0])
-					tokens[i].ftype = get_words_ftype(tokens[i].words[0]);
-			}
-			i++;
-		}
+		if (proc->tokens)
+			proc->ftype = get_words_ftype(proc->tokens[0].word);
 	}
 }

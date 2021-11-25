@@ -22,19 +22,18 @@ INCLUDE		=		-I include \
 #################	SOURCE FILES	#################
 
 SRCS		=		minishell.c \
-					tokenisation.c \
+					get_procs.c \
+					print_procs.c \
+					free_procs.c \
+					get_tokens.c \
+					string.c \
 					dollar_expand.c \
-					dollar_expand_utils.c \
-					print_tokens.c \
-					free_tokens.c \
-					get_words.c \
 					get_ftype.c \
-					get_path.c \
-					minishell_utils.c \
-					builtin_exit.c \
-					builtin_pwd.c \
-					builtin_env.c \
-					get_fds.c
+					get_path.c
+				#	builtin_exit.c \
+				#	builtin_pwd.c \
+				#	builtin_env.c \
+				#	get_fds.c
 
 SOURCES		=		$(addprefix $(SRCS_DIR)/,$(SRCS))
 
@@ -56,11 +55,11 @@ LINK		=		-L $(LIBFT_DIR) -l ft
 ################	TESTS			#################
 
 #RELINK!
-test_tokenisation:	$(LIBFT)
-					@$(CC) $(TESTS_DIR)/main_tokenisation.c \
-					src/tokenisation.c src/get_words.c src/dollar_expand_utils.c \
-					$(INCLUDE) $(LINK) -o main_tokenisation
-					@valgrind ./main_tokenisation
+test_get_procs:		$(LIBFT)
+					@$(CC) $(TESTS_DIR)/main_get_procs.c \
+					src/get_procs.c src/get_words.c src/dollar_expand_utils.c \
+					$(INCLUDE) $(LINK) -o main_get_procs
+					@valgrind ./main_get_procs
 
 #UNUSABLE!			UNABLE TO ADD ENV VAR
 test_expand:		$(LIBFT)
@@ -77,15 +76,6 @@ test_get_words:		$(LIBFT)
 					src/get_words.c src/dollar_expand_utils.c \
 					$(INCLUDE) $(LINK) -o main_get_words
 					@valgrind ./main_get_words
-
-test_exit:			$(LIBFT)
-					@$(CC) $(TESTS_DIR)/main_exit.c \
-					src/builtin_exit.c src/tokenisation.c \
-					src/free_tokens.c src/get_words.c \
-					src/minishell_utils.c \
-					src/dollar_expand_utils.c\
-					$(INCLUDE) $(LINK) -o main_exit
-					@valgrind ./main_exit
 
 ################	TARGETS			#################
 
@@ -122,4 +112,4 @@ fclean:				clean
 
 re:					fclean all
 
-.PHONY:				all clean fclean re debug test_tokenisation test_expand test_get_words
+.PHONY:				all clean fclean re debug test_get_procs test_expand test_get_words

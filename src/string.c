@@ -1,20 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   dollar_expand_utils.c                              :+:      :+:    :+:   */
+/*   string.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 17:30:28 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/23 10:47:11 by sameye           ###   ########.fr       */
+/*   Updated: 2021/11/25 12:45:17 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	free_str_tab(char **tab)
+{
+	int i;
+
+	i = 0;
+	if (tab)
+	{
+		while (tab[i])
+		{
+			free(tab[i]);
+			i++;
+		}
+		free(tab);
+	}
+}
+
 //This version of ft_strjoin is able to
 //join a str to (null) and frees s1  and s2
-void	strjoin_iter(char **str, char **s1, char **s2)
+static void	strjoin_iter(char **str, char **s1, char **s2)
 {
 	int	i;
 	int	j;

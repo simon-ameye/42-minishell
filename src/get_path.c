@@ -6,13 +6,13 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 18:17:57 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/23 12:43:23 by sameye           ###   ########.fr       */
+/*   Updated: 2021/11/25 12:32:58 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**find_paths(char *const *env)
+static char	**find_paths(char *const *env)
 {
 	int	i;
 
@@ -26,7 +26,7 @@ char	**find_paths(char *const *env)
 	return (NULL);
 }
 
-char	*get_path_env(char *fnct, char *const *env)
+static char	*get_path_env(char *fnct, char *const *env)
 {
 	int		i;
 	char	**paths;
@@ -58,7 +58,7 @@ char	*get_path_env(char *fnct, char *const *env)
 	return (NULL);
 }
 
-char	*get_path_iter(char *cmd, char *const *env)
+static char	*get_proc_path(char *cmd, char *const *env)
 {
 	if (cmd != NULL)
 	{
@@ -79,21 +79,11 @@ char	*get_path_iter(char *cmd, char *const *env)
 	return (NULL);
 }
 
-void    get_path(t_token *tokens, char *const *env)
+void	get_path(t_proc *proc, char *const *env)
 {
-	int		i;
-
-	i = 0;
-	if (tokens)
+	if (proc)
 	{
-		while(!tokens[i].is_last)
-		{
-			if (tokens[i].words)
-			{
-				if (tokens[i].words[0] && tokens[i].ftype == EXECVE)
-					tokens[i].path = get_path_iter(tokens[i].words[0], env);
-			}
-			i++;
-		}
+		if (proc->tokens && proc->ftype == 0)
+			proc->path = get_proc_path(proc->tokens[0].word, env);
 	}
 }

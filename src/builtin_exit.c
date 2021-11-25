@@ -54,27 +54,27 @@ static int	custom_ft_atoi(const char *s)
 	return (result * sign);
 }
 
-void	builtin_exit(t_token *tokens, t_token *token)
+void	builtin_exit(t_proc *procs, t_proc *proc)
 {
 	int	exit_args;
 	int	exit_value;
 
-	exit_args = length_2d_array(token->words) - 1;
-	exit_value = custom_ft_atoi(token->words[1]);
+	exit_args = length_2d_array(proc->words) - 1;
+	exit_value = custom_ft_atoi(proc->words[1]);
 	if (exit_args > 1)
 	{
 		if (exit_value > -1)
 		{
 			ft_putstr_fd("exit\n", STDERR_FILENO);
 			ft_putstr_fd("minishell: exit: too many arguments\n", STDERR_FILENO);
-			free_tokens(tokens);
+			free_procs(procs);
 		}
 		else
 		{
 			ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
-			ft_putstr_fd(token->words[1], STDERR_FILENO);
+			ft_putstr_fd(proc->words[1], STDERR_FILENO);
 			ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
-			free_tokens(tokens);
+			free_procs(procs);
 			exit(42);
 		}
 	}
@@ -83,13 +83,13 @@ void	builtin_exit(t_token *tokens, t_token *token)
 		if (exit_value > -1 && exit_value < 256)
 		{
 			ft_putstr_fd("exit\n", STDERR_FILENO);
-			free_tokens(tokens);
+			free_procs(procs);
 			exit(exit_value);
 		}
 		else
 		{
 			ft_putstr_fd("exit\n", STDERR_FILENO);
-			free_tokens(tokens);
+			free_procs(procs);
 			exit(42); // undefined behavior (cf. man exit)
 		}
 	}

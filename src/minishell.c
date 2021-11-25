@@ -1,9 +1,30 @@
 #include "minishell.h"
 
+static void	parser(t_proc *procs, char *const *env, unsigned char exitval)
+{
+	int	i;
+
+	if (procs)
+	{
+		i = 0;
+		while (!procs[i].is_last)
+		{
+			dollar_expand(procs[i], env, exitval);
+			get_ftype(&procs[i]); // merge two funtions
+			get_path(&procs[i], env);
+			i++;
+		}
+	}
+	//get_fds(procs);
+	//exiting in main for tests
+	//if (procs[0].ftype == EXIT)
+	//	builtin_exit(procs, &(procs[0]));
+}
+
 int main(int ac, char **av, char *const *env)
 {
 	char			*line;
-	t_token			*tokens;
+	t_proc			*procs;
 	unsigned char	exitval;
 
 	(void)ac;
@@ -15,17 +36,11 @@ int main(int ac, char **av, char *const *env)
 		line = readline("minishell> ");
 		if (!line)
 			break ;
-		tokens = tokenisation(line);
-		get_words(tokens);
-		dollar_expand(tokens, env, exitval);
-		get_ftype(tokens);
-		get_path(tokens, env);
-		//get_fds(tokens);
-		print_tokens(tokens);
-		//exiting in main for tests
-		if (tokens[0].ftype == EXIT)
-			builtin_exit(tokens, &(tokens[0]));
-		free_tokens(tokens);
+		procs = get_procs(line);
+		get_tokens(procs);
+		parser(procs, env, exitval);
+		print_procs(procs);
+		free_procs(procs);
 		free(line);
 	}
 	return (0);

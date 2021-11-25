@@ -6,13 +6,13 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 16:18:04 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/24 09:41:51 by trobin           ###   ########.fr       */
+/*   Updated: 2021/11/25 12:41:09 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*find_var(char *str, char *const *env)
+static char	*find_var(char *str, char *const *env)
 {
 	char	*ret;
 	int		len;
@@ -31,7 +31,7 @@ char	*find_var(char *str, char *const *env)
 	return (ret);
 }
 
-char	*dollar_expand_str(char *str, char *const *env, unsigned char	exitval)
+static char	*dollar_expand_str(char *str, char *const *env, unsigned char	exitval)
 {
 	// unifier la notation avec get_str_words()
 	int		indbquotes; // double_quote
@@ -103,25 +103,19 @@ char	*dollar_expand_str(char *str, char *const *env, unsigned char	exitval)
 	return (res);
 }
 
-void	dollar_expand(t_token *tokens, char *const *env, unsigned char	exitval)
+void	dollar_expand(t_proc proc, char *const *env, unsigned char	exitval)
 {
 	int		i;
-	int		j;
 	char	*tmp;
 
-	if (tokens)
+	if (proc.tokens)
 	{
 		i = 0;
-		while (!tokens[i].is_last)
+		while (proc.tokens[i].word)
 		{
-			j = 0;
-			while (tokens[i].words[j])
-			{
-				tmp = dollar_expand_str(tokens[i].words[j], env, exitval);
-				free(tokens[i].words[j]);
-				tokens[i].words[j] = tmp;
-				j++;
-			}
+			tmp = dollar_expand_str(proc.tokens[i].word, env, exitval);
+			free(proc.tokens[i].word);
+			proc.tokens[i].word = tmp;
 			i++;
 		}
 	}
