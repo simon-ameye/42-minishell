@@ -1,14 +1,9 @@
 #include "minishell.h"
 
-static int	is_quote(char c)
+static char	*remove_quotes_str(char *str)
 {
-	return (c == '"' || c == '\'');
-}
-
-static char    *remove_quotes_str(char *str)
-{
-	int     i;
-	char    *res;
+	int		i;
+	char	*res;
 	char	quote;
 
 	res = malloc(sizeof(char) * (ft_strlen(str) + 1));
@@ -18,7 +13,7 @@ static char    *remove_quotes_str(char *str)
 	i = 0;
 	while (*str)
 	{
-		if (!is_quote(*str)) // pas une quote, on ecrit
+		if (*str != '"' && *str != '\'') // pas une quote, on ecrit
 			res[i++] = *str;
 		else if (!quote) // une quot et on etait pas dans des quotes, on zappe et on entre dans des quotes
 			quote = *str;

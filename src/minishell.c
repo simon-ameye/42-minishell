@@ -1,6 +1,8 @@
 #include "minishell.h"
 
-static void	parser(t_proc *procs, char *const *env, unsigned char exitval)
+unsigned char	g_exitval;
+
+static void	parser(t_proc *procs, char *const *env)
 {
 	int	i;
 
@@ -14,7 +16,7 @@ static void	parser(t_proc *procs, char *const *env, unsigned char exitval)
 			print_procs(procs);
 
 			ft_putstr_fd("\n----------dollar_expand----------\n", STDERR_FILENO);
-			dollar_expand(procs[i], env, exitval);
+			dollar_expand(procs[i], env);
 			print_procs(procs);
 
 			ft_putstr_fd("\n----------get_fnct_type----------\n", STDERR_FILENO);
@@ -45,11 +47,11 @@ int main(int ac, char **av, char *const *env)
 {
 	char			*line;
 	t_proc			*procs;
-	unsigned char	exitval;
 
 	(void)ac;
 	(void)av;
-	exitval = 0;
+	g_exitval = 0;
+	(void)g_exitval;
 	while (1)
 	{
 		line = NULL;
@@ -58,7 +60,7 @@ int main(int ac, char **av, char *const *env)
 			break ;
 		procs = get_procs(line);
 		get_tokens(procs);
-		parser(procs, env, exitval);
+		parser(procs, env);
 		print_procs(procs);
 		free_procs(procs);
 		free(line);

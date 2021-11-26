@@ -88,7 +88,7 @@ void	builtin_env(char *const *env);
 /*                                                                            */
 /******************************************************************************/
 
-void	dollar_expand(t_proc proc, char *const *env, unsigned char	exitval);
+void	dollar_expand(t_proc proc, char *const *env);
 
 /******************************************************************************/
 /*                                                                            */
