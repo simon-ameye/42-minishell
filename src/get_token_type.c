@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 11:15:23 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/26 17:57:50 by sameye           ###   ########.fr       */
+/*   Updated: 2021/11/26 19:21:36 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ static int are_alnums(char *s)
 	return (1);
 }
 
-//// Dont forget to exit if just '<'
 int	get_token_type(t_proc *proc)
 {
 	int i;
@@ -68,12 +67,12 @@ int	get_token_type(t_proc *proc)
 				chevron = 1;
 			}
 			error = 1;
-			if (chevron && !are_alnums(proc->tokens[i + 1].word) && proc->tokens[i + 1].word[0])
-				ft_putstr_fd("syntax error near unexpected token\n", STDERR_FILENO); // Dont forget to free + exit
-			else if (chevron && !proc->tokens[i + 1].word)
-				ft_putstr_fd("syntax error near unexpected token\n", STDERR_FILENO); // Dont forget to exit
+			if (chevron && !proc->tokens[i + 1].word)
+				ft_putstr_fd("syntax error near unexpected token\n", STDERR_FILENO);
+			else if (chevron && !are_alnums(proc->tokens[i + 1].word) && proc->tokens[i + 1].word[0])
+				ft_putstr_fd("syntax error near unexpected token\n", STDERR_FILENO);
 			else if (chevron && !proc->tokens[i + 1].word[0])
-				ft_putstr_fd("ambiguous redirect\n", STDERR_FILENO); // Dont forget to exit
+				ft_putstr_fd("ambiguous redirect\n", STDERR_FILENO);
 			else
 				error = 0;
 			if (error == 1)

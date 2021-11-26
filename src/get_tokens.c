@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 11:08:48 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/26 17:00:05 by sameye           ###   ########.fr       */
+/*   Updated: 2021/11/26 19:16:42 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,11 @@ static void	init_tokens(t_token *tokens, int len)
 {
 	int i;
 
-	while (i <= len)
+	i = 0;
+	while (i <= len - 1)
 	{
-		tokens->word = NULL;
-		tokens->type = 0;
+		tokens[i].word = NULL;
+		tokens[i].type = 0;
 		i++;
 	}
 }
