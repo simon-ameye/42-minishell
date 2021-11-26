@@ -2,6 +2,12 @@
 
 unsigned char	g_exitval;
 
+static void free_procs_exit(t_proc *procs)
+{
+	free_procs(procs);
+	exit(g_exitval);
+}
+
 static void	parser(t_proc *procs, char *const *env)
 {
 	int	i;
@@ -14,32 +20,32 @@ static void	parser(t_proc *procs, char *const *env)
 
 			ft_putstr_fd("\n----------get_token_type----------\n", STDERR_FILENO);
 			if (get_token_type(&procs[i])) //out condition inside
-				break ;
+				free_procs_exit(procs);
 			print_procs(procs);
 
 			ft_putstr_fd("\n----------dollar_expand----------\n", STDERR_FILENO);
 			if(dollar_expand(procs[i], env)) //malloc inside, 
-				break ;
+				free_procs_exit(procs);
 			print_procs(procs);
 
 			ft_putstr_fd("\n----------get_fnct_type----------\n", STDERR_FILENO);
 			if (get_fnct_type(&procs[i])) //nothing 
-				break ;
+				free_procs_exit(procs);
 			print_procs(procs);
 
 			ft_putstr_fd("\n----------remove_quotes----------\n", STDERR_FILENO);
 			if (remove_quotes(procs[i])) //malloc inside
-				break ;
+				free_procs_exit(procs);
 			print_procs(procs);
 
 			ft_putstr_fd("\n----------get_fds----------\n", STDERR_FILENO);
 			if (get_fds(&procs[i])) //nothing
-				break ;
+				free_procs_exit(procs);
 			print_procs(procs);
 
 			ft_putstr_fd("\n----------get_path----------\n", STDERR_FILENO);
 			if (get_path(&procs[i], env)) //malloc inside,
-				break ;
+				free_procs_exit(procs);
 			print_procs(procs);
 			i++;
 		}
