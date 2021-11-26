@@ -18,7 +18,7 @@ static int	length_2d_array(char **s)
 void	builtin_pwd(t_proc *proc)
 {
 	if (length_2d_array(proc->words) == 1)
-		ft_putstr_fd(getcwd(NULL, 0), STDOUT_FILENO);
+		ft_putstr_fd(getcwd(NULL, 0), STDOUT_FILENO); // Bizarre ce stdout, ajouter un \n
 	else
 		ft_putstr_fd("pwd: too many arguments\n", STDERR_FILENO);
 }

@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 16:18:04 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/25 17:19:26 by sameye           ###   ########.fr       */
+/*   Updated: 2021/11/26 10:52:07 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static char	*find_var(char *str, char *const *env)
 	return (ret);
 }
 
-static char	*dollar_expand_str(char *str, char *const *env, unsigned char	exitval, int *expanded)
+static char	*dollar_expand_str(char *str, char *const *env, unsigned char	exitval)
 {
 	// unifier la notation avec get_str_words()
 	int		dbq; // double_quote
@@ -41,7 +41,6 @@ static char	*dollar_expand_str(char *str, char *const *env, unsigned char	exitva
 	char	*varname;
 	char	*varval;
 
-	*expanded = 0;
 	if (!str || !env)
 		return (NULL);
 	if (!*env)
@@ -65,7 +64,6 @@ static char	*dollar_expand_str(char *str, char *const *env, unsigned char	exitva
 		}
 		else if (*str == '$' && sgq == 0)
 		{
-			*expanded = 1;
 			if (str[1] == '?')
 			{
 				varval = ft_itoa(exitval);
@@ -109,17 +107,15 @@ void	dollar_expand(t_proc proc, char *const *env, unsigned char	exitval)
 {
 	int		i;
 	char	*tmp;
-	int		expanded;
 
 	if (proc.tokens)
 	{
 		i = 0;
 		while (proc.tokens[i].word)
 		{
-			tmp = dollar_expand_str(proc.tokens[i].word, env, exitval, &expanded);
+			tmp = dollar_expand_str(proc.tokens[i].word, env, exitval);
 			free(proc.tokens[i].word);
 			proc.tokens[i].word = tmp;
-			proc.tokens[i].expanded = expanded;
 			i++;
 		}
 	}

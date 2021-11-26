@@ -22,7 +22,7 @@ void	print_procs(t_proc *procs)
 				while (procs[i].tokens[j].word)
 				{
 					printf("[%s]", procs[i].tokens[j].word);
-					printf("(%d)", procs[i].tokens[j].expanded);
+					//printf("(%d)", procs[i].tokens[j].expanded);
 					printf("{%d} ", procs[i].tokens[j].type);
 					j++;
 				}

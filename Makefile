@@ -29,11 +29,13 @@ SRCS		=		minishell.c \
 					string.c \
 					dollar_expand.c \
 					get_token_type.c \
-					get_path.c
+					get_path.c \
+					get_fnct_type.c \
+					remove_quotes.c \
+					get_fds.c
 				#	builtin_exit.c \
 				#	builtin_pwd.c \
 				#	builtin_env.c \
-				#	get_fds.c
 
 SOURCES		=		$(addprefix $(SRCS_DIR)/,$(SRCS))
 
