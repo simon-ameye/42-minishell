@@ -27,7 +27,7 @@ static char	*remove_quotes_str(char *str)
 	return (res);
 }
 
-void	remove_quotes(t_proc proc)
+int	remove_quotes(t_proc proc)
 {
 	int		i;
 	char	*tmp;
@@ -38,9 +38,12 @@ void	remove_quotes(t_proc proc)
 		while (proc.tokens[i].word)
 		{
 			tmp = remove_quotes_str(proc.tokens[i].word);
+			if (!tmp)
+				return (EXIT_FAILURE);
 			free(proc.tokens[i].word);
 			proc.tokens[i].word = tmp;
 			i++;
 		}
 	}
+	return (EXIT_SUCCESS);
 }

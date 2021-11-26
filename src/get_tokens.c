@@ -6,26 +6,28 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 11:08:48 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/26 16:02:33 by sameye           ###   ########.fr       */
+/*   Updated: 2021/11/26 17:00:05 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_token *free_tokens(t_token *tokens, int i)
+static t_token *free_tokens_tab(t_token *tokens)
 {
-	int	j;
-
-	j = 0;
-	while (j <= i)
-	{
-		if (tokens[j].word)
-			free(tokens[j].word);
-		j++;
-	}
-	if (tokens)
-		free(tokens);
+	free_tokens(tokens);
 	return (NULL);
+}
+
+static void	init_tokens(t_token *tokens, int len)
+{
+	int i;
+
+	while (i <= len)
+	{
+		tokens->word = NULL;
+		tokens->type = 0;
+		i++;
+	}
 }
 
 static t_token	*get_proc_tokens(char *str)
@@ -41,6 +43,7 @@ static t_token	*get_proc_tokens(char *str)
 	tokens = malloc(sizeof(t_token) * (ft_strlen(str) + 1));
 	if (!tokens)
 		return (NULL);
+	init_tokens(tokens, ft_strlen(str) + 1);
 	sgq = 0;
 	dbq = 0;
 	inword = 0;
@@ -54,7 +57,7 @@ static t_token	*get_proc_tokens(char *str)
 			i++;
 			tokens[i].word = malloc(sizeof(char) * 3);
 			if (tokens[i].word == NULL)
-				return (free_tokens(tokens, i));
+				return (free_tokens_tab(tokens));
 			tokens[i].word[0] = *str;
 			tokens[i].word[1] = '\0';
 			if (*str == *(str + 1)) //double bracket
@@ -65,7 +68,6 @@ static t_token	*get_proc_tokens(char *str)
 			}
 			inword = 0;
 		}
-		
 		else //a characher will be appened to result
 		{
 			if (*str == '"' && !sgq)
@@ -77,18 +79,16 @@ static t_token	*get_proc_tokens(char *str)
 				i++;
 				tokens[i].word = malloc(sizeof(char));
 				if (tokens[i].word == NULL)
-					return (free_tokens(tokens, i));
+					return (free_tokens_tab(tokens));
 				tokens[i].word[0] = '\0';
 				inword = 1;
 			}
 			tokens[i].word = join_char_free(tokens[i].word, *str);
 			if (tokens[i].word == NULL)
-				return (free_tokens(tokens, i));
+				return (free_tokens_tab(tokens));
 		}
 		str++;
 	}
-	i++;
-	tokens[i].word = NULL;
 	return (tokens);
 }
 

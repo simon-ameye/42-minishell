@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 17:36:49 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/26 12:48:16 by sameye           ###   ########.fr       */
+/*   Updated: 2021/11/26 18:02:41 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static void	get_proc_fdout(int *fd, char *filename, t_token_type type)
 	}
 }
 
-void	get_fds(t_proc *proc)
+int	get_fds(t_proc *proc)
 {
 	int	i;
 
@@ -83,4 +83,5 @@ void	get_fds(t_proc *proc)
 			}
 		}
 	}
+	return (EXIT_SUCCESS);
 }

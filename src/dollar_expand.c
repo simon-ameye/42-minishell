@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 16:18:04 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/26 13:33:44 by sameye           ###   ########.fr       */
+/*   Updated: 2021/11/26 18:06:18 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,15 +97,10 @@ static char	*dollar_expand_str(char *str, char *const *env)
 			str++;
 		}
 	}
-	if (dbq)
-	{
-		ft_putstr_fd("Error : double quote not closed\n", STDERR_FILENO);
-		//	free + exit
-	}
 	return (res);
 }
 
-void	dollar_expand(t_proc proc, char *const *env)
+int	dollar_expand(t_proc proc, char *const *env)
 {
 	int		i;
 	char	*tmp;
@@ -116,9 +111,12 @@ void	dollar_expand(t_proc proc, char *const *env)
 		while (proc.tokens[i].word)
 		{
 			tmp = dollar_expand_str(proc.tokens[i].word, env);
+			if (!tmp)
+				return (EXIT_FAILURE);
 			free(proc.tokens[i].word);
 			proc.tokens[i].word = tmp;
 			i++;
 		}
 	}
+	return (EXIT_SUCCESS);
 }

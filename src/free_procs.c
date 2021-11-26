@@ -13,6 +13,7 @@ void	free_tokens(t_token *tokens)
 			i++;
 		}
 		free(tokens);
+		tokens = NULL;
 	}
 }
 
@@ -34,5 +35,6 @@ void	free_procs(t_proc *procs)
 			i++;
 		}
 		free(procs);
+		procs = NULL;
 	}
 }

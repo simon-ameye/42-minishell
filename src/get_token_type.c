@@ -6,11 +6,13 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 11:15:23 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/26 12:14:20 by sameye           ###   ########.fr       */
+/*   Updated: 2021/11/26 17:57:50 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern unsigned char	g_exitval;
 
 static int are_alnums(char *s)
 {
@@ -27,52 +29,60 @@ static int are_alnums(char *s)
 }
 
 //// Dont forget to exit if just '<'
-void	get_token_type(t_proc *proc)
+int	get_token_type(t_proc *proc)
 {
 	int i;
-	int chevronspotted;
+	int chevron;
+	int	error;
 
+	error = 0;
 	if (proc->tokens)
 	{
 		i = 0;
 		while (proc->tokens[i].word)
 		{
-			chevronspotted = 0;
+			chevron = 0;
 			proc->tokens[i].type = WORD;
-			//if (proc->tokens[i].expanded == 0)
-			//{
-				if (!ft_strcmp(proc->tokens[i].word, "<"))
-				{
-					proc->tokens[i].type = FILE_IN;
-					proc->tokens[i + 1].type = OPEN_FILE;
-					chevronspotted = 1;
-				}
-				else if (!ft_strcmp(proc->tokens[i].word, "<<"))
-				{
-					proc->tokens[i].type = HERE_DOC;
-					proc->tokens[i + 1].type = LIMITOR;
-					chevronspotted = 1;
-				}
-				else if (!ft_strcmp(proc->tokens[i].word, ">"))
-				{
-					proc->tokens[i].type = FILE_OUT;
-					proc->tokens[i + 1].type = EXIT_FILE;
-					chevronspotted = 1;
-				}
-				else if (!ft_strcmp(proc->tokens[i].word, ">>"))
-				{
-					proc->tokens[i].type = FILE_OUT_SUR;
-					proc->tokens[i + 1].type = EXIT_FILE_RET;
-					chevronspotted = 1;
-				}
-			//}
-			if (chevronspotted && !are_alnums(proc->tokens[i + 1].word) && proc->tokens[i + 1].word[0])
+			if (!ft_strcmp(proc->tokens[i].word, "<"))
+			{
+				proc->tokens[i].type = FILE_IN;
+				proc->tokens[i + 1].type = OPEN_FILE;
+				chevron = 1;
+			}
+			else if (!ft_strcmp(proc->tokens[i].word, "<<"))
+			{
+				proc->tokens[i].type = HERE_DOC;
+				proc->tokens[i + 1].type = LIMITOR;
+				chevron = 1;
+			}
+			else if (!ft_strcmp(proc->tokens[i].word, ">"))
+			{
+				proc->tokens[i].type = FILE_OUT;
+				proc->tokens[i + 1].type = EXIT_FILE;
+				chevron = 1;
+			}
+			else if (!ft_strcmp(proc->tokens[i].word, ">>"))
+			{
+				proc->tokens[i].type = FILE_OUT_SUR;
+				proc->tokens[i + 1].type = EXIT_FILE_RET;
+				chevron = 1;
+			}
+			error = 1;
+			if (chevron && !are_alnums(proc->tokens[i + 1].word) && proc->tokens[i + 1].word[0])
 				ft_putstr_fd("syntax error near unexpected token\n", STDERR_FILENO); // Dont forget to free + exit
-			if (chevronspotted && !proc->tokens[i + 1].word)
+			else if (chevron && !proc->tokens[i + 1].word)
 				ft_putstr_fd("syntax error near unexpected token\n", STDERR_FILENO); // Dont forget to exit
-			else if (chevronspotted && !proc->tokens[i + 1].word[0])
+			else if (chevron && !proc->tokens[i + 1].word[0])
 				ft_putstr_fd("ambiguous redirect\n", STDERR_FILENO); // Dont forget to exit
-			i = i + 1 + chevronspotted;
+			else
+				error = 0;
+			if (error == 1)
+			{
+				g_exitval = 2;
+				return (EXIT_FAILURE);
+			}
+			i = i + 1 + chevron;
 		}
 	}
+	return (EXIT_SUCCESS);
 }

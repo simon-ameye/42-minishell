@@ -11,28 +11,35 @@ static void	parser(t_proc *procs, char *const *env)
 		i = 0;
 		while (!procs[i].is_last)
 		{
+
 			ft_putstr_fd("\n----------get_token_type----------\n", STDERR_FILENO);
-			get_token_type(&procs[i]);
+			if (get_token_type(&procs[i])) //out condition inside
+				break ;
 			print_procs(procs);
 
 			ft_putstr_fd("\n----------dollar_expand----------\n", STDERR_FILENO);
-			dollar_expand(procs[i], env);
+			if(dollar_expand(procs[i], env)) //malloc inside, 
+				break ;
 			print_procs(procs);
 
 			ft_putstr_fd("\n----------get_fnct_type----------\n", STDERR_FILENO);
-			get_fnct_type(&procs[i]);
+			if (get_fnct_type(&procs[i])) //nothing 
+				break ;
 			print_procs(procs);
 
 			ft_putstr_fd("\n----------remove_quotes----------\n", STDERR_FILENO);
-			remove_quotes(procs[i]);
+			if (remove_quotes(procs[i])) //malloc inside
+				break ;
 			print_procs(procs);
 
 			ft_putstr_fd("\n----------get_fds----------\n", STDERR_FILENO);
-			get_fds(&procs[i]);
+			if (get_fds(&procs[i])) //nothing
+				break ;
 			print_procs(procs);
 
 			ft_putstr_fd("\n----------get_path----------\n", STDERR_FILENO);
-			get_path(&procs[i], env);
+			if (get_path(&procs[i], env)) //malloc inside,
+				break ;
 			print_procs(procs);
 			i++;
 		}
@@ -55,7 +62,7 @@ int main(int ac, char **av, char *const *env)
 	while (1)
 	{
 		line = NULL;
-		line = readline("minishell> ");
+		line = readline("\e[0;36mminishell\e[0;35m> \e[0m");
 		if (!line)
 			break ;
 		procs = get_procs(line);

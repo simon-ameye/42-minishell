@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 18:17:57 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/25 19:59:18 by sameye           ###   ########.fr       */
+/*   Updated: 2021/11/26 18:04:53 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,15 @@ static char	*get_path_env(char *fnct, char *const *env)
 		{
 			testpath1 = ft_strjoin(paths[i], "/");
 			testpath2 = ft_strjoin(testpath1, fnct);
-			free(testpath1);
+			if (testpath1)
+				free(testpath1);
 			if (access(testpath2, F_OK) == 0)
 			{
 				free_str_tab(paths);
 				return (testpath2);
 			}
-			free(testpath2);
+			if (testpath2)
+				free(testpath2);
 			i++;
 		}
 		free_str_tab(paths);
@@ -79,8 +81,7 @@ static char	*get_proc_path(char *cmd, char *const *env)
 	return (NULL);
 }
 
-// TODO HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-void	get_path(t_proc *proc, char *const *env)
+int	get_path(t_proc *proc, char *const *env)
 {
 	int	i;
 
@@ -94,10 +95,11 @@ void	get_path(t_proc *proc, char *const *env)
 				if (proc->tokens[i].type == FUNCTION)
 				{
 					proc->path = get_proc_path(proc->tokens[i].word, env);
-					return ;	
+					return (EXIT_SUCCESS);	
 				}
 				i++;
 			}
 		}
 	}
+	return (EXIT_SUCCESS);
 }
