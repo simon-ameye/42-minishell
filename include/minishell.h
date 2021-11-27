@@ -154,13 +154,7 @@ int	remove_quotes(t_proc proc);
 /*                                                                            */
 /******************************************************************************/
 
-char	*custom_ft_strncpy(char *dst, char *src, int len);
-char	*ft_strndup(char *s, int n);
-void	init_proc(t_proc *proc);
-char	*get_proc_str(char *line, int proc_index);
-void	create_proc(t_proc *procs, char *line, int index);
-int		get_nb_procs(char *line);
-t_proc	*get_procs(char *line);
+void	get_procs(t_proc **procs, char *line);
 
 /******************************************************************************/
 /*                                                                            */

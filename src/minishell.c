@@ -51,6 +51,35 @@ static int	parser(t_proc *procs, char *const *env)
 	//	builtin_exit(procs, &(procs[0]));
 }
 
+/*
+static int	parser(t_proc *procs, char *const *env)
+{
+	int	i;
+
+	if (procs)
+	{
+		i = 0;
+		while (!procs[i].is_last)
+		{
+			if (get_token_type(&procs[i]))
+				break ;
+			if (dollar_expand(procs[i], env))
+				break ;
+			if (get_fnct_type(&procs[i]))
+				break ;
+			if (remove_quotes(procs[i]))
+				break ;
+			if (get_fds(&procs[i]))
+				break ;
+			if (get_path(&procs[i], env))
+				break ;
+			i++;
+		}
+	}
+	return (!procs || !procs[i].is_last);
+}
+*/
+
 int main(int ac, char **av, char *const *env)
 {
 	char			*line;
@@ -59,14 +88,14 @@ int main(int ac, char **av, char *const *env)
 	(void)ac;
 	(void)av;
 	g_exitval = 0;
-	(void)g_exitval;
 	while (1)
 	{
 		line = NULL;
 		line = readline("\e[0;36mminishell\e[0;35m> \e[0m");
 		if (!line)
 			break ;
-		procs = get_procs(line);
+		procs = NULL;
+		get_procs(&procs, line);
 		get_tokens(procs);
 		if (parser(procs, env))
 		{
