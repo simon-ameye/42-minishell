@@ -40,10 +40,11 @@ static void	exec_proc(t_proc *proc)
 			builtin_env(proc->env);
 		else if (proc->ftype == EXIT)
 			exit(4242);
+		else if (proc->ftype == ECHO)
+			builtin_echo(proc);
 		else
 		{
 			run_execve(proc);
-			fprintf(stderr, "AH!\n");
 		}
 	}
 }
@@ -78,9 +79,27 @@ static void	redirect_io(t_proc *proc)
 	}
 }
 
+static void	save_stream_status(int *saved_std)
+{
+	saved_std[0] = dup(STDIN_FILENO);
+	saved_std[1] = dup(STDOUT_FILENO);
+}
+
+static void	restore_stream_status(int *saved_std)
+{
+	dup2(saved_std[0], STDIN_FILENO);
+	dup2(saved_std[1], STDOUT_FILENO);
+	close(saved_std[0]);
+	close(saved_std[1]);
+}
+
 void	exec_child(t_proc *proc, t_proc *procs)
 {
+	int saved_std[2];
+
+	save_stream_status(saved_std);
 	redirect_io(proc);
 	exec_proc(proc);
 	free_procs(procs);
+	restore_stream_status(saved_std);
 }

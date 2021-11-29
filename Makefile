@@ -35,7 +35,8 @@ SRCS		=		minishell.c \
 					get_fds.c \
 					exec.c \
 					exec_child.c \
-					builtin_env.c
+					builtin_env.c \
+					builtin_echo.c
 				#	builtin_exit.c
 				#	builtin_pwd.c \
 

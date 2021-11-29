@@ -97,7 +97,6 @@ int main(int ac, char **av, char *const *env)
 		if (!parser(procs))
 			exec(procs);
 	//	print_procs(procs);
-		free_procs(procs);
 	}
 	return (0);
 }
