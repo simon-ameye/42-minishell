@@ -12,32 +12,32 @@ static int	parser(t_proc *procs)
 		while (!procs[i].is_last)
 		{
 
-			ft_putstr_fd("\n----------get_token_type----------\n", STDERR_FILENO);
+	//		ft_putstr_fd("\n----------get_token_type----------\n", STDERR_FILENO);
 			if (get_token_type(&procs[i])) //out condition inside
 				return (EXIT_FAILURE);
-			print_procs(procs);
+	//		print_procs(procs);
 
-			ft_putstr_fd("\n----------dollar_expand----------\n", STDERR_FILENO);
+	//		ft_putstr_fd("\n----------dollar_expand----------\n", STDERR_FILENO);
 			if(dollar_expand(procs[i])) //malloc inside, 
 				return (EXIT_FAILURE);
-			print_procs(procs);
+	//		print_procs(procs);
 
-			ft_putstr_fd("\n----------get_fnct_type----------\n", STDERR_FILENO);
+	//		ft_putstr_fd("\n----------get_fnct_type----------\n", STDERR_FILENO);
 			if (get_fnct_type(&procs[i])) //nothing 
 				return (EXIT_FAILURE);
-			print_procs(procs);
+	//		print_procs(procs);
 
-			ft_putstr_fd("\n----------remove_quotes----------\n", STDERR_FILENO);
+	//		ft_putstr_fd("\n----------remove_quotes----------\n", STDERR_FILENO);
 			if (remove_quotes(procs[i])) //malloc inside
 				return (EXIT_FAILURE);
-			print_procs(procs);
+	//		print_procs(procs);
 
-			ft_putstr_fd("\n----------get_fds----------\n", STDERR_FILENO);
+	//		ft_putstr_fd("\n----------get_fds----------\n", STDERR_FILENO);
 			if (get_fds(&procs[i])) //nothing
 				return (EXIT_FAILURE);
-			print_procs(procs);
+	//		print_procs(procs);
 
-			ft_putstr_fd("\n----------get_path----------\n", STDERR_FILENO);
+	//		ft_putstr_fd("\n----------get_path----------\n", STDERR_FILENO);
 			if (get_path(&procs[i])) //malloc inside,
 				return (EXIT_FAILURE);
 			print_procs(procs);
@@ -45,10 +45,6 @@ static int	parser(t_proc *procs)
 		}
 	}
 	return (EXIT_SUCCESS);
-	//
-	//exiting in main for tests
-	//if (procs[0].ftype == EXIT)
-	//	builtin_exit(procs, &(procs[0]));
 }
 
 /*
@@ -100,7 +96,7 @@ int main(int ac, char **av, char *const *env)
 		get_tokens(procs);
 		if (!parser(procs))
 			exec(procs);
-		print_procs(procs);
+	//	print_procs(procs);
 		free_procs(procs);
 	}
 	return (0);

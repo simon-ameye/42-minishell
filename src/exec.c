@@ -28,6 +28,10 @@ static void	create_childs(t_proc *procs)
 				printf("Error: child return\n"); // tmp
 				exit(4242); //tmp
 			}
+			if (i > 0)
+				close(procs[i].stream_in);
+			if (!procs[i + 1].is_last)
+				close(procs[i].stream_out);
 			i++;
 		}
 		i = 0;
@@ -42,6 +46,7 @@ static void	create_childs(t_proc *procs)
 	// one process bultin
 	else
 	{
+		// we are in parent process
 		exec_child(&procs[0], procs);
 	}
 }

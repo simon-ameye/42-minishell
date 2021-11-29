@@ -29,6 +29,8 @@ static void	init_proc(t_proc *proc, char * const *env)
 		proc->ftype = 0;
 		proc->fdin = -1;
 		proc->fdout = -1;
+		proc->stream_in = -1;
+		proc->stream_out = -1;
 		proc->is_last = 0;
 		proc->env = env;
 	}
