@@ -2,7 +2,7 @@
 
 unsigned char	g_exitval;
 
-static int	parser(t_proc *procs, char *const *env)
+static int	parser(t_proc *procs)
 {
 	int	i;
 
@@ -18,7 +18,7 @@ static int	parser(t_proc *procs, char *const *env)
 			print_procs(procs);
 
 			ft_putstr_fd("\n----------dollar_expand----------\n", STDERR_FILENO);
-			if(dollar_expand(procs[i], env)) //malloc inside, 
+			if(dollar_expand(procs[i])) //malloc inside, 
 				return (EXIT_FAILURE);
 			print_procs(procs);
 
@@ -38,7 +38,7 @@ static int	parser(t_proc *procs, char *const *env)
 			print_procs(procs);
 
 			ft_putstr_fd("\n----------get_path----------\n", STDERR_FILENO);
-			if (get_path(&procs[i], env)) //malloc inside,
+			if (get_path(&procs[i])) //malloc inside,
 				return (EXIT_FAILURE);
 			print_procs(procs);
 			i++;
@@ -98,7 +98,7 @@ int main(int ac, char **av, char *const *env)
 		get_procs(&procs, line, env);
 		free(line);
 		get_tokens(procs);
-		if (!parser(procs, env))// remove env
+		if (!parser(procs))
 			exec(procs);
 		print_procs(procs);
 		free_procs(procs);
