@@ -9,9 +9,8 @@
 #include "libft.h"
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/wait.h>
 #include <fcntl.h>
-
-# define PRINT 1
 
 typedef enum e_ftype
 {
@@ -59,16 +58,17 @@ typedef struct	s_proc
 {
 	char			*str;
 	char			*path;
-	char			**args;
-//	char			**words;
+	char *const		*env;
 	t_token			*tokens;
 	t_ftype			ftype;
 //	t_io			in;
 //	t_io			out;
-	int				fdin;
-	int				fdout;
+	int				fdin; // fd_in
+	int				fdout; //fd_out
+	int				stream_in;
+	int				stream_out;
 //	bool			is_child; // `cd /` vs `cd / | cd /`
-//	pid_t			pid;
+	pid_t			pid;
 	int				is_last;
 }	t_proc;
 
@@ -154,7 +154,7 @@ int	remove_quotes(t_proc proc);
 /*                                                                            */
 /******************************************************************************/
 
-void	get_procs(t_proc **procs, char *line);
+void	get_procs(t_proc **procs, char *line, char * const *env);
 
 /******************************************************************************/
 /*                                                                            */
@@ -172,5 +172,21 @@ void	print_procs(t_proc *procs);
 
 void	free_procs(t_proc *procs);
 void	free_tokens(t_token *tokens);
+
+/******************************************************************************/
+/*                                                                            */
+/*     exec.c                                                                 */
+/*                                                                            */
+/******************************************************************************/
+
+void	exec(t_proc *procs);
+
+/******************************************************************************/
+/*                                                                            */
+/*     exec_child.c                                                           */
+/*                                                                            */
+/******************************************************************************/
+
+void	exec_child(t_proc *proc, t_proc *procs);
 
 # endif

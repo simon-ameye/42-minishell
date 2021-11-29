@@ -30,6 +30,8 @@ void	print_procs(t_proc *procs)
 			}
 			printf("	ftype : %i\n", procs[i].ftype);
 			printf("	path : %s\n", procs[i].path);
+			printf("	fd_in: %d, fd_out: %d\n", procs[i].fdin, procs[i].fdout);
+			printf("	stream_in: %d, stream_out: %d\n", procs[i].stream_in, procs[i].stream_out);
 			/*
 			if (procs[i].path)
 				printf("	path : %s\n", procs[i].path);

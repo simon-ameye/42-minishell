@@ -32,7 +32,9 @@ SRCS		=		minishell.c \
 					get_path.c \
 					get_fnct_type.c \
 					remove_quotes.c \
-					get_fds.c
+					get_fds.c \
+					exec.c \
+					exec_child.c
 				#	builtin_exit.c
 				#	builtin_pwd.c \
 				#	builtin_env.c \

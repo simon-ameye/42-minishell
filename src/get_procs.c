@@ -19,18 +19,18 @@ static char	*ft_strndup(char *s, int n)
 	return (ret);
 }
 
-static void	init_proc(t_proc *proc)
+static void	init_proc(t_proc *proc, char * const *env)
 {
 	if (proc)
 	{
 		proc->str = NULL;
 		proc->path = NULL;
-		proc->args = NULL;
 		proc->tokens = NULL;
 		proc->ftype = 0;
 		proc->fdin = -1;
 		proc->fdout = -1;
 		proc->is_last = 0;
+		proc->env = env;
 	}
 }
 
@@ -139,7 +139,7 @@ static int	get_nb_procs(char *line)
 	return (ret);
 }
 
-void	get_procs(t_proc **procs, char *line)
+void	get_procs(t_proc **procs, char *line, char * const *env)
 {
 	int	i;
 	int	nb_procs;
@@ -156,7 +156,7 @@ void	get_procs(t_proc **procs, char *line)
 		while (i < nb_procs)
 		{
 	//		create_proc(*procs, line, i);
-			init_proc(&(*procs)[i]);
+			init_proc(&(*procs)[i], env);
 			(*procs)[i].str = get_proc_str(line, i);
 			if ((*procs)[i].str == NULL)
 			{

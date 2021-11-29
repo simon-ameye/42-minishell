@@ -50,6 +50,7 @@ static int	parser(t_proc *procs, char *const *env)
 	//if (procs[0].ftype == EXIT)
 	//	builtin_exit(procs, &(procs[0]));
 }
+
 /*
 static int	parser(t_proc *procs, char *const *env)
 {
@@ -94,11 +95,12 @@ int main(int ac, char **av, char *const *env)
 		if (!line)
 			break ;
 		procs = NULL;
-		get_procs(&procs, line);
+		get_procs(&procs, line, env);
 		free(line);
 		get_tokens(procs);
-		if (!parser(procs, env))
-		//	exec(procs);
+		if (!parser(procs, env))// remove env
+			exec(procs);
+		print_procs(procs);
 		free_procs(procs);
 	}
 	return (0);

@@ -4,7 +4,7 @@
  *
  * todo
  *
- * event if we dont exit, set global variagble g_exitval ccordingly
+ * event if we dont exit, set global variable g_exitval accordingly
  *
  */
 
