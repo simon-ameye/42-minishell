@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 18:17:57 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/26 18:04:53 by sameye           ###   ########.fr       */
+/*   Updated: 2021/11/29 10:17:45 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,8 @@ int	get_path(t_proc *proc, char *const *env)
 			i = 0;
 			while (proc->tokens[i].word)
 			{
-				if (proc->tokens[i].type == FUNCTION)
+				if (proc->tokens[i].type == FUNCTION
+					&& proc->ftype == EXECVE)
 				{
 					proc->path = get_proc_path(proc->tokens[i].word, env);
 					return (EXIT_SUCCESS);	
