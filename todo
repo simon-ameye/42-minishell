@@ -50,29 +50,28 @@ digraph G
         p6 [label="GET_PATH : \ndetect function path\n only for 0 execve\n"]
     }
     
-    
-    
         subgraph cluster_exec
     {
         label = "EXEC\nExecute functions";
-        x1 [label="CREATE_CHILDS : \nCreate table of pipes\nStore pipes in process\nLaunch REDIRECT_IO in forks or in father based on number of procs"]
-        x2 [label="REDIRECT_IO : \nRedirects IO based on Imput and Output (for Childs only)\n"]
+        x0 [label="CREATE_PIPES : \nCreate table of pipes\nSet stream_in and stream_out for procs n and n+1\nSet first proc stream input to 0 and last stream output to 1\n(Pipe() + copy ints in procs)"]
+        x1 [label="CREATE_CHILDS : \nLaunch continues in forks or in father based on number of procs and ftype\n(Fork())"]
+        x2 [label="REDIRECT_IO : \nMaybe there is redirect ? Redirects IO based on Imput and Output (for Childs only)\nClose useless fd\n(Dup2)"]
         x3 [label="EXEC_PROC :\nBased of ftype, launches BUILD_IN or EXEC_PROGRAM\n"]
         x33 [label="BUILD_IN :\nAny build in\n"]
-        x4 [label="EXEC_PROGRAM : \nSets the args according to execve requirements and launches"]
-        x5 [label="WAIT_CHILDS :\nWaits childs and closes fds\n"]
+        x4 [label="EXEC_PROGRAM : \nSets the args according to execve requirements and launches(Execve)"]
+        x5 [label="WAIT_CHILDS :\nWaits childs and closes fds\n(Loop of WaitPID)"]
     }
-    
 
         process_data [label="PROCESS_DATA\n\
         string\n\
         tab of tokens\n\
         path (as requested by execve)\n\
         func_type\n\
-        input stream\n\
-        output stream\n\
+        fd_in\n\
+        fd_out\n\
+        stream_in\n\
+        stream_out\n\
         is_last\n\
-        MORE USEFUL DATA"]
         
         tokens [label="TOKENS\n\
         Null terminated pointer tab\l\
@@ -83,8 +82,8 @@ digraph G
 
     l1 -> l2 -> p1
     p1 -> p2 -> p3 ->p4 -> p5 -> p6
-    p6 -> x1
-    x1 -> x2 -> x3 -> x4 -> x5
+    p6 -> x0
+    x0 ->x1 -> x2 -> x3 -> x4 -> x5
     x3 -> x33
     process_data -> tokens
 }
