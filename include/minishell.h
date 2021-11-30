@@ -78,6 +78,7 @@ typedef struct	s_proc
 /*                                                                            */
 /******************************************************************************/
 
+void	builtin_cd(t_proc *proc);
 void	builtin_exit(t_proc *procs, t_proc *proc);
 void	builtin_pwd(void);
 void	builtin_env(char *const *env);

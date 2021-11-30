@@ -35,6 +35,8 @@ static void	exec_proc(t_proc *proc, t_proc *procs)
 {
 	if (proc)
 	{
+		if (proc->ftype == CD)
+			builtin_cd(proc);
 		if (proc->ftype == PWD)
 			builtin_pwd();
 		if (proc->ftype == ENV)
