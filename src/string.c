@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 17:30:28 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/25 12:45:17 by trobin           ###   ########.fr       */
+/*   Updated: 2021/11/30 15:13:41 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,4 +87,14 @@ char	*join_char_free(char *str, char c)
 	res[ft_strlen(str) + 1] = '\0';
 	free(str);
 	return (res);
+}
+
+int	str_tab_len(char *const *env)
+{
+	int i;
+
+	i = 0;
+	while (env[i])
+		i++;
+	return (i);
 }

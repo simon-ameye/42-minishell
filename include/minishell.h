@@ -100,6 +100,7 @@ int	dollar_expand(t_proc proc);
 void	free_str_tab(char **tab);
 char	*ft_strjoinfree(char *s1, char *s2);
 char	*join_char_free(char *str, char c);
+int		str_tab_len(char *const *env);
 
 /******************************************************************************/
 /*                                                                            */
@@ -189,5 +190,14 @@ void	exec(t_proc *procs);
 /******************************************************************************/
 
 void	exec_child(t_proc *proc, t_proc *procs);
+
+
+/******************************************************************************/
+/*                                                                            */
+/*     env.c                                                                  */
+/*                                                                            */
+/******************************************************************************/
+
+char **copy_env(char *const *original_env);
 
 # endif
