@@ -40,3 +40,4 @@ void	builtin_echo(t_proc *proc)
 		ft_putstr_fd("\n", STDOUT_FILENO);
 	g_exitval = 0;
 }
+
