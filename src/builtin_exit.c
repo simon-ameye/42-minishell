@@ -1,26 +1,24 @@
 #include "minishell.h"
 
-/*
- *
- * todo
- *
- * event if we dont exit, set global variable g_exitval accordingly
- *
- */
+extern unsigned char	g_exitval;
 
-// defined also into builtin_pwd.c
-static int	length_2d_array(char **s)
+static int	get_nb_args(t_token *tokens)
 {
 	int	i;
+	int	ret;
 
-	if (s)
+	ret = 0;
+	if (tokens)
 	{
 		i = 0;
-		while (s[i])
+		while (tokens[i].word)
+		{
+			if (tokens[i].type == WORD)
+				ret++;
 			i++;
-		return (i);
+		}
 	}
-	return (-1);
+	return (ret);
 }
 
 static int	custom_ft_atoi(const char *s)
@@ -54,43 +52,57 @@ static int	custom_ft_atoi(const char *s)
 	return (result * sign);
 }
 
-void	builtin_exit(t_proc *procs, t_proc *proc)
+void	builtin_exit(t_proc *proc, t_proc *procs)
 {
 	int	exit_args;
 	int	exit_value;
 
-	exit_args = length_2d_array(proc->words) - 1;
-	exit_value = custom_ft_atoi(proc->words[1]);
-	if (exit_args > 1)
+	exit_args = get_nb_args(proc->tokens);
+	printf("exit_args: %d\n", exit_args);
+
+	if (exit_args == 0)
 	{
-		if (exit_value > -1)
-		{
-			ft_putstr_fd("exit\n", STDERR_FILENO);
-			ft_putstr_fd("minishell: exit: too many arguments\n", STDERR_FILENO);
-			free_procs(procs);
-		}
-		else
+		// don't modify g_exitval
+		ft_putstr_fd("exit\n", STDERR_FILENO);
+		free_procs(procs);
+		exit(g_exitval);
+	}
+	if (exit_args > 0)
+	{
+		exit_value = custom_ft_atoi(proc->tokens[1].word);
+		// non numeric argument
+		if (exit_value == -1)
 		{
 			ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
-			ft_putstr_fd(proc->words[1], STDERR_FILENO);
+			ft_putstr_fd(proc->tokens[1].word, STDERR_FILENO);
 			ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
 			free_procs(procs);
-			exit(42);
+			g_exitval = 2;
+			exit(g_exitval);
 		}
-	}
-	if (exit_args == 1)
-	{
+		// too much arguments
+		if (exit_args > 1)
+		{
+			// don't exit && don't modify g_exitval
+			ft_putstr_fd("exit\n", STDERR_FILENO);
+			ft_putstr_fd("minishell: exit: too many arguments\n", STDERR_FILENO);
+			return ;
+		}
+		// exit_value in correct range
 		if (exit_value > -1 && exit_value < 256)
 		{
 			ft_putstr_fd("exit\n", STDERR_FILENO);
 			free_procs(procs);
+			g_exitval = exit_value;
 			exit(exit_value);
 		}
+		// exit_value in incorrect range
 		else
 		{
 			ft_putstr_fd("exit\n", STDERR_FILENO);
 			free_procs(procs);
-			exit(42); // undefined behavior (cf. man exit)
+			g_exitval = 42; // define this in header ?
+			exit(g_exitval); // undefined behavior (cf. man exit)
 		}
 	}
 }

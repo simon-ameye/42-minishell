@@ -31,7 +31,7 @@ static void	run_execve(t_proc *proc)
 	free(arg);
 }
 
-static void	exec_proc(t_proc *proc)
+static void	exec_proc(t_proc *proc, t_proc *procs)
 {
 	if (proc)
 	{
@@ -39,7 +39,7 @@ static void	exec_proc(t_proc *proc)
 		if (proc->ftype == ENV)
 			builtin_env(proc->env);
 		else if (proc->ftype == EXIT)
-			exit(4242);
+			builtin_exit(proc, procs);
 		else if (proc->ftype == ECHO)
 			builtin_echo(proc);
 		else
@@ -99,7 +99,7 @@ void	exec_child(t_proc *proc, t_proc *procs)
 
 	save_stream_status(saved_std);
 	redirect_io(proc);
-	exec_proc(proc);
+	exec_proc(proc, procs);
 	free_procs(procs);
 	restore_stream_status(saved_std);
 }
