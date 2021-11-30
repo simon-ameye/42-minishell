@@ -18,19 +18,21 @@ void	builtin_echo(t_proc *proc)
 		ft_putstr_fd("Error: unsupported echo option\n", STDERR_FILENO);
 		return ;
 	}
-	while (proc->tokens[i].word && !ft_strcmp(proc->tokens[i].word, "-n")) //handling multiple "-n"
+	while (proc->tokens[i].word && proc->tokens[i].type == WORD && !ft_strcmp(proc->tokens[i].word, "-n")) //handling multiple "-n"
 		i++;
 	while (proc->tokens[i].word)
 	{
 		if (proc->tokens[i].type == WORD)
-			break;
+			ft_putstr_fd(proc->tokens[i].word, STDOUT_FILENO);
 		i++;
 	}
-	while (proc->tokens[i].word && proc->tokens[i].type == WORD)
+	while (proc->tokens[i].word)
 	{
-		ft_putstr_fd(proc->tokens[i].word, STDOUT_FILENO);
-		if (proc->tokens[i + 1].word && proc->tokens[i + 1].type == WORD)
+		if (proc->tokens[i].type == WORD)
+		{
 			ft_putstr_fd(" ", STDOUT_FILENO);
+			ft_putstr_fd(proc->tokens[i].word, STDOUT_FILENO);
+		}
 		i++;
 	}
 	g_exitval = 0;
