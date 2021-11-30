@@ -94,6 +94,7 @@ int main(int ac, char **av, char **envp)
 		line = readline("\e[0;36mminishell\e[0;35m> \e[0m");
 		if (!line)
 			break ;
+		add_history(line);
 		procs = NULL;
 		get_procs(&procs, line, &env);
 		free(line);
