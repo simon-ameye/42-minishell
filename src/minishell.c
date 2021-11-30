@@ -43,8 +43,9 @@ static int	parser(t_proc *procs)
 			print_procs(procs);
 			i++;
 		}
+		return (EXIT_SUCCESS);
 	}
-	return (EXIT_SUCCESS);
+	return (EXIT_FAILURE);
 }
 
 /*
@@ -76,14 +77,46 @@ static int	parser(t_proc *procs, char *const *env)
 }
 */
 
-int main(int ac, char **av, char *const *env)
+int	str_tab_len(char *const *env)
+{
+	int i;
+
+	i = 0;
+	while (env[i])
+		i++;
+	return (i);
+}
+
+static char **copy_env(char *const *original_env)
+{
+	char **env;
+	int i;
+
+	if (!original_env)
+		return(NULL);
+	env = malloc(sizeof(char *) * (str_tab_len(original_env) + 1));
+	if (!env)
+		return (NULL);
+	i = 0;
+	while(original_env[i])
+	{
+		env[i] = ft_strdup(original_env[i]);
+		i++;
+	}
+	env[i] = NULL;
+	return (env);
+}
+
+int main(int ac, char **av, char *const *original_env)
 {
 	char			*line;
 	t_proc			*procs;
+	char 			**env;
 
 	(void)ac;
 	(void)av;
 	g_exitval = 0;
+	env = copy_env(original_env);
 	while (1)
 	{
 		line = NULL;
@@ -96,7 +129,8 @@ int main(int ac, char **av, char *const *env)
 		get_tokens(procs);
 		if (!parser(procs))
 			exec(procs);
-	//	print_procs(procs);
+		//print_procs(procs);
 	}
+	free_str_tab(env);
 	return (0);
 }

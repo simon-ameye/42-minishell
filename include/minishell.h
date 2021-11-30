@@ -58,7 +58,7 @@ typedef struct	s_proc
 {
 	char			*str;
 	char			*path;
-	char *const		*env;
+	char			**env;
 	t_token			*tokens;
 	t_ftype			ftype;
 //	t_io			in;
@@ -155,7 +155,7 @@ int	remove_quotes(t_proc proc);
 /*                                                                            */
 /******************************************************************************/
 
-void	get_procs(t_proc **procs, char *line, char * const *env);
+void	get_procs(t_proc **procs, char *line, char **env);
 
 /******************************************************************************/
 /*                                                                            */

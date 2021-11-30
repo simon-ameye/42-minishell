@@ -19,7 +19,7 @@ static char	*ft_strndup(char *s, int n)
 	return (ret);
 }
 
-static void	init_proc(t_proc *proc, char * const *env)
+static void	init_proc(t_proc *proc, char **env)
 {
 	if (proc)
 	{
@@ -141,7 +141,7 @@ static int	get_nb_procs(char *line)
 	return (ret);
 }
 
-void	get_procs(t_proc **procs, char *line, char * const *env)
+void	get_procs(t_proc **procs, char *line, char **env)
 {
 	int	i;
 	int	nb_procs;
