@@ -35,7 +35,8 @@ static void	exec_proc(t_proc *proc, t_proc *procs)
 {
 	if (proc)
 	{
-		// add all builtins
+		if (proc->ftype == PWD)
+			builtin_pwd();
 		if (proc->ftype == ENV)
 			builtin_env(proc->env);
 		else if (proc->ftype == EXIT)
