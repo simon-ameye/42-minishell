@@ -25,7 +25,7 @@ static void	run_execve(t_proc *proc)
 	arg[i] = NULL;
 	if (proc->path)
 	{
-		if (execve(proc->path, arg, proc->env) == -1)
+		if (execve(proc->path, arg, *proc->env) == -1)
 			perror("Error");
 	}
 	free(arg);
@@ -40,11 +40,15 @@ static void	exec_proc(t_proc *proc, t_proc *procs)
 		if (proc->ftype == PWD)
 			builtin_pwd();
 		if (proc->ftype == ENV)
-			builtin_env(proc->env);
+			builtin_env(*proc->env);
 		else if (proc->ftype == EXIT)
 			builtin_exit(proc, procs);
 		else if (proc->ftype == ECHO)
 			builtin_echo(proc);
+		else if (proc->ftype == UNSET)
+			builtin_unset(proc);
+		else if (proc->ftype == EXPORT)
+			builtin_export(proc);
 		else
 		{
 			run_execve(proc);

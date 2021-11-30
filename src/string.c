@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 17:30:28 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/30 15:13:41 by sameye           ###   ########.fr       */
+/*   Updated: 2021/11/30 16:48:21 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	free_str_tab(char **tab)
 		while (tab[i])
 		{
 			free(tab[i]);
+			tab[i] = NULL;
 			i++;
 		}
 		free(tab);

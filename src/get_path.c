@@ -6,13 +6,13 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 18:17:57 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/29 15:16:05 by trobin           ###   ########.fr       */
+/*   Updated: 2021/11/30 16:47:19 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	**find_paths(char *const *env)
+static char	**find_paths(char **env)
 {
 	int	i;
 
@@ -26,7 +26,7 @@ static char	**find_paths(char *const *env)
 	return (NULL);
 }
 
-static char	*get_path_env(char *fnct, char *const *env)
+static char	*get_path_env(char *fnct, char **env)
 {
 	int		i;
 	char	**paths;
@@ -60,7 +60,7 @@ static char	*get_path_env(char *fnct, char *const *env)
 	return (NULL);
 }
 
-static char	*get_proc_path(char *cmd, char *const *env)
+static char	*get_proc_path(char *cmd, char **env)
 {
 	if (cmd != NULL)
 	{
@@ -95,7 +95,7 @@ int	get_path(t_proc *proc)
 				if (proc->tokens[i].type == FUNCTION
 					&& proc->ftype == EXECVE)
 				{
-					proc->path = get_proc_path(proc->tokens[i].word, proc->env);
+					proc->path = get_proc_path(proc->tokens[i].word, *proc->env);
 					return (EXIT_SUCCESS);	
 				}
 				i++;

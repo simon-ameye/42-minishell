@@ -2,7 +2,7 @@
 
 extern	unsigned char	g_exitval;
 
-void	builtin_env(char *const *env)
+void	builtin_env(char **env)
 {
 	if (env)
 	{

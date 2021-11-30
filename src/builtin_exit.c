@@ -64,6 +64,7 @@ void	builtin_exit(t_proc *proc, t_proc *procs)
 	{
 		// don't modify g_exitval
 		ft_putstr_fd("exit\n", STDERR_FILENO);
+		free_env(procs->env);
 		free_procs(procs);
 		exit(g_exitval);
 	}
@@ -76,6 +77,7 @@ void	builtin_exit(t_proc *proc, t_proc *procs)
 			ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
 			ft_putstr_fd(proc->tokens[1].word, STDERR_FILENO);
 			ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
+			free_env(procs->env);
 			free_procs(procs);
 			g_exitval = 2;
 			exit(g_exitval);
@@ -92,6 +94,7 @@ void	builtin_exit(t_proc *proc, t_proc *procs)
 		if (exit_value > -1 && exit_value < 256)
 		{
 			ft_putstr_fd("exit\n", STDERR_FILENO);
+			free_env(procs->env);
 			free_procs(procs);
 			g_exitval = exit_value;
 			exit(exit_value);
@@ -100,6 +103,7 @@ void	builtin_exit(t_proc *proc, t_proc *procs)
 		else
 		{
 			ft_putstr_fd("exit\n", STDERR_FILENO);
+			free_env(procs->env);
 			free_procs(procs);
 			g_exitval = 42; // define this in header ?
 			exit(g_exitval); // undefined behavior (cf. man exit)

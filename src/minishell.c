@@ -77,7 +77,7 @@ static int	parser(t_proc *procs, char *const *env)
 }
 */
 
-int main(int ac, char **av, char *const *original_env)
+int main(int ac, char **av, char **envp)
 {
 	char			*line;
 	t_proc			*procs;
@@ -86,7 +86,8 @@ int main(int ac, char **av, char *const *original_env)
 	(void)ac;
 	(void)av;
 	g_exitval = 0;
-	env = copy_env(original_env);
+	env = copy_env(envp);
+	increase_shlvl(env);
 	while (1)
 	{
 		line = NULL;
@@ -94,13 +95,13 @@ int main(int ac, char **av, char *const *original_env)
 		if (!line)
 			break ;
 		procs = NULL;
-		get_procs(&procs, line, env);
+		get_procs(&procs, line, &env);
 		free(line);
 		get_tokens(procs);
 		if (!parser(procs))
 			exec(procs);
 		//print_procs(procs);
 	}
-	free_str_tab(env);
+	free_env(&env);
 	return (0);
 }

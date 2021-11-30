@@ -58,7 +58,7 @@ typedef struct	s_proc
 {
 	char			*str;
 	char			*path;
-	char			**env;
+	char			***env;
 	t_token			*tokens;
 	t_ftype			ftype;
 //	t_io			in;
@@ -81,8 +81,10 @@ typedef struct	s_proc
 void	builtin_cd(t_proc *proc);
 void	builtin_exit(t_proc *procs, t_proc *proc);
 void	builtin_pwd(void);
-void	builtin_env(char *const *env);
+void	builtin_env(char **env);
 void	builtin_echo(t_proc *proc);
+void	builtin_unset(t_proc *proc);
+void	builtin_export(t_proc *proc);
 
 /******************************************************************************/
 /*                                                                            */
@@ -157,7 +159,7 @@ int	remove_quotes(t_proc proc);
 /*                                                                            */
 /******************************************************************************/
 
-void	get_procs(t_proc **procs, char *line, char **env);
+void	get_procs(t_proc **procs, char *line, char ***env);
 
 /******************************************************************************/
 /*                                                                            */
@@ -199,6 +201,10 @@ void	exec_child(t_proc *proc, t_proc *procs);
 /*                                                                            */
 /******************************************************************************/
 
-char **copy_env(char *const *original_env);
+char	**copy_env(char **original_env);
+void	free_env(char ***env);
+void	increase_shlvl(char **env);
+void	add_line_in_env(char ***env, char *str);
+int		find_var_in_env(char **env, char *str);
 
 # endif

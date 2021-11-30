@@ -1,5 +1,6 @@
 TODO
 
+- verifier le comportement de sleep 2 + CTRL+C
 - set g_exitval after each command (builtin or not)
 - define possible exit values in header file ? (via macros/enum)
 - historique
