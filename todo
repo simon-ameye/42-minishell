@@ -1,7 +1,7 @@
 TODO
 
-- refaire le getwords pour au il divise correctement a>b et cat a > > b
-- poursuivre getfds
+- set g_exitval after each command (builtin or not)
+- define possible exit values in header file ? (via macros/enum)
 - historique
 - C-c, C-v, C-\
 
