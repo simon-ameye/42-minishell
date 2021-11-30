@@ -1,5 +1,7 @@
 #include "minishell.h"
 
+extern	unsigned char	g_exitval;
+
 void	builtin_env(char *const *env)
 {
 	if (env)
@@ -10,5 +12,6 @@ void	builtin_env(char *const *env)
 			ft_putstr_fd("\n", STDOUT_FILENO);
 			env++;
 		}
+		g_exitval = 1;
 	}
 }
