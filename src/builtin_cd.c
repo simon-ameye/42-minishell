@@ -1,5 +1,4 @@
 #include "minishell.h"
-#include <errno.h>
 
 extern	unsigned char	g_exitval;
 
