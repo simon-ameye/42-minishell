@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <readline/readline.h>
+#include <readline/history.h>
 
 #include "libft.h"
 #include <sys/types.h>
