@@ -1,4 +1,3 @@
-
 #include "minishell.h"
 
 extern unsigned char	g_exitval;
