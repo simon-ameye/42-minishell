@@ -42,7 +42,8 @@ SRCS		=		minishell.c \
 					builtin_cd.c \
 					builtin_unset.c \
 					builtin_export.c \
-					env.c
+					env.c \
+					here_doc.c
 
 SOURCES		=		$(addprefix $(SRCS_DIR)/,$(SRCS))
 

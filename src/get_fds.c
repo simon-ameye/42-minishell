@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 17:36:49 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/26 18:02:41 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/01 18:37:11 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,14 @@ int	get_fds(t_proc *proc)
 					get_proc_fdout(&proc->fdout, proc->tokens[i].word, EXIT_FILE_RET);
 				}
 				// '<'
-				if (proc->tokens[i].type == OPEN_FILE)
+				else if (proc->tokens[i].type == OPEN_FILE)
 				{
 					get_proc_fdin(&proc->fdin, proc->tokens[i].word);
+				}
+				// '<<'
+				else if (proc->tokens[i].type == LIMITOR)
+				{
+					get_proc_here_doc(&proc->fdin, proc->tokens[i].word);
 				}
 				i++;
 			}

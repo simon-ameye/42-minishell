@@ -209,4 +209,12 @@ void	increase_shlvl(char ***env);
 void	add_line_in_env(char ***env, char *str);
 int		find_var_in_env(char **env, char *str);
 
+/******************************************************************************/
+/*                                                                            */
+/*     here_doc.c                                                             */
+/*                                                                            */
+/******************************************************************************/
+
+void	get_proc_here_doc(int *fd, char *eof);
+
 # endif

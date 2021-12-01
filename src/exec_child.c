@@ -5,6 +5,7 @@ static void	run_execve(t_proc *proc)
 	int		i;
 	int		len;
 	char	**arg;
+	int		count;
 
 	len = 0;
 	while (proc->tokens[len].word)
@@ -14,15 +15,19 @@ static void	run_execve(t_proc *proc)
 	if (!arg)
 		exit(222); // tmp
 
+	count = 0;
 	i = 0;
 	while (proc->tokens[i].word)
 	{
 		if (proc->tokens[i].type == WORD
-		|| proc->tokens[i].type == FUNCTION) // ?
-			 arg[i] = proc->tokens[i].word;
+		|| proc->tokens[i].type == FUNCTION)
+		{
+			 arg[count] = proc->tokens[i].word;
+			 count++;
+		}
 		i++;
 	}
-	arg[i] = NULL;
+	arg[count] = NULL;
 	if (proc->path)
 	{
 		if (execve(proc->path, arg, *proc->env) == -1)
