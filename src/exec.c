@@ -91,19 +91,3 @@ void	exec(t_proc *procs)
 		create_childs(procs);
 	}
 }
-
-/*
-void	exec(t_proc *procs)
-{
-	if (procs)
-	{
-		if (procs->ftype == EXIT)
-		{
-			//builtin_exit(procs, procs);
-			ft_putstr_fd("exit\n", STDERR_FILENO);
-			free_procs(procs);
-			exit(42);
-		}
-	}
-}
-*/
