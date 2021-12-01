@@ -26,4 +26,6 @@ void	builtin_unset(t_proc *proc)
 		}
 		i++;
 	}
+	//g_exitstatus
+
 }

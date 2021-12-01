@@ -87,7 +87,7 @@ int main(int ac, char **av, char **envp)
 	(void)av;
 	g_exitval = 0;
 	env = copy_env(envp);
-	increase_shlvl(env);
+	increase_shlvl(&env);
 	while (1)
 	{
 		line = NULL;

@@ -28,34 +28,47 @@ void	add_line_in_env(char ***env, char *str)
 	char	**new_env;
 
 	new_env = copy_env(*env);
+	if (!new_env)
+	{
+		free_env(env);
+		return;
+	}
 	new_env[str_tab_len(*env)] = ft_strdup(str);
 	new_env[str_tab_len(*env) + 1] = NULL;
 	free_str_tab(*env);
 	*env = new_env;
 }
 
-void	increase_shlvl(char **env)
+void	increase_shlvl(char ***env)
 {
 	int	line;
 	int oldlvl;
 	char *str;
 	char *newlvl;
 
-	line = find_var_in_env(env, "SHLVL");
+	line = find_var_in_env(*env, "SHLVL");
 	oldlvl = 0;
 	if (line >= 0)
-	{
-		oldlvl = ft_atoi(&env[line][ft_strlen("SHLVL=")]);
-	}
+		oldlvl = ft_atoi(&(*env)[line][ft_strlen("SHLVL=")]);
 	newlvl = ft_itoa(oldlvl + 1);
 	str = ft_strjoin("SHLVL=", newlvl);
 	if (str)
 	{
-		free(env[line]);
-		env[line] = str;
+		if (line >= 0)
+		{
+			free((*env)[line]);
+			(*env)[line] = str;
+		}
+		else
+		{
+			add_line_in_env(env, str);
+			free(str);
+		}
 	}
 	if (newlvl)
 		free(newlvl);
+	if (!*env)
+		exit(EXIT_FAILURE);
 }
 
 char	**copy_env(char **original_env)
@@ -72,6 +85,11 @@ char	**copy_env(char **original_env)
 	while(original_env[i])
 	{
 		env[i] = ft_strdup(original_env[i]);
+		if (!env[i])
+		{
+			free_str_tab(env);
+			return (NULL);
+		}
 		i++;
 	}
 	env[i] = NULL;
