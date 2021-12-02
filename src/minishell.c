@@ -126,17 +126,21 @@ int main(int ac, char **av, char **envp)
 	{
 		line = NULL;
 		line = readline("\e[0;36mminishell\e[0;35m> \e[0m");
-		if (!line)
-			break ;
-		if (*line)
+		if (!line) // EOF. readline can't fail (cf. man readline)
+		{
+			write(1, "exit\n", 5);
+			exit(g_exitval);
+		}
+		else if (*line)
+		{
 			add_history(line);
-		procs = NULL;
-		get_procs(&procs, line, &env);
-		free(line);
-		get_tokens(procs);
-		if (!parser(procs))
-			exec(procs);
-		//print_procs(procs);
+			procs = NULL;
+			get_procs(&procs, line, &env);
+			free(line);
+			get_tokens(procs);
+			if (!parser(procs))
+				exec(procs);
+		}
 	}
 	free_env(&env);
 	return (0);
