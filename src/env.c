@@ -9,14 +9,14 @@ void	free_env(char ***env)
 	}
 }
 
-int	find_var_in_env(char **env, char *str)
+int	find_var_in_env(char **env, char *str, int strlen)
 {
 	int	i;
 
 	i = 0;
 	while (env[i])
 	{
-		if (ft_strnstr(env[i], str, ft_strlen(str)) != NULL && env[i][ft_strlen(str)] == '=')
+		if (!ft_strncmp(env[i], str, strlen) && env[i][strlen] == '=')
 			return (i);
 		i++;
 	}
@@ -46,7 +46,7 @@ void	increase_shlvl(char ***env)
 	char *str;
 	char *newlvl;
 
-	line = find_var_in_env(*env, "SHLVL");
+	line = find_var_in_env(*env, "SHLVL", 5);
 	oldlvl = 0;
 	if (line >= 0)
 		oldlvl = ft_atoi(&(*env)[line][ft_strlen("SHLVL=")]);

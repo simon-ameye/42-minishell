@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 18:17:57 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/30 16:47:19 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/02 11:59:19 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static char	**find_paths(char **env)
 	i = 0;
 	while (env[i])
 	{
-		if (ft_strnstr(env[i], "PATH=", 5) != NULL)
+		if (!ft_strncmp(env[i], "PATH=", 5))
 			return (ft_split(env[i] + 5, ':'));
 		i++;
 	}
@@ -34,6 +34,7 @@ static char	*get_path_env(char *fnct, char **env)
 	char	*testpath2;
 
 	paths = find_paths(env);
+
 	if (paths)
 	{
 		i = 0;

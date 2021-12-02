@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 16:18:04 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/30 16:46:47 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/02 11:54:09 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static char	*find_var(char *str, char **env)
 	{
 		while (*env)
 		{
-			if (ft_strnstr(*env, str, len) && *(*env + len) == '=')
+			if (!ft_strncmp(*env, str, len) && *(*env + len) == '=')
 				return (ft_strdup(*env + len + 1));
 			env++;
 		}
