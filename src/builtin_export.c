@@ -31,26 +31,25 @@ static void	print_env_declare(char **env)
 	}
 }
 
-static char *get_varname(char *str)
+static int	get_varnamelen(char *str)
 {
 	int i;
 	char *name;
 
 	name = ft_strdup(str);
 	if (!name)
-		return (NULL);
+		return (0);
 	i = 0;
 	while (name[i] && name[i] != '=')
 		i++;
-	name[i] = '\0';
-	return(name);
+	return(i);
 }
 
 void	builtin_export(t_proc *proc)
 {
 	int i;
 	int no_argument;
-	char	*varname;
+	int	varnamelen;
 	int	line;
 	int	error_occured;
 
@@ -64,19 +63,15 @@ void	builtin_export(t_proc *proc)
 			no_argument = 0;
 			if (is_correct_export_name(proc->tokens[i].word))
 			{
-				varname = get_varname(proc->tokens[i].word);
-				if (varname)
+				varnamelen = get_varnamelen(proc->tokens[i].word);
+				line = find_var_in_env(*proc->env, proc->tokens[i].word, varnamelen);
+				if (line >= 0)
 				{
-					line = find_var_in_env(*proc->env, varname);
-					if (line >= 0)
-					{
-						free((*proc->env)[line]);
-						(*proc->env)[line] = ft_strdup(proc->tokens[i].word);
-					}
-					else
-						add_line_in_env(proc->env, proc->tokens[i].word);
-					free(varname);
+					free((*proc->env)[line]);
+					(*proc->env)[line] = ft_strdup(proc->tokens[i].word);
 				}
+				else
+					add_line_in_env(proc->env, proc->tokens[i].word);
 			}
 			else
 			{
@@ -86,6 +81,8 @@ void	builtin_export(t_proc *proc)
 				ft_putstr_fd(": not a valid identifier\n", STDOUT_FILENO);
 			}
 		}
+		printf("len %d, line, %d\n", varnamelen, line);
+		fflush(stdout);
 		i++;
 	}
 	if (no_argument)

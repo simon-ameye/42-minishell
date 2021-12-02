@@ -41,7 +41,7 @@ void	builtin_unset(t_proc *proc)
 		{
 			if (is_correct_export_name(proc->tokens[i].word))
 			{
-				line = find_var_in_env(*proc->env, proc->tokens[i].word);
+				line = find_var_in_env(*proc->env, proc->tokens[i].word, ft_strlen(proc->tokens[i].word));
 				if (line >= 0)
 					free_line_and_stack(*proc->env, line);
 			}

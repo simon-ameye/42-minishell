@@ -207,7 +207,7 @@ char	**copy_env(char **original_env);
 void	free_env(char ***env);
 void	increase_shlvl(char ***env);
 void	add_line_in_env(char ***env, char *str);
-int		find_var_in_env(char **env, char *str);
+int		find_var_in_env(char **env, char *str, int strlen);
 
 /******************************************************************************/
 /*                                                                            */
