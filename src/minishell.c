@@ -116,9 +116,10 @@ int main(int ac, char **av, char **envp)
 	increase_shlvl(&env);
 
 	// signal setup
-	struct sigaction act;
-	act.sa_flags = SA_SIGINFO; // allow to call 'sa_sigaction' instead of 'sa_handler'
-	act.sa_sigaction = &signal_handler;
+	struct sigaction act = {
+		.sa_flags = SA_SIGINFO, // allow to call 'sa_sigaction' instead of 'sa_handler'
+		.sa_sigaction = &signal_handler
+	};
 	sigaction(SIGINT, &act, NULL);
 	sigaction(SIGQUIT, &act, NULL);
 
