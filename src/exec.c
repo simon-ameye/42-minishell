@@ -24,9 +24,10 @@ static void	create_childs(t_proc *procs)
 			}
 			if (procs[i].pid == 0)
 			{
+				if (!(procs[i].ftype == NO_FUNCTION || procs[i].ftype == EXIT))
+					g_exitval = 0;
 				exec_child(&procs[i], procs);
-				printf("Error: child return\n"); // tmp
-				exit(4242); //tmp
+				exit(g_exitval); //tmp
 			}
 			if (i > 0)
 				close(procs[i].stream_in);
@@ -38,8 +39,7 @@ static void	create_childs(t_proc *procs)
 		while (!procs[i].is_last)
 		{
 			waitpid(procs[i].pid, &code, 0);
-			if (code)
-				g_exitval = WEXITSTATUS(code);
+			g_exitval = WEXITSTATUS(code);
 			i++;
 		}
 		free_procs(procs); //valgrind fix

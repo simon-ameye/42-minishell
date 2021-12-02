@@ -1,5 +1,7 @@
 #include "minishell.h"
 
+extern unsigned char	g_exitval;
+
 static void	run_execve(t_proc *proc)
 {
 	int		i;
@@ -40,6 +42,8 @@ static void	exec_proc(t_proc *proc, t_proc *procs)
 {
 	if (proc)
 	{
+		//if (proc->ftype == NO_FUNCTION)
+		//	g_exitval = 0;
 		if (proc->ftype == CD)
 			builtin_cd(proc);
 		if (proc->ftype == PWD)
@@ -55,9 +59,7 @@ static void	exec_proc(t_proc *proc, t_proc *procs)
 		else if (proc->ftype == EXPORT)
 			builtin_export(proc);
 		else
-		{
 			run_execve(proc);
-		}
 	}
 }
 

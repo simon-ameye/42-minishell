@@ -40,7 +40,7 @@ static int	parser(t_proc *procs)
 	//		ft_putstr_fd("\n----------get_path----------\n", STDERR_FILENO);
 			if (get_path(&procs[i])) //malloc inside,
 				return (EXIT_FAILURE);
-			print_procs(procs);
+			//print_procs(procs);
 			i++;
 		}
 		return (EXIT_SUCCESS);

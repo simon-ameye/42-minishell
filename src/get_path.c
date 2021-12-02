@@ -6,11 +6,13 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 18:17:57 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/02 11:59:19 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/02 16:35:22 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern unsigned char	g_exitval;
 
 static char	**find_paths(char **env)
 {
@@ -58,6 +60,7 @@ static char	*get_path_env(char *fnct, char **env)
 	ft_putstr_fd("command not found: ", STDERR_FILENO);
 	ft_putstr_fd(fnct, STDERR_FILENO);
 	ft_putstr_fd("\n", STDERR_FILENO);
+	g_exitval = 127;
 	return (NULL);
 }
 
@@ -97,6 +100,8 @@ int	get_path(t_proc *proc)
 					&& proc->ftype == EXECVE)
 				{
 					proc->path = get_proc_path(proc->tokens[i].word, *proc->env);
+					if (!proc->path)
+						proc->ftype = NO_FUNCTION;
 					return (EXIT_SUCCESS);	
 				}
 				i++;

@@ -1,4 +1,6 @@
 TODO
+- lkslkcs | exit doit sortir la valeur de la derniere commande et non le command not found status 127
+- 
 - commande aui fait bugger l historiaue :
 export A=a B=b C=c D=d E=e F=f G=g H=h I=i J=j K=k L=l
 echo $A$B$C$D$E$F$G$H$I$J$K$L$M$N$O$P$Q$R$S$T$U$V$W$X$Y$Z
