@@ -13,6 +13,7 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <signal.h>
 
 typedef enum e_ftype
 {
@@ -215,6 +216,6 @@ int		find_var_in_env(char **env, char *str, int strlen);
 /*                                                                            */
 /******************************************************************************/
 
-void	get_proc_here_doc(int *fd, char *eof);
+int		get_proc_here_doc(int *fd, char *eof);
 
 # endif

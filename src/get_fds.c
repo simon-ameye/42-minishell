@@ -6,13 +6,13 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 17:36:49 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/01 18:37:11 by trobin           ###   ########.fr       */
+/*   Updated: 2021/12/02 15:41:06 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	get_proc_fdin(int *fd, char *filename)
+static int	get_proc_fdin(int *fd, char *filename)
 {
 	// are these protections very useful ? ...
 	if (fd)
@@ -24,14 +24,22 @@ static void	get_proc_fdin(int *fd, char *filename)
 		*fd = open(filename, O_RDONLY, 0644);
 		// check for open() failure
 		if (*fd == -1)
+		{
 		// exit here
 		// in case of echo < file1 < file2,
 		// where both input files don't exist)
-			perror("ERROR :");
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
+			ft_putstr_fd(strerror(errno), 2);
+			ft_putstr_fd(": ", STDERR_FILENO);
+			ft_putstr_fd(filename, STDERR_FILENO);
+			ft_putstr_fd("\n", STDERR_FILENO);
+			return (EXIT_FAILURE);
+		}
 	}
+	return (EXIT_SUCCESS);
 }
 
-static void	get_proc_fdout(int *fd, char *filename, t_token_type type)
+static int	get_proc_fdout(int *fd, char *filename, t_token_type type)
 {
 	// are these protections very useful ? ...
 	if (fd)
@@ -47,15 +55,26 @@ static void	get_proc_fdout(int *fd, char *filename, t_token_type type)
 			*fd = open(filename, O_CREAT | O_RDWR, 0644);
 		// check for open() failure
 		if (*fd == -1)
-			perror("ERROR :");
+		{
+			//perror("minishell");
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
+			ft_putstr_fd(strerror(errno), 2);
+			ft_putstr_fd(": ", STDERR_FILENO);
+			ft_putstr_fd(filename, STDERR_FILENO);
+			ft_putstr_fd("\n", STDERR_FILENO);
+			return (EXIT_FAILURE);
+		}
 	}
+	return (EXIT_SUCCESS);
 }
 
 int	get_fds(t_proc *proc)
 {
 	int	i;
+	int	err;
 
 	// are these protections very useful ? ...
+	err = 0;
 	if (proc)
 	{
 		// same here
@@ -66,23 +85,20 @@ int	get_fds(t_proc *proc)
 			{
 				// '>'
 				if (proc->tokens[i].type == EXIT_FILE)
-				{
-					get_proc_fdout(&proc->fdout, proc->tokens[i].word, EXIT_FILE);
-				}
+					err += get_proc_fdout(&proc->fdout, proc->tokens[i].word, EXIT_FILE);
 				// '>>'
 				else if (proc->tokens[i].type == EXIT_FILE_RET)
-				{
-					get_proc_fdout(&proc->fdout, proc->tokens[i].word, EXIT_FILE_RET);
-				}
+					err += get_proc_fdout(&proc->fdout, proc->tokens[i].word, EXIT_FILE_RET);
 				// '<'
 				else if (proc->tokens[i].type == OPEN_FILE)
-				{
-					get_proc_fdin(&proc->fdin, proc->tokens[i].word);
-				}
+					err += get_proc_fdin(&proc->fdin, proc->tokens[i].word);
 				// '<<'
 				else if (proc->tokens[i].type == LIMITOR)
+					err += get_proc_here_doc(&proc->fdin, proc->tokens[i].word);
+				if (err)
 				{
-					get_proc_here_doc(&proc->fdin, proc->tokens[i].word);
+					proc->ftype = NO_FUNCTION;
+					return (EXIT_SUCCESS);
 				}
 				i++;
 			}
