@@ -42,6 +42,7 @@ static void	create_childs(t_proc *procs)
 				g_exitval = WEXITSTATUS(code);
 			i++;
 		}
+		free_procs(procs); //valgrind fix
 	}
 	// one process bultin
 	else
