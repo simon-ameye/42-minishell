@@ -23,7 +23,11 @@ void	builtin_echo(t_proc *proc)
 		while (proc->tokens[i].word)
 		{
 			if (proc->tokens[i].type == WORD)
+			{
 				ft_putstr_fd(proc->tokens[i].word, STDOUT_FILENO);
+				i++;
+				break ;
+			}
 			i++;
 		}
 		while (proc->tokens[i].word)
@@ -40,4 +44,3 @@ void	builtin_echo(t_proc *proc)
 		ft_putstr_fd("\n", STDOUT_FILENO);
 	g_exitval = 0;
 }
-
