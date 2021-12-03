@@ -70,6 +70,8 @@ typedef struct	s_proc
 	int				fdout; //fd_out
 	int				stream_in;
 	int				stream_out;
+	int				prev_stream_out;
+	int				next_stream_in;
 //	bool			is_child; // `cd /` vs `cd / | cd /`
 	pid_t			pid;
 	int				is_last;

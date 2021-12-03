@@ -26,6 +26,8 @@ static void	create_childs(t_proc *procs)
 			{
 				if (!(procs[i].ftype == NO_FUNCTION || procs[i].ftype == EXIT))
 					g_exitval = 0;
+				close (procs[i].prev_stream_out);
+				close (procs[i].next_stream_in);
 				exec_child(&procs[i], procs);
 				exit(g_exitval); //tmp
 			}
@@ -71,6 +73,8 @@ static void	create_pipes(t_proc *procs)
 			}
 			procs[i].stream_in = pipefd[0];
 			procs[i - 1].stream_out = pipefd[1];
+			procs[i].prev_stream_out =  pipefd[1];
+			procs[i - 1].next_stream_in = pipefd[0];
 			i++;
 		}
 		procs[i - 1].stream_out = STDOUT_FILENO;

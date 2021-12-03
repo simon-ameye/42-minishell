@@ -31,6 +31,8 @@ static void	init_proc(t_proc *proc, char ***env)
 		proc->fdout = -1;
 		proc->stream_in = -1;
 		proc->stream_out = -1;
+		proc->prev_stream_out = -1;
+		proc->next_stream_in = -1;
 		proc->is_last = 0;
 		proc->env = env;
 	}

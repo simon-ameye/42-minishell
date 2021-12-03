@@ -122,6 +122,7 @@ int main(int ac, char **av, char **envp)
 	};
 	sigaction(SIGINT, &act, NULL);
 	sigaction(SIGQUIT, &act, NULL);
+	rl_outstream = stderr;
 
 	while (1)
 	{

@@ -58,7 +58,7 @@ void	builtin_exit(t_proc *proc, t_proc *procs)
 	int	exit_value;
 
 	exit_args = get_nb_args(proc->tokens);
-	printf("exit_args: %d\n", exit_args);
+	//printf("exit_args: %d\n", exit_args);
 
 	if (exit_args == 0)
 	{
