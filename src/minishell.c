@@ -15,31 +15,31 @@ static int	parser(t_proc *procs)
 	//		ft_putstr_fd("\n----------get_token_type----------\n", STDERR_FILENO);
 			if (get_token_type(&procs[i])) //out condition inside
 				return (EXIT_FAILURE);
-	//		print_procs(procs);
 
 	//		ft_putstr_fd("\n----------dollar_expand----------\n", STDERR_FILENO);
 			if(dollar_expand(procs[i])) //malloc inside, 
 				return (EXIT_FAILURE);
-	//		print_procs(procs);
 
 	//		ft_putstr_fd("\n----------get_fnct_type----------\n", STDERR_FILENO);
 			if (get_fnct_type(&procs[i])) //nothing 
 				return (EXIT_FAILURE);
-	//		print_procs(procs);
+
+	//		ft_putstr_fd("\n----------set_ignored_tokens----------\n", STDERR_FILENO);
+			if(set_ignored_tokens(&procs[i])) //malloc inside, 
+				return (EXIT_FAILURE);
 
 	//		ft_putstr_fd("\n----------remove_quotes----------\n", STDERR_FILENO);
 			if (remove_quotes(procs[i])) //malloc inside
 				return (EXIT_FAILURE);
-	//		print_procs(procs);
 
 	//		ft_putstr_fd("\n----------get_fds----------\n", STDERR_FILENO);
 			if (get_fds(&procs[i])) //nothing
 				return (EXIT_FAILURE);
-	//		print_procs(procs);
 
 	//		ft_putstr_fd("\n----------get_path----------\n", STDERR_FILENO);
 			if (get_path(&procs[i])) //malloc inside,
 				return (EXIT_FAILURE);
+
 			//print_procs(procs);
 			i++;
 		}

@@ -43,7 +43,8 @@ SRCS		=		minishell.c \
 					builtin_unset.c \
 					builtin_export.c \
 					env.c \
-					here_doc.c
+					here_doc.c \
+					set_ignored_tokens.c
 
 SOURCES		=		$(addprefix $(SRCS_DIR)/,$(SRCS))
 

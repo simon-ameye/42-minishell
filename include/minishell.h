@@ -39,7 +39,8 @@ typedef enum e_token_type
     OPEN_FILE,		// word following '<'
     LIMITOR,		// word following '<<'
     EXIT_FILE,		// word following '>'
-    EXIT_FILE_RET	// word following '>>'
+    EXIT_FILE_RET,	// word following '>>'
+	IGNORED			//ignored because is empty
 }	t_token_type;
 
 typedef struct	s_token
@@ -219,5 +220,13 @@ int		find_var_in_env(char **env, char *str, int strlen);
 /******************************************************************************/
 
 int		get_proc_here_doc(int *fd, char *eof);
+
+/******************************************************************************/
+/*                                                                            */
+/*     set_ignored_tokens.c                                                   */
+/*                                                                            */
+/******************************************************************************/
+
+int	set_ignored_tokens(t_proc *proc);
 
 # endif

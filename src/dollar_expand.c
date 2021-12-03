@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 16:18:04 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/03 11:52:36 by trobin           ###   ########.fr       */
+/*   Updated: 2021/12/03 17:33:55 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ static char	*dollar_expand_str(char *str, char **env)
 				res = ft_strjoinfree(res, varval);
 				str += 2;
 			}
+			else if (str[1] >= '0' && str[1] <= '9')
+				str += 2;
 			else if (!ft_isalnum(str[1]))
 			{
 				res = join_char_free(res, *str);
