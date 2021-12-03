@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 11:15:23 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/26 19:21:36 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/03 11:59:12 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,10 @@ int	get_token_type(t_proc *proc)
 			error = 1;
 			if (chevron && !proc->tokens[i + 1].word)
 				ft_putstr_fd("syntax error near unexpected token\n", STDERR_FILENO);
-			else if (chevron && !are_alnums(proc->tokens[i + 1].word) && proc->tokens[i + 1].word[0])
+			else if (chevron
+				&& !are_alnums(proc->tokens[i + 1].word)
+				&& proc->tokens[i + 1].word[0]
+				&& proc->tokens[i+1].type != LIMITOR)
 				ft_putstr_fd("syntax error near unexpected token\n", STDERR_FILENO);
 			else if (chevron && !proc->tokens[i + 1].word[0])
 				ft_putstr_fd("ambiguous redirect\n", STDERR_FILENO);

@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 16:18:04 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/02 11:54:09 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/03 11:52:36 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,11 +110,14 @@ int	dollar_expand(t_proc proc)
 		i = 0;
 		while (proc.tokens[i].word)
 		{
-			tmp = dollar_expand_str(proc.tokens[i].word, *proc.env);
-			if (!tmp)
-				return (EXIT_FAILURE);
-			free(proc.tokens[i].word);
-			proc.tokens[i].word = tmp;
+			if (proc.tokens[i].type != LIMITOR)
+			{
+				tmp = dollar_expand_str(proc.tokens[i].word, *proc.env);
+				if (!tmp)
+					return (EXIT_FAILURE);
+				free(proc.tokens[i].word);
+				proc.tokens[i].word = tmp;
+			}
 			i++;
 		}
 	}
