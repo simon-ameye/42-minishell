@@ -34,10 +34,8 @@ void	try_chdir(char *path)
 		ft_putstr_fd(": ", STDERR_FILENO);
 		ft_putstr_fd(strerror(errno), STDERR_FILENO);
 		ft_putstr_fd("\n", STDERR_FILENO);
-		g_exitval = 2;
 	}
-	else
-		g_exitval = 1;
+	g_exitval = 1;
 }
 
 void	builtin_cd(t_proc *proc)
