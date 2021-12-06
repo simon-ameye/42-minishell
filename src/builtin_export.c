@@ -27,7 +27,7 @@ static void	print_env_declare(char **env)
 		{
 			i = 0;
 			ft_putstr_fd("declare -x ", STDOUT_FILENO);  //SURTOUT CORRIGER L'ERREUR : export | grep BLA Binary file (standard input) matches
-			while ((*env)[i] != '=')
+			while ((*env)[i] && (*env)[i] != '=')
 			{
 				ft_putchar_fd((*env)[i], STDOUT_FILENO);
 				i++;
