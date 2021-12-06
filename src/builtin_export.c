@@ -19,12 +19,27 @@ static int	is_correct_export_name(char *str)
 
 static void	print_env_declare(char **env)
 {
+	int i;
+
 	if (env && *env)
 	{
 		while(*env)
 		{
-			ft_putstr_fd("declare -x ", STDOUT_FILENO);
-			ft_putstr_fd(*env, STDOUT_FILENO);
+			i = 0;
+			ft_putstr_fd("declare -x ", STDOUT_FILENO);  //SURTOUT CORRIGER L'ERREUR : export | grep BLA Binary file (standard input) matches
+			while ((*env)[i] != '=')
+			{
+				ft_putchar_fd((*env)[i], STDOUT_FILENO);
+				i++;
+			}
+			if ((*env)[i] == '=')
+			{
+				ft_putchar_fd((*env)[i], STDOUT_FILENO);
+				i++;
+				ft_putchar_fd('"', STDOUT_FILENO);
+				ft_putstr_fd(&(*env)[i], STDOUT_FILENO);
+				ft_putchar_fd('"', STDOUT_FILENO);
+			}
 			ft_putstr_fd("\n", STDOUT_FILENO);
 			env++;
 		}
@@ -87,3 +102,9 @@ void	builtin_export(t_proc *proc)
 		print_env_declare(*proc->env);
 	g_exitval = error_occured;
 }
+
+/*
+export BLA=1
+export BLA2=
+export BLA3
+*/
