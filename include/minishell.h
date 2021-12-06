@@ -40,13 +40,15 @@ typedef enum e_token_type
     LIMITOR,		// word following '<<'
     EXIT_FILE,		// word following '>'
     EXIT_FILE_RET,	// word following '>>'
-	IGNORED			//ignored because is empty
+	IGNORED,		//ignored because is empty
+	AMBIGOUS_REDIRECT
 }	t_token_type;
 
 typedef struct	s_token
 {
 	char	*word;
 	int		type;
+	int		expanded;
 }	t_token;
 
 /*

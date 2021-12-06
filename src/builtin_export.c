@@ -76,13 +76,11 @@ void	builtin_export(t_proc *proc)
 			else
 			{
 				error_occured = 1;
-				ft_putstr_fd("export: ", STDOUT_FILENO);
-				ft_putstr_fd(proc->tokens[i].word, STDOUT_FILENO);
-				ft_putstr_fd(": not a valid identifier\n", STDOUT_FILENO);
+				ft_putstr_fd("export: ", STDERR_FILENO);
+				ft_putstr_fd(proc->tokens[i].word, STDERR_FILENO);
+				ft_putstr_fd(": not a valid identifier\n", STDERR_FILENO);
 			}
 		}
-		printf("len %d, line, %d\n", varnamelen, line);
-		fflush(stdout);
 		i++;
 	}
 	if (no_argument)

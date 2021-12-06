@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 17:36:49 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/02 15:41:06 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/06 13:42:26 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,12 @@ int	get_fds(t_proc *proc)
 			i = 0;
 			while (proc->tokens[i].word)
 			{
+				// 'AMBIGOUS_REDIRECT'
+				if (proc->tokens[i].type == AMBIGOUS_REDIRECT)
+				{
+					ft_putstr_fd("ambiguous redirect\n", STDERR_FILENO);
+					err += 1;
+				}
 				// '>'
 				if (proc->tokens[i].type == EXIT_FILE)
 					err += get_proc_fdout(&proc->fdout, proc->tokens[i].word, EXIT_FILE);

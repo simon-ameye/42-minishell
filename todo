@@ -1,4 +1,7 @@
 TODO
+env n affiche pas les vars sans =
+
+
 - lkslkcs | exit doit sortir la valeur de la derniere commande et non le command not found status 127
 - 
 - commande aui fait bugger l historiaue :
@@ -98,3 +101,36 @@ digraph G
     process_data -> tokens
 }
 
+
+
+
+
+set ignored token doit etre avant remove quotes pour ne pas ignorer :
+sameye@e2r4p1:~/temp/msh_tester$ echo A  >>  "$USERR"
+bash: : No such file or directory
+
+remove quotes doit etre avant get_function_type pour detecter par exemple "echo"
+
+set _ignored_tokens dit etre avant get function type car
+$USERR echo bla
+Doit fonctionner
+
+set_ignored tokens doit etre apres dollar_expand pour retirer les expands nulls
+
+get_funct_type doit etre apres dollar expand pour detecter les fonctions expand
+
+
+get_token_type doit etre apres get_ignored_tokens pour detecter les redirections vers token NULL (ambigous)
+Ou alors il faut traiter les ambigous dans open file
+
+IMPOSSIBLE! get_token_type doit etre avant dollar_expand pour ne pas considerer les < comme operateur
+Ou alors il faut retenir "has_been_expand" dans le token
+
+get_path doit etre apres get_function_type OBVIOUSLY
+get_fds doit etre apres get_token_type OBVIOUSLY
+
+
+ATTENTION un chevron expand perd sa signification
+
+Ajouter le test de string null dans le open => no such file
+Traiter le token ignores (ambigous) dans le open

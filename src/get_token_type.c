@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 11:15:23 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/03 16:45:59 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/06 13:42:47 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 extern unsigned char	g_exitval;
 
-static int are_alnums(char *s)
+/*
+
+static int is_filename(char *s)
 {
 	if (s)
 	{
@@ -70,7 +72,7 @@ int	get_token_type(t_proc *proc)
 			if (chevron && !proc->tokens[i + 1].word)
 				ft_putstr_fd("syntax error near unexpected token\n", STDERR_FILENO);
 			else if (chevron
-				&& !are_alnums(proc->tokens[i + 1].word)
+				&& !is_filename(proc->tokens[i + 1].word)
 				&& proc->tokens[i + 1].word[0]
 				&& proc->tokens[i+1].type != LIMITOR)
 				ft_putstr_fd("syntax error near unexpected token\n", STDERR_FILENO);
@@ -87,4 +89,91 @@ int	get_token_type(t_proc *proc)
 		}
 	}
 	return (EXIT_SUCCESS);
+}
+*/
+
+
+
+
+static void	get_operators(t_proc *proc)
+{
+	int i;
+
+	if (proc->tokens)
+	{
+		i = 0;
+		while (proc->tokens[i].word)
+		{
+			//proc->tokens[i].type = WORD;
+			if (!proc->tokens[i].expanded)
+			{
+				if (!ft_strcmp(proc->tokens[i].word, "<"))
+					proc->tokens[i].type = FILE_IN;
+				else if (!ft_strcmp(proc->tokens[i].word, "<<"))
+					proc->tokens[i].type = HERE_DOC;
+				else if (!ft_strcmp(proc->tokens[i].word, ">"))
+					proc->tokens[i].type = FILE_OUT;
+				else if (!ft_strcmp(proc->tokens[i].word, ">>"))
+					proc->tokens[i].type = FILE_OUT_SUR;
+			}
+			i++;
+		}
+	}
+}
+
+static int	is_redir_op(int i)
+{
+	return (i == FILE_IN
+				|| i == HERE_DOC
+				|| i == FILE_OUT
+				|| i == FILE_OUT_SUR);
+}
+
+static int	redir_op_to_file_type(int i)
+{
+	return ((i == FILE_IN) * OPEN_FILE
+				+ (i == HERE_DOC) * LIMITOR
+				+ (i == FILE_OUT) * EXIT_FILE
+				+ (i == FILE_OUT_SUR) * EXIT_FILE_RET);
+}
+
+static int	get_filenames_type(t_proc *proc)
+{
+	int i;
+
+	if (proc->tokens)
+	{
+		i = 0;
+		while (proc->tokens[i].word)
+		{
+			if (is_redir_op(proc->tokens[i].type))
+			{
+				if (!proc->tokens[i + 1].word)
+				{
+					ft_putstr_fd("syntax error near unexpected token\n", STDERR_FILENO);
+					return (EXIT_FAILURE);
+				}
+				else if (proc->tokens[i + 1].type == IGNORED)
+				{
+					//ft_putstr_fd("ambiguous redirect\n", STDERR_FILENO);
+					proc->tokens[i + 1].type = AMBIGOUS_REDIRECT;
+				}
+				else if (proc->tokens[i + 1].type == WORD)
+					proc->tokens[i + 1].type = redir_op_to_file_type(proc->tokens[i].type);
+				else //There is probably an other redir next to this one
+				{
+					ft_putstr_fd("syntax error near unexpected token\n", STDERR_FILENO);
+					return (EXIT_FAILURE);
+				}
+			}
+			i++;
+		}
+	}
+	return (EXIT_SUCCESS);
+}
+
+int	get_token_type(t_proc *proc)
+{
+	get_operators(proc);
+	return (get_filenames_type(proc));
 }

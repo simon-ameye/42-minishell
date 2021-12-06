@@ -12,31 +12,32 @@ static int	parser(t_proc *procs)
 		while (!procs[i].is_last)
 		{
 
-	//		ft_putstr_fd("\n----------get_token_type----------\n", STDERR_FILENO);
-			if (get_token_type(&procs[i])) //out condition inside
-				return (EXIT_FAILURE);
-
-	//		ft_putstr_fd("\n----------dollar_expand----------\n", STDERR_FILENO);
+			//forcement apres get_token_type
 			if(dollar_expand(procs[i])) //malloc inside, 
 				return (EXIT_FAILURE);
 
-	//		ft_putstr_fd("\n----------get_fnct_type----------\n", STDERR_FILENO);
-			if (get_fnct_type(&procs[i])) //nothing 
-				return (EXIT_FAILURE);
-
-	//		ft_putstr_fd("\n----------set_ignored_tokens----------\n", STDERR_FILENO);
+			//forcement apres dollar_expand
 			if(set_ignored_tokens(&procs[i])) //malloc inside, 
 				return (EXIT_FAILURE);
 
-	//		ft_putstr_fd("\n----------remove_quotes----------\n", STDERR_FILENO);
+			//forcement apres set_ignored_tokens
+			if (get_token_type(&procs[i])) //out condition inside
+				return (EXIT_FAILURE);
+
+			//forcement apres set_ignored_tokens
 			if (remove_quotes(procs[i])) //malloc inside
 				return (EXIT_FAILURE);
 
-	//		ft_putstr_fd("\n----------get_fds----------\n", STDERR_FILENO);
+			//forcement apres remove_quotes
+			//forcement apres dollar_expand
+			if (get_fnct_type(&procs[i])) //nothing 
+				return (EXIT_FAILURE);
+
+			//forcement apres get_token_type
 			if (get_fds(&procs[i])) //nothing
 				return (EXIT_FAILURE);
 
-	//		ft_putstr_fd("\n----------get_path----------\n", STDERR_FILENO);
+			//forcement apres get_fnct_type
 			if (get_path(&procs[i])) //malloc inside,
 				return (EXIT_FAILURE);
 
