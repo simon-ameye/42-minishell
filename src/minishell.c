@@ -78,32 +78,6 @@ static int	parser(t_proc *procs, char *const *env)
 }
 */
 
-void	signal_handler(int signum, siginfo_t *siginfo, void *context)
-{
-	(void)context;
-	if (signum == SIGINT)
-	{
-		write(1, "\n", 1);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		if (siginfo->si_pid != 0)
-			rl_redisplay();
-		else
-			g_exitval = 130;
-	}
-	else if (signum == SIGQUIT)
-	{
-		if (siginfo->si_pid == 0)
-			ft_putstr_fd("Quit (core dumped)\n", STDOUT_FILENO); // stderr ?
-		else
-		{
-			write(1, "\b \b", 3);
-			write(1, "\b \b", 3);
-			g_exitval = 131;
-		}
-	}
-}
-
 int main(int ac, char **av, char **envp)
 {
 	char	*line;
@@ -115,16 +89,7 @@ int main(int ac, char **av, char **envp)
 	g_exitval = 0;
 	env = copy_env(envp);
 	increase_shlvl(&env);
-
-	// signal setup
-	struct sigaction act = {
-		.sa_flags = SA_SIGINFO, // allow to call 'sa_sigaction' instead of 'sa_handler'
-		.sa_sigaction = &signal_handler
-	};
-	sigaction(SIGINT, &act, NULL);
-	sigaction(SIGQUIT, &act, NULL);
-	rl_outstream = stderr;
-
+	init_signals();
 	while (1)
 	{
 		line = NULL;

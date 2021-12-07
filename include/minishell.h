@@ -231,4 +231,13 @@ int		get_proc_here_doc(int *fd, char *eof);
 
 int	set_ignored_tokens(t_proc *proc);
 
+/******************************************************************************/
+/*                                                                            */
+/*     signals.c                                                              */
+/*                                                                            */
+/******************************************************************************/
+
+void	init_signals(void);
+void	signal_handler(int signum, siginfo_t *siginfo, void *context);
+
 # endif
