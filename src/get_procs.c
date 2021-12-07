@@ -35,6 +35,7 @@ static void	init_proc(t_proc *proc, char ***env)
 		proc->next_stream_in = -1;
 		proc->is_last = 0;
 		proc->env = env;
+		proc->pid = 1; // father == 1, childs == 0 (will be overwritten by fork())
 	}
 }
 
@@ -89,6 +90,8 @@ static int	syntax_error_pipe(char *line, int i)
 		j = i - 1;
 		while (line[j] == ' ')
 			j--;
+		//if (!line[j] || line[j] == '|')
+		//if (!line[j] || line[j] == '|' || line[j] == '<' || line[j] == '>')
 		if (!line[j] || line[j] == '|' || line[i] == '<' || line[i] == '>')
 			return (1);
 		// check after line[i]

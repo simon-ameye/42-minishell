@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 17:36:49 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/06 13:42:26 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/07 17:47:52 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int	get_fds(t_proc *proc)
 					err += get_proc_fdin(&proc->fdin, proc->tokens[i].word);
 				// '<<'
 				else if (proc->tokens[i].type == LIMITOR)
-					err += get_proc_here_doc(&proc->fdin, proc->tokens[i].word);
+					err += get_proc_here_doc(&proc->fdin, proc->tokens[i], *proc->env);
 				if (err)
 				{
 					proc->ftype = NO_FUNCTION;

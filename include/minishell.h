@@ -48,7 +48,7 @@ typedef struct	s_token
 {
 	char	*word;
 	int		type;
-	int		expanded;
+	char	*expanded;
 }	t_token;
 
 /*
@@ -100,7 +100,9 @@ void	builtin_export(t_proc *proc);
 /*                                                                            */
 /******************************************************************************/
 
-int	dollar_expand(t_proc proc);
+char	*dollar_expand_str_heredoc(char *str, char **env);
+char	*dollar_expand_str(char *str, char **env);
+int		dollar_expand(t_proc proc);
 
 /******************************************************************************/
 /*                                                                            */
@@ -159,7 +161,8 @@ void    get_tokens(t_proc *procs);
 /*                                                                            */
 /******************************************************************************/
 
-int	remove_quotes(t_proc proc);
+char	*remove_quotes_str(char *str);
+int		remove_quotes(t_proc proc);
 
 /******************************************************************************/
 /*                                                                            */
@@ -202,7 +205,6 @@ void	exec(t_proc *procs);
 
 void	exec_child(t_proc *proc, t_proc *procs);
 
-
 /******************************************************************************/
 /*                                                                            */
 /*     env.c                                                                  */
@@ -221,7 +223,7 @@ int		find_var_in_env(char **env, char *str, int strlen);
 /*                                                                            */
 /******************************************************************************/
 
-int		get_proc_here_doc(int *fd, char *eof);
+int		get_proc_here_doc(int *fd, t_token token, char **env);
 
 /******************************************************************************/
 /*                                                                            */

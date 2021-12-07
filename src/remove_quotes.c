@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static char	*remove_quotes_str(char *str)
+char	*remove_quotes_str(char *str)
 {
 	int		i;
 	char	*res;
@@ -37,11 +37,14 @@ int	remove_quotes(t_proc proc)
 		i = 0;
 		while (proc.tokens[i].word)
 		{
-			tmp = remove_quotes_str(proc.tokens[i].word);
-			if (!tmp)
-				return (EXIT_FAILURE);
-			free(proc.tokens[i].word);
-			proc.tokens[i].word = tmp;
+			if (proc.tokens[i].type != LIMITOR)
+			{
+				tmp = remove_quotes_str(proc.tokens[i].word);
+				if (!tmp)
+					return (EXIT_FAILURE);
+				free(proc.tokens[i].word);
+				proc.tokens[i].word = tmp;
+			}
 			i++;
 		}
 	}
