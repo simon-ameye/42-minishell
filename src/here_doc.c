@@ -44,8 +44,10 @@ static int	heredoc_open_error(char *filename)
 	return (EXIT_FAILURE);
 }
 
-static	int	exit_heredoc(int *fd, char *filename, char *delimiter)
+static	int	exit_heredoc(int *fd, char *filename, char *delimiter, char *line)
 {
+	if (!line)
+		write(1, "\n", 1);
 	close(*fd);
 	*fd = open(filename, O_RDONLY);
 	unlink(filename);
@@ -65,6 +67,7 @@ static	int	init_heredoc(int *fd, t_token token, char **filename, char **delimite
 	*delimiter = get_delimiter(token);
 	return (EXIT_SUCCESS);
 }
+
 
 int	get_proc_here_doc(int *fd, t_token token, char **env)
 {
@@ -95,5 +98,5 @@ int	get_proc_here_doc(int *fd, t_token token, char **env)
 			free(tmp);
 		}
 	}
-	return (exit_heredoc(fd, filename, delimiter));
+	return (exit_heredoc(fd, filename, delimiter, line));
 }
