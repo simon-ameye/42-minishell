@@ -67,6 +67,7 @@ static void	exit_non_numeric_arguments(t_proc *proc, t_proc *procs)
 	ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
 	free_env(procs->env);
 	free_procs(procs);
+	rl_clear_history();
 	g_exitval = 2;
 	exit(g_exitval);
 }
@@ -78,6 +79,7 @@ static void	exit_valid_scope(t_proc *proc, t_proc *procs, int exit_value)
 		ft_putstr_fd("exit\n", STDERR_FILENO);
 	free_env(procs->env);
 	free_procs(procs);
+	rl_clear_history();
 	exit(g_exitval);
 }
 
@@ -88,6 +90,7 @@ static void	exit_invalid_scope(t_proc *proc, t_proc *procs)
 	free_env(procs->env);
 	free_procs(procs);
 	g_exitval = 2;
+	rl_clear_history();
 	exit(g_exitval);
 }
 
@@ -103,6 +106,7 @@ void	builtin_exit(t_proc *proc, t_proc *procs)
 			ft_putstr_fd("exit\n", STDERR_FILENO);
 		free_env(procs->env);
 		free_procs(procs);
+		rl_clear_history();
 		exit(g_exitval);
 	}
 	else

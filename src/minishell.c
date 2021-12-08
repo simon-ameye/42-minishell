@@ -97,6 +97,7 @@ int main(int ac, char **av, char **envp)
 		if (!line) // EOF. readline can't fail (cf. man readline)
 		{
 			write(1, "exit\n", 5);
+			rl_clear_history();
 			exit(g_exitval);
 		}
 		else if (*line)
@@ -110,6 +111,6 @@ int main(int ac, char **av, char **envp)
 				exec(procs);
 		}
 	}
-	free_env(&env);
+	free_env(&env); // ??
 	return (0);
 }
