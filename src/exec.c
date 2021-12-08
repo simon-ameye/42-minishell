@@ -7,9 +7,11 @@ static void	create_childs(t_proc *procs)
 	int	i;
 	int	code;
 
-	// - at least two process
-	// OR
-	// - one one execve process
+	/*
+	 *	soit:
+	 *	- more than one process
+	 *	- one process not builtin
+	 */
 	if ((procs && !procs[0].is_last && !procs[1].is_last)
 	|| (procs && procs[0].ftype == EXECVE))
 	{
@@ -41,7 +43,8 @@ static void	create_childs(t_proc *procs)
 		while (!procs[i].is_last)
 		{
 			waitpid(procs[i].pid, &code, 0);
-			g_exitval = WEXITSTATUS(code);
+			if (WIFEXITED(code))
+				g_exitval = WEXITSTATUS(code);
 			i++;
 		}
 		free_procs(procs); //valgrind fix
