@@ -17,31 +17,56 @@ static int	is_correct_export_name(char *str)
 	return (1);
 }
 
-static void	print_env_declare(char **env)
+static void	print_env_declare(char *str)
 {
 	int i;
 
+	if (str)
+	{
+		i = 0;
+		ft_putstr_fd("declare -x ", STDOUT_FILENO);
+		while (*str && *str != '=')
+		{
+			ft_putchar_fd(*str, STDOUT_FILENO);
+			str++;
+		}
+		if (*str == '=')
+		{
+			ft_putchar_fd(*str, STDOUT_FILENO);
+			str++;
+			ft_putchar_fd('"', STDOUT_FILENO);
+			ft_putstr_fd(str, STDOUT_FILENO);
+			ft_putchar_fd('"', STDOUT_FILENO);
+		}
+		ft_putstr_fd("\n", STDOUT_FILENO);
+	}
+}
+
+static void	print_env_sort(char **env)
+{
+	int i;
+	int j;
+	char *previous;
+	char *actual;
+
 	if (env && *env)
 	{
-		while(*env)
+		previous = NULL;
+		i = 0;
+		while (env[i])
 		{
-			i = 0;
-			ft_putstr_fd("declare -x ", STDOUT_FILENO);  //SURTOUT CORRIGER L'ERREUR : export | grep BLA Binary file (standard input) matches
-			while ((*env)[i] && (*env)[i] != '=')
+			j = 0;
+			actual = NULL;
+			while (env[j])
 			{
-				ft_putchar_fd((*env)[i], STDOUT_FILENO);
-				i++;
+				if ((!previous || ft_strcmp(env[j], previous) > 0)
+					&& (!actual || ft_strcmp(env[j], actual) < 0))
+					actual = env[j];
+				j++;
 			}
-			if ((*env)[i] == '=')
-			{
-				ft_putchar_fd((*env)[i], STDOUT_FILENO);
-				i++;
-				ft_putchar_fd('"', STDOUT_FILENO);
-				ft_putstr_fd(&(*env)[i], STDOUT_FILENO);
-				ft_putchar_fd('"', STDOUT_FILENO);
-			}
-			ft_putstr_fd("\n", STDOUT_FILENO);
-			env++;
+			print_env_declare(actual);
+			previous = actual;
+			i++;
 		}
 	}
 }
@@ -99,12 +124,6 @@ void	builtin_export(t_proc *proc)
 		i++;
 	}
 	if (no_argument)
-		print_env_declare(*proc->env);
+		print_env_sort(*proc->env);
 	g_exitval = error_occured;
 }
-
-/*
-export BLA=1
-export BLA2=
-export BLA3
-*/
