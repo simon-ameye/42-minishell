@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 11:15:23 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/06 13:42:47 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/09 12:09:49 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 extern unsigned char	g_exitval;
 
 /*
-
 static int is_filename(char *s)
 {
 	if (s)
@@ -92,9 +91,6 @@ int	get_token_type(t_proc *proc)
 }
 */
 
-
-
-
 static void	get_operators(t_proc *proc)
 {
 	int i;
@@ -150,7 +146,8 @@ static int	get_filenames_type(t_proc *proc)
 			{
 				if (!proc->tokens[i + 1].word)
 				{
-					ft_putstr_fd("syntax error near unexpected token\n", STDERR_FILENO);
+					ft_putstr_fd("syntax error near unexpected token ", STDERR_FILENO);
+					write(2, "'newline'\n", 10);
 					return (EXIT_FAILURE);
 				}
 				else if (proc->tokens[i + 1].type == IGNORED)
@@ -162,7 +159,11 @@ static int	get_filenames_type(t_proc *proc)
 					proc->tokens[i + 1].type = redir_op_to_file_type(proc->tokens[i].type);
 				else //There is probably an other redir next to this one
 				{
-					ft_putstr_fd("syntax error near unexpected token\n", STDERR_FILENO);
+					ft_putstr_fd("syntax error near unexpected token ", STDERR_FILENO);
+					write(2, "'", 1);
+					write(2, proc->tokens[i].word, ft_strlen(proc->tokens[i].word));
+					write(2, "'", 1);
+					write(2, "\n", 1);
 					return (EXIT_FAILURE);
 				}
 			}
