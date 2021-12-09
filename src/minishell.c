@@ -107,6 +107,7 @@ int main(int ac, char **av, char **envp)
 			get_procs(&procs, line, &env);
 			free(line);
 			get_tokens(procs);
+			//print_procs(procs);
 			if (!parser(procs))
 				exec(procs);
 		}
