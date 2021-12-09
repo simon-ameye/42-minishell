@@ -17,7 +17,8 @@ INCLUDE_DIR	=		include
 #################	HEADER FILES	#################
 
 INCLUDE		=		-I include \
-					-I libft
+					-I libft \
+					-I /opt/homebrew/opt/readline/include/
 
 #################	SOURCE FILES	#################
 
@@ -62,7 +63,7 @@ NAME		=		minishell
 ################	LIBFT			#################
 
 LIBFT		=		$(LIBFT_DIR)/libft.a
-LINK		=		-L $(LIBFT_DIR) -l ft
+LINK		=		-L $(LIBFT_DIR) -l ft -L /opt/homebrew/opt/readline/lib
 
 all:				$(NAME)
 
