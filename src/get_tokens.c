@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 11:08:48 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/10 00:29:46 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/10 00:37:30 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,13 +105,18 @@ static int	get_words(t_token *tokens, char *line)
 		quote = switch_quote(quote, line[start + len]);
 		op_len = operator_len(line + start + len);
 		sp_len = separator_len(line + start + len);
-		if (!quote && sp_len)
+		//one or more separators are found outside quotes:
+		//	we create a new word with all chars since last separator
+		if (!quote && sp_len) 
 		{
 			if (add_word(tokens, line, start, len))
 				return (EXIT_FAILURE);
 			start = start + len + sp_len;
 			len = 0;
 		}
+		//one operator is found outside quotes:
+		//	we create a new word with all chars since last separator
+		//	we also add a word with the operator
 		else if (!quote && op_len)
 		{
 			if (add_word(tokens, line, start, len))
@@ -121,12 +126,16 @@ static int	get_words(t_token *tokens, char *line)
 			start = start + len + op_len;
 			len = 0;
 		}
+		//end of line :
+		//	we create a new word
 		else if (!line[start + len])
 		{
 			if (add_word(tokens, line, start, len))
 				return (EXIT_FAILURE);
 			break ;
 		}
+		//nothing special :
+		//	we increase len to add char to current word
 		else
 			len++;
 	}
