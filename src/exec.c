@@ -72,7 +72,7 @@ static void	do_waits(t_proc *procs)
 		if (WIFSIGNALED(wstatus))
 		{
 			if (i == 0)
-				write(1, "\n", 1);
+				ft_putstr_fd("\n", STDERR_FILENO);
 			g_exitval = WTERMSIG(wstatus) + 128;
 		}
 		i++;
@@ -86,12 +86,14 @@ void	exec(t_proc *procs)
 		// do not forget to close fd
 		// streams are automatically closed by execve
 		// cf. valgrind --track-fds=yes
-		if ((procs[0].ftype == EXECVE || !procs[1].is_last))
+		if (procs[0].ftype == EXECVE
+		|| (!procs[0].is_last && !procs[1].is_last))
 		{
 			do_pipes(procs);
 			do_forks(procs);
 			do_waits(procs);
 			init_signals();
+			free_procs(procs);
 		}
 		else
 		{
@@ -99,6 +101,5 @@ void	exec(t_proc *procs)
 			procs[0].stream_out = STDOUT_FILENO;
 			exec_child(&procs[0], procs);
 		}
-		free_procs(procs);
 	}
 }
