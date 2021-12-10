@@ -15,6 +15,6 @@ void	builtin_env(char **env)
 			}
 			env++;
 		}
-		g_exitval = 1;
+		g_exitval = 0;
 	}
 }
