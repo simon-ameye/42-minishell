@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 18:17:57 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/02 16:35:22 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/10 17:09:29 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static char	*get_path_env(char *fnct, char **env)
 		}
 		free_str_tab(paths);
 	}
-	ft_putstr_fd("command not found: ", STDERR_FILENO);
+	ft_putstr_fd("minishell: command not found: ", STDERR_FILENO);
 	ft_putstr_fd(fnct, STDERR_FILENO);
 	ft_putstr_fd("\n", STDERR_FILENO);
 	g_exitval = 127;

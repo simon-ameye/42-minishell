@@ -39,10 +39,6 @@ GLOBAL VARIABLE
 - environnement (?)
 - shlvl (?)
 ____________________________________________
-SYNTAX
-
-faire preceder command not found de 'minishell:'
-____________________________________________
 VALGRIND
 
 warning: invalid file descriptor -1 in syscall close()
