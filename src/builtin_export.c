@@ -21,7 +21,7 @@ static void	print_env_declare(char *str)
 {
 	if (str)
 	{
-		ft_putstr_fd("declare -x ", STDOUT_FILENO);
+		ft_putstr_fd("export ", STDOUT_FILENO);
 		while (*str && *str != '=')
 		{
 			ft_putchar_fd(*str, STDOUT_FILENO);

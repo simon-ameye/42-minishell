@@ -124,9 +124,9 @@ static int	get_nb_procs(char *line)
 			if (!line[i])
 			{
 				if (quote == '\'')
-					printf("Error: simple quote not closed\n");
+					ft_putstr_fd("Error: simple quote not closed\n", STDERR_FILENO);
 				else
-					printf("Error: double quote not closed\n");
+					ft_putstr_fd("Error: double quote not closed\n", STDERR_FILENO);
 				g_exitval = 2;
 				return (0);
 			}
@@ -135,7 +135,7 @@ static int	get_nb_procs(char *line)
 		{
 			if (syntax_error_pipe(line, i))
 			{
-				printf("minishell: syntax error near unexpected token '|'\n");
+				ft_putstr_fd("minishell: syntax error near unexpected token '|'\n", STDERR_FILENO);
 				g_exitval = 2;
 				return (0);
 			}
