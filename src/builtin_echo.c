@@ -2,6 +2,22 @@
 
 extern unsigned char	g_exitval;
 
+static int	is_valid_option_n(char *str)
+{
+	if (!*str || *str != '-')
+		return (0);
+	str++;
+	if (!*str || *str != 'n')
+		return (0);
+	while (*str)
+	{
+		if (*str != 'n')
+			return (0);
+		str++;
+	}
+	return (1);
+}
+
 void	builtin_echo(t_proc *proc)
 {
 	int i;
@@ -15,7 +31,7 @@ void	builtin_echo(t_proc *proc)
 		i++;
 	if (proc->tokens[i].word)
 	{
-		while (proc->tokens[i].word && proc->tokens[i].type == WORD && !ft_strcmp(proc->tokens[i].word, "-n")) //handling multiple "-n"
+		while (proc->tokens[i].word && proc->tokens[i].type == WORD && is_valid_option_n(proc->tokens[i].word))
 		{
 			n_option = 1;
 			i++;
