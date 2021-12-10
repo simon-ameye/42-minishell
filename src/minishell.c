@@ -90,13 +90,26 @@ int main(int ac, char **av, char **envp)
 	env = copy_env(envp);
 	increase_shlvl(&env);
 	init_signals();
+
+	if (ac == 3) // support for -c arg
+	{
+		line = av[2];
+		procs = NULL;
+		get_procs(&procs, line, &env);
+		get_tokens(procs);
+		if (!parser(procs))
+			exec(procs);
+		free_env(&env);
+		exit (g_exitval);
+	}
+
 	while (1)
 	{
 		line = NULL;
 		line = readline("\e[0;36mminishell\e[0;35m> \e[0m");
 		if (!line) // EOF. readline can't fail (cf. man readline)
 		{
-			write(1, "exit\n", 5);
+			write(2, "exit\n", 5);
 			rl_clear_history();
 			exit(g_exitval);
 		}

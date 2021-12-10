@@ -30,7 +30,7 @@ static char	*get_delimiter(t_token token)
 	if (token.expanded)
 		return (remove_quotes_str(token.expanded));
 	else
-		return (remove_quotes_str(token.word));
+		return (remove_quotes_str(token.word)); /// echo bla > "'test'" donne "'test'" !!
 }
 
 static int	heredoc_open_error(char *filename)

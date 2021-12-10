@@ -19,11 +19,8 @@ static int	is_correct_export_name(char *str)
 
 static void	print_env_declare(char *str)
 {
-	int i;
-
 	if (str)
 	{
-		i = 0;
 		ft_putstr_fd("declare -x ", STDOUT_FILENO);
 		while (*str && *str != '=')
 		{
