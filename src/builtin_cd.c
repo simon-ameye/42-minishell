@@ -34,8 +34,10 @@ void	try_chdir(char *path)
 		ft_putstr_fd(": ", STDERR_FILENO);
 		ft_putstr_fd(strerror(errno), STDERR_FILENO);
 		ft_putstr_fd("\n", STDERR_FILENO);
+		g_exitval = 1;
 	}
-	g_exitval = 1;
+	else
+		g_exitval = 0;
 }
 
 void	builtin_cd(t_proc *proc)
@@ -52,7 +54,7 @@ void	builtin_cd(t_proc *proc)
 			if (path == NULL)
 			{
 				ft_putstr_fd("minishell: cd: HOME not set\n", STDERR_FILENO);
-				g_exitval = 1;
+				g_exitval = 0;
 			}
 			else
 				try_chdir(path);
