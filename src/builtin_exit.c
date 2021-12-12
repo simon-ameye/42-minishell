@@ -52,16 +52,18 @@ static int	ft_atouchar(const char *s)
 	return (result * sign);
 }
 
-static void	exit_too_many_arguments(void)
+static void	exit_too_many_arguments(t_proc *proc)
 {
-	ft_putstr_fd("exit\n", STDERR_FILENO);
+	if (proc->pid)
+		ft_putstr_fd("exit\n", STDERR_FILENO);
 	ft_putstr_fd("minishell: exit: too many arguments\n", STDERR_FILENO);
 	g_exitval = 1;
 }
 
 static void	exit_non_numeric_arguments(t_proc *proc, t_proc *procs)
 {
-	ft_putstr_fd("exit\n", STDERR_FILENO);
+	if (proc->pid)
+		ft_putstr_fd("exit\n", STDERR_FILENO);
 	ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
 	ft_putstr_fd(proc->tokens[1].word, STDERR_FILENO);
 	ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
@@ -115,7 +117,7 @@ void	builtin_exit(t_proc *proc, t_proc *procs)
 		if (exit_value == -2)
 			return (exit_non_numeric_arguments(proc, procs));
 		if (exit_args > 1)
-			return (exit_too_many_arguments());
+			return (exit_too_many_arguments(proc));
 		if (exit_value == -1)
 			return (exit_invalid_scope(proc, procs));
 		return (exit_valid_scope(proc, procs, exit_value));
