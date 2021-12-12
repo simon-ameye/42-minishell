@@ -53,7 +53,7 @@ static int	add_word(t_token *tokens, char *line, int start, int len)
 
 static int	operator_len(char *line)
 {
-	if (line[1])
+	if (line[0])
 	{
 		if (ft_strncmp(line, ">>", 2) == 0)
 			return (2);
