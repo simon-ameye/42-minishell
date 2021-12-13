@@ -91,18 +91,6 @@ int main(int ac, char **av, char **envp)
 	increase_shlvl(&env);
 	init_signals();
 
-	if (ac == 3) // support for -c arg
-	{
-		line = av[2];
-		procs = NULL;
-		get_procs(&procs, line, &env);
-		get_tokens(procs);
-		if (!parser(procs))
-			exec(procs);
-		free_env(&env);
-		exit (g_exitval);
-	}
-
 	while (1)
 	{
 		line = NULL;
