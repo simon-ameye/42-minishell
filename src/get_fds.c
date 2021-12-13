@@ -6,11 +6,13 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 17:36:49 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/07 17:47:52 by trobin           ###   ########.fr       */
+/*   Updated: 2021/12/13 18:16:23 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern unsigned char	g_exitval;
 
 static int	get_proc_fdin(int *fd, char *filename)
 {
@@ -33,6 +35,7 @@ static int	get_proc_fdin(int *fd, char *filename)
 			ft_putstr_fd(": ", STDERR_FILENO);
 			ft_putstr_fd(filename, STDERR_FILENO);
 			ft_putstr_fd("\n", STDERR_FILENO);
+			g_exitval = 1;
 			return (EXIT_FAILURE);
 		}
 	}
@@ -62,6 +65,7 @@ static int	get_proc_fdout(int *fd, char *filename, t_token_type type)
 			ft_putstr_fd(": ", STDERR_FILENO);
 			ft_putstr_fd(filename, STDERR_FILENO);
 			ft_putstr_fd("\n", STDERR_FILENO);
+			g_exitval = 1;
 			return (EXIT_FAILURE);
 		}
 	}

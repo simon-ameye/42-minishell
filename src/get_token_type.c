@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 11:15:23 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/09 12:09:49 by trobin           ###   ########.fr       */
+/*   Updated: 2021/12/13 16:58:04 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,9 +147,11 @@ static int	get_filenames_type(t_proc *proc)
 				if (!proc->tokens[i + 1].word)
 				{
 					ft_putstr_fd("syntax error near unexpected token ", STDERR_FILENO);
-					write(2, "'newline'\n", 10);
+					ft_putstr_fd("'newline'\n", STDOUT_FILENO);
 					return (EXIT_FAILURE);
 				}
+				else if (proc->tokens[i].type == HERE_DOC)
+					proc->tokens[i + 1].type = LIMITOR;
 				else if (proc->tokens[i + 1].type == IGNORED)
 				{
 					//ft_putstr_fd("ambiguous redirect\n", STDERR_FILENO);
@@ -160,10 +162,8 @@ static int	get_filenames_type(t_proc *proc)
 				else //There is probably an other redir next to this one
 				{
 					ft_putstr_fd("syntax error near unexpected token ", STDERR_FILENO);
-					write(2, "'", 1);
-					write(2, proc->tokens[i].word, ft_strlen(proc->tokens[i].word));
-					write(2, "'", 1);
-					write(2, "\n", 1);
+					ft_putstr_fd(proc->tokens[i].word, STDOUT_FILENO);
+					ft_putstr_fd("\n", STDOUT_FILENO);
 					return (EXIT_FAILURE);
 				}
 			}
