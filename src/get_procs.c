@@ -36,6 +36,8 @@ static void	init_proc(t_proc *proc, char ***env)
 		proc->is_last = 0;
 		proc->env = env;
 		proc->pid = 1; // father == 1, childs == 0 (will be overwritten by fork())
+		proc->saved_std[0] = -1;
+		proc->saved_std[1] = -1;
 	}
 }
 

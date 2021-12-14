@@ -107,6 +107,7 @@ void	builtin_exit(t_proc *proc, t_proc *procs)
 		if (proc->pid)
 			ft_putstr_fd("exit\n", STDERR_FILENO);
 		free_env(procs->env);
+		close_saved_fd_and_streams(procs);
 		free_procs(procs);
 		rl_clear_history();
 		exit(g_exitval);

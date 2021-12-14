@@ -46,7 +46,8 @@ SRCS		=		minishell.c \
 					env.c \
 					here_doc.c \
 					set_ignored_tokens.c \
-					signals.c
+					signals.c \
+					fd_tools.c
 
 SOURCES		=		$(addprefix $(SRCS_DIR)/,$(SRCS))
 

@@ -7,7 +7,7 @@ static void	do_pipes(t_proc *procs)
 	int	pipefd[2];
 	int	i;
 
-	procs[0].stream_in = STDIN_FILENO;
+	procs[0].stream_in = dup(STDIN_FILENO);
 	i = 1;
 	while (!procs[i].is_last)
 	{
@@ -22,7 +22,30 @@ static void	do_pipes(t_proc *procs)
 		procs[i - 1].next_stream_in = pipefd[0];
 		i++;
 	}
-	procs[i - 1].stream_out = STDOUT_FILENO;
+	procs[i - 1].stream_out = dup(STDOUT_FILENO);
+}
+
+static void do_redirs(t_proc *procs)
+{
+	int	i;
+
+	i = 0;
+	while (!procs[i].is_last)
+	{
+		if (procs[i].fdout > 0)
+		{
+			secure_close(procs[i].stream_out);
+			procs[i].stream_out = procs[i].fdout;
+			procs[i].fdout = -1;
+		}
+		if (procs[i].fdin > 0)
+		{
+			secure_close(procs[i].stream_in);
+			procs[i].stream_in = procs[i].fdin;
+			procs[i].fdin = -1;
+		}
+		i++;
+	}
 }
 
 static void	do_forks(t_proc *procs)
@@ -42,15 +65,15 @@ static void	do_forks(t_proc *procs)
 		{
 			if (!(procs[i].ftype == NO_FUNCTION || procs[i].ftype == EXIT))
 				g_exitval = 0;
-			close(procs[i].prev_stream_out);
-			close(procs[i].next_stream_in);
+			close_all_streams_except_current(procs, i);
 			exec_child(&procs[i], procs);
+			free_procs(procs);
+			close(0);
+			close(1);
 			exit(g_exitval);
 		}
-		if (i > 0)
-			close(procs[i].stream_in);
-		if (!procs[i + 1].is_last)
-			close(procs[i].stream_out);
+		secure_close(procs[i].stream_in);
+		secure_close(procs[i].stream_out);
 		i++;
 	}
 }
@@ -83,13 +106,11 @@ void	exec(t_proc *procs)
 {
 	if (procs)
 	{
-		// do not forget to close fd
-		// streams are automatically closed by execve
-		// cf. valgrind --track-fds=yes
 		if (procs[0].ftype == EXECVE
 		|| (!procs[0].is_last && !procs[1].is_last))
 		{
 			do_pipes(procs);
+			do_redirs(procs);
 			do_forks(procs);
 			do_waits(procs);
 			init_signals();
@@ -97,8 +118,9 @@ void	exec(t_proc *procs)
 		}
 		else
 		{
-			procs[0].stream_in = STDIN_FILENO;
-			procs[0].stream_out = STDOUT_FILENO;
+			procs[0].stream_in = dup(STDIN_FILENO);
+			procs[0].stream_out = dup(STDOUT_FILENO);
+			do_redirs(procs);
 			exec_child(&procs[0], procs);
 		}
 	}

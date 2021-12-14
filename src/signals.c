@@ -64,7 +64,7 @@ void	init_signals(void)
 
 	act.sa_flags = SA_SIGINFO;
 	act.sa_sigaction = &signal_handler;
-	//sigemptyset(&act.sa_mask);
+	sigemptyset(&act.sa_mask);
 	sigaction(SIGINT, &act, NULL);
 	sigaction(SIGQUIT, &act, NULL);
 	rl_outstream = stderr; // see: bash 2> file (rien a faire la)

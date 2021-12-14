@@ -78,6 +78,7 @@ typedef struct	s_proc
 //	bool			is_child; // `cd /` vs `cd / | cd /`
 	pid_t			pid;
 	int				is_last;
+	int				saved_std[2];
 }	t_proc;
 
 /******************************************************************************/
@@ -241,5 +242,15 @@ int	set_ignored_tokens(t_proc *proc);
 
 void	init_signals(void);
 void	signal_handler(int signum, siginfo_t *siginfo, void *context);
+
+/******************************************************************************/
+/*                                                                            */
+/*     fd_tools                                                               */
+/*                                                                            */
+/******************************************************************************/
+
+void close_saved_fd_and_streams(t_proc *procs);
+void secure_close(int fd);
+void close_all_streams_except_current(t_proc *procs, int i);
 
 # endif
