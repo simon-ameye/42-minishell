@@ -10,6 +10,8 @@ void	free_tokens(t_token *tokens)
 		while (tokens[i].word)
 		{
 			free(tokens[i].word);
+			if (tokens[i].expanded) //Il suffisait de free le .expanded
+				free(tokens[i].expanded);
 			i++;
 		}
 		free(tokens);

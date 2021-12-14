@@ -88,7 +88,7 @@ int main(int ac, char **av, char **envp)
 	(void)av;
 	g_exitval = 0;
 	env = copy_env(envp);
-	increase_shlvl(&env);
+	//increase_shlvl(&env);
 	init_signals();
 
 	while (1)
@@ -110,7 +110,7 @@ int main(int ac, char **av, char **envp)
 			get_tokens(procs);
 			if (!parser(procs))
 			{
-				//print_procs(procs);
+				print_procs(procs);
 				exec(procs);
 			}
 		}

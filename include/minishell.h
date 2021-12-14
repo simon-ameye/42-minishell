@@ -30,16 +30,16 @@ typedef enum e_ftype
 
 typedef enum e_token_type
 {
-    WORD,			//word
+	WORD,			//word
 	FUNCTION,		//function
-    FILE_IN,		//'<'
-    HERE_DOC,		//<<'
-    FILE_OUT,		//'>'
-    FILE_OUT_SUR,	//'>>'
-    OPEN_FILE,		// word following '<'
-    LIMITOR,		// word following '<<'
-    EXIT_FILE,		// word following '>'
-    EXIT_FILE_RET,	// word following '>>'
+	FILE_IN,		//'<'
+	HERE_DOC,		//<<'
+	FILE_OUT,		//'>'
+	FILE_OUT_SUR,	//'>>'
+	OPEN_FILE,		// word following '<'
+	LIMITOR,		// word following '<<'
+	EXIT_FILE,		// word following '>'
+	EXIT_FILE_RET,	// word following '>>'
 	IGNORED,		//ignored because is empty
 	AMBIGOUS_REDIRECT
 }	t_token_type;

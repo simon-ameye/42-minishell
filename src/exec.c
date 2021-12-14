@@ -114,7 +114,6 @@ void	exec(t_proc *procs)
 			do_forks(procs);
 			do_waits(procs);
 			init_signals();
-			free_procs(procs);
 		}
 		else
 		{
@@ -123,5 +122,6 @@ void	exec(t_proc *procs)
 			do_redirs(procs);
 			exec_child(&procs[0], procs);
 		}
+		free_procs(procs);
 	}
 }
