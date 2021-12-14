@@ -110,7 +110,7 @@ int main(int ac, char **av, char **envp)
 			get_tokens(procs);
 			if (!parser(procs))
 			{
-				print_procs(procs);
+				//print_procs(procs);
 				exec(procs);
 			}
 		}
