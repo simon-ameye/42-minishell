@@ -71,13 +71,9 @@ static void	print_env_sort(char **env)
 static int	get_varnamelen(char *str)
 {
 	int i;
-	char *name;
 
-	name = ft_strdup(str);
-	if (!name)
-		return (0);
 	i = 0;
-	while (name[i] && name[i] != '=')
+	while (str[i] && str[i] != '=')
 		i++;
 	return(i);
 }
