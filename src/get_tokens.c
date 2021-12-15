@@ -6,13 +6,13 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 11:08:48 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/10 00:37:30 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/15 19:03:05 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	init_tokens(t_token *tokens, int len)
+static void init_tokens(t_token *tokens, int len)
 {
 	int i;
 
@@ -26,7 +26,7 @@ static void	init_tokens(t_token *tokens, int len)
 	}
 }
 
-static int	tokens_nb(t_token *tokens)
+static int tokens_nb(t_token *tokens)
 {
 	int i;
 
@@ -36,7 +36,7 @@ static int	tokens_nb(t_token *tokens)
 	return (i);
 }
 
-static int	add_word(t_token *tokens, char *line, int start, int len)
+static int add_word(t_token *tokens, char *line, int start, int len)
 {
 	int index;
 
@@ -51,7 +51,7 @@ static int	add_word(t_token *tokens, char *line, int start, int len)
 	return (EXIT_SUCCESS);
 }
 
-static int	operator_len(char *line)
+static int operator_len(char *line)
 {
 	if (line[0])
 	{
@@ -67,7 +67,7 @@ static int	operator_len(char *line)
 	return (0);
 }
 
-static int	separator_len(char *line)
+static int separator_len(char *line)
 {
 	int i;
 
@@ -77,7 +77,7 @@ static int	separator_len(char *line)
 	return (i);
 }
 
-static char	switch_quote(char quote, char c)
+static char switch_quote(char quote, char c)
 {
 	if (c == '"' || c == '\'')
 	{
@@ -89,62 +89,71 @@ static char	switch_quote(char quote, char c)
 	return (quote);
 }
 
-static int	get_words(t_token *tokens, char *line)
+static int	separator_spotted(t_token *tokens, char *line, t_word *word)
 {
-	int		len;
-	int		start;
-	int		op_len;
-	int		sp_len;
-	char	quote;
+	if (add_word(tokens, line, word->start, word->len))
+		return (EXIT_FAILURE);
+	word->start = word->start + word->len + word->sp_len;
+	word->len = 0;
+	return (EXIT_SUCCESS);
+}
 
-	start = 0;
-	len = 0;
-	quote = 0;
+static int	operator_spotted(t_token *tokens, char *line, t_word *word)
+{
+	if (add_word(tokens, line, word->start, word->len))
+		return (EXIT_FAILURE);
+	if (add_word(tokens, line, word->start + word->len, word->op_len))
+		return (EXIT_FAILURE);
+	word->start = word->start + word->len + word->op_len;
+	word->len = 0;
+	return (EXIT_SUCCESS);
+}
+
+static void	get_quote_operator_separator(char *line, t_word *word)
+{
+	word->quote = switch_quote(word->quote, line[word->start + word->len]);
+	word->op_len = operator_len(line + word->start + word->len);
+	word->sp_len = separator_len(line + word->start + word->len);
+}
+
+static void init_word(t_word *word)
+{
+	word->start = 0;
+	word->len = 0;
+	word->quote = 0;
+}
+
+static int get_words(t_token *tokens, char *line, t_word word)
+{
 	while (1)
 	{
-		quote = switch_quote(quote, line[start + len]);
-		op_len = operator_len(line + start + len);
-		sp_len = separator_len(line + start + len);
-		//one or more separators are found outside quotes:
-		//	we create a new word with all chars since last separator
-		if (!quote && sp_len) 
+		get_quote_operator_separator(line, &word);
+		if (!word.quote && word.sp_len)
 		{
-			if (add_word(tokens, line, start, len))
+			if (separator_spotted(tokens, line, &word))
 				return (EXIT_FAILURE);
-			start = start + len + sp_len;
-			len = 0;
 		}
-		//one operator is found outside quotes:
-		//	we create a new word with all chars since last separator
-		//	we also add a word with the operator
-		else if (!quote && op_len)
+		else if (!word.quote && word.op_len)
 		{
-			if (add_word(tokens, line, start, len))
+			if (operator_spotted(tokens, line, &word))
 				return (EXIT_FAILURE);
-			if (add_word(tokens, line, start + len, op_len))
-				return (EXIT_FAILURE);
-			start = start + len + op_len;
-			len = 0;
 		}
-		//end of line :
-		//	we create a new word
-		else if (!line[start + len])
+		else if (!line[word.start + word.len])
 		{
-			if (add_word(tokens, line, start, len))
+			if (add_word(tokens, line, word.start, word.len))
 				return (EXIT_FAILURE);
-			break ;
+			break;
 		}
-		//nothing special :
-		//	we increase len to add char to current word
 		else
-			len++;
+			word.len++;
 	}
 	return (EXIT_SUCCESS);
 }
 
-void	get_tokens(t_proc *procs)
+void get_tokens(t_proc *procs)
 {
-	int		i;
+	int i;
+	t_word word;
 
 	if (procs)
 	{
@@ -158,7 +167,8 @@ void	get_tokens(t_proc *procs)
 				exit(EXIT_FAILURE);
 			}
 			init_tokens(procs[i].tokens, ft_strlen(procs[i].str) + 1);
-			if (get_words(procs[i].tokens, procs[i].str))
+			init_word(&word);
+			if (get_words(procs[i].tokens, procs[i].str, word))
 			{
 				free_procs(procs);
 				exit(EXIT_FAILURE);

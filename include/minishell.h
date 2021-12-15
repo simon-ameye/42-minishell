@@ -51,6 +51,15 @@ typedef struct	s_token
 	char	*expanded;
 }	t_token;
 
+typedef struct	s_word
+{
+	int len;
+	int start;
+	int op_len;
+	int sp_len;
+	char quote;
+}	t_word;
+
 /*
 typedef struct	s_io
 {
