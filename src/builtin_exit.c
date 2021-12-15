@@ -35,6 +35,8 @@ long	ft_atol(char *s)
 	i = 0;
 	while (s[i] == ' ')
 		i++;
+	if (!s[i])
+		return (-2);
 	sign = 1;
 	if (s[i] == '+' || s[i] == '-')
 	{
