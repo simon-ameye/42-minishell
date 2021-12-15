@@ -58,9 +58,10 @@ long	ft_atol(char *s)
 	return ((long)(ret * sign));
 }
 
-static void	exit_minishell(t_proc *procs)
+void	exit_minishell(t_proc *procs)
 {
-	free_env(procs->env);
+	if (procs && procs->env)
+		free_env(procs->env);
 	close_saved_fd_and_streams(procs);
 	free_procs(procs);
 	rl_clear_history();
