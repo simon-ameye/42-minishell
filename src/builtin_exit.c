@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include <limits.h> /* LONG_MAX, LONG_MIN */
 
 extern unsigned char	g_exitval;
 
@@ -23,33 +24,45 @@ static int	get_nb_args(t_token *tokens)
 }
 
 // move
-static int	ft_atouchar(const char *s)
+long	ft_atol(char *s)
 {
-	int	i;
-	int	sign;
-	int	result;
+	unsigned long	ret;
+	int				i;
+	int				sign;
 
+	if (!s)
+		return (-2);
 	i = 0;
 	while (s[i] == ' ')
-		++i;
+		i++;
 	sign = 1;
-	if (s[i] == '-' || s[i] == '+')
+	if (s[i] == '+' || s[i] == '-')
 	{
 		if (s[i] == '-')
 			sign = -1;
-		++i;
+		i++;
 	}
-	result = 0;
+	ret = 0;
 	while (ft_isdigit(s[i]))
 	{
-		result = result * 10 + s[i] - 48;
-		if (result * sign < 0 || result * sign > 255)
-			return (-1); // outside uchar range
-		++i;
+		ret = ret * 10 + s[i] - 48;
+		if ((sign == 1 && ret > LONG_MAX)
+		|| (sign == -1 && ret > (unsigned long)(LONG_MAX + 1UL)))
+			return (-2);
+		i++;
 	}
 	if (s[i])
-		return (-2); // wrong numeric format
-	return (result * sign);
+		return (-2);
+	return ((long)(ret * sign));
+}
+
+static void	exit_minishell(t_proc *procs)
+{
+	free_env(procs->env);
+	close_saved_fd_and_streams(procs);
+	free_procs(procs);
+	rl_clear_history();
+	exit(g_exitval);
 }
 
 static void	exit_too_many_arguments(t_proc *proc)
@@ -67,60 +80,32 @@ static void	exit_non_numeric_arguments(t_proc *proc, t_proc *procs)
 	ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
 	ft_putstr_fd(proc->tokens[1].word, STDERR_FILENO);
 	ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
-	free_env(procs->env);
-	free_procs(procs);
-	rl_clear_history();
 	g_exitval = 2;
-	exit(g_exitval);
-}
-
-static void	exit_valid_scope(t_proc *proc, t_proc *procs, int exit_value)
-{
-	g_exitval = (unsigned char)exit_value;
-	if (proc->pid)
-		ft_putstr_fd("exit\n", STDERR_FILENO);
-	free_env(procs->env);
-	free_procs(procs);
-	rl_clear_history();
-	exit(g_exitval);
-}
-
-static void	exit_invalid_scope(t_proc *proc, t_proc *procs)
-{
-	if (proc->pid)
-		ft_putstr_fd("exit\n", STDERR_FILENO);
-	free_env(procs->env);
-	free_procs(procs);
-	g_exitval = 2;
-	rl_clear_history();
-	exit(g_exitval);
+	exit_minishell(procs);
 }
 
 void	builtin_exit(t_proc *proc, t_proc *procs)
 {
-	int	exit_args;
-	int	exit_value;
+	int		exit_args;
+	long	exit_value;
 
 	exit_args = get_nb_args(proc->tokens);
 	if (exit_args == 0)
 	{
 		if (proc->pid)
 			ft_putstr_fd("exit\n", STDERR_FILENO);
-		free_env(procs->env);
-		close_saved_fd_and_streams(procs); //A ajouter dans tous les cas de exit !
-		free_procs(procs);
-		rl_clear_history();
-		exit(g_exitval);
+		exit_minishell(procs);
 	}
 	else
 	{
-		exit_value = ft_atouchar(proc->tokens[1].word);
+		exit_value = ft_atol(proc->tokens[1].word);
 		if (exit_value == -2)
 			return (exit_non_numeric_arguments(proc, procs));
 		if (exit_args > 1)
 			return (exit_too_many_arguments(proc));
-		if (exit_value == -1)
-			return (exit_invalid_scope(proc, procs));
-		return (exit_valid_scope(proc, procs, exit_value));
+		if (proc->pid)
+			ft_putstr_fd("exit\n", STDERR_FILENO);
+		g_exitval = (unsigned char)exit_value;
+		return (exit_minishell(procs));
 	}
 }
