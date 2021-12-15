@@ -111,8 +111,7 @@ void	builtin_export(t_proc *proc);
 /*                                                                            */
 /******************************************************************************/
 
-char	*dollar_expand_str_heredoc(char *str, char **env);
-char	*dollar_expand_str(char *str, char **env);
+char	*dollar_expand_str(char *str, char **env, int heredoc);
 int		dollar_expand(t_proc proc);
 
 /******************************************************************************/
@@ -123,8 +122,8 @@ int		dollar_expand(t_proc proc);
 
 void	free_str_tab(char **tab);
 char	*ft_strjoinfree(char *s1, char *s2);
-char	*join_char_free(char *str, char c);
 int		str_tab_len(char *const *env);
+void	switch_quote(char *quote, char c);
 
 /******************************************************************************/
 /*                                                                            */

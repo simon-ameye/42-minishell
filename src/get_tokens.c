@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 11:08:48 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/15 19:03:05 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/15 20:17:13 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,18 +77,6 @@ static int separator_len(char *line)
 	return (i);
 }
 
-static char switch_quote(char quote, char c)
-{
-	if (c == '"' || c == '\'')
-	{
-		if (!quote)
-			return (c);
-		else if (c == quote)
-			return (0);
-	}
-	return (quote);
-}
-
 static int	separator_spotted(t_token *tokens, char *line, t_word *word)
 {
 	if (add_word(tokens, line, word->start, word->len))
@@ -111,7 +99,7 @@ static int	operator_spotted(t_token *tokens, char *line, t_word *word)
 
 static void	get_quote_operator_separator(char *line, t_word *word)
 {
-	word->quote = switch_quote(word->quote, line[word->start + word->len]);
+	switch_quote(&(word->quote), line[word->start + word->len]);
 	word->op_len = operator_len(line + word->start + word->len);
 	word->sp_len = separator_len(line + word->start + word->len);
 }

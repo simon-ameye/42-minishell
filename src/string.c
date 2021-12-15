@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 17:30:28 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/30 16:48:21 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/15 20:17:40 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,25 +71,6 @@ char	*ft_strjoinfree(char *s1, char *s2)
 	return (str);
 }
 
-char	*join_char_free(char *str, char c)
-{
-	char	*res;
-
-	if (!str)
-		return (NULL);
-	res = malloc(sizeof(char) * (ft_strlen(str) + 2));
-	if (res == NULL)
-	{
-		free(str);
-		return (NULL);
-	}
-	ft_strcpy(res, str);
-	res[ft_strlen(str)] = c;
-	res[ft_strlen(str) + 1] = '\0';
-	free(str);
-	return (res);
-}
-
 int	str_tab_len(char *const *env)
 {
 	int i;
@@ -98,4 +79,15 @@ int	str_tab_len(char *const *env)
 	while (env[i])
 		i++;
 	return (i);
+}
+
+void switch_quote(char *quote, char c)
+{
+	if (c == '"' || c == '\'')
+	{
+		if (!*quote)
+			*quote = c;
+		else if (c == *quote)
+			*quote = 0;
+	}
 }

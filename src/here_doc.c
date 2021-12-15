@@ -92,7 +92,7 @@ int	get_proc_here_doc(int *fd, t_token token, char **env)
 		}
 		else
 		{
-			tmp = dollar_expand_str_heredoc(line, env);
+			tmp = dollar_expand_str(line, env, 1);
 			ft_putstr_fd(tmp, *fd);
 			ft_putstr_fd("\n", *fd);
 			free(tmp);
