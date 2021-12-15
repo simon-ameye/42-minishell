@@ -8,10 +8,13 @@ void secure_close(int fd)
 
 void close_saved_fd_and_streams(t_proc *procs)
 {
-	secure_close(procs->saved_std[0]);
-	secure_close(procs->saved_std[1]);
-	secure_close(0);
-	secure_close(1);
+	if (procs)
+	{
+		secure_close(procs->saved_std[0]);
+		secure_close(procs->saved_std[1]);
+		secure_close(0);
+		secure_close(1);
+	}
 }
 
 void close_all_streams_except_current(t_proc *procs, int i)

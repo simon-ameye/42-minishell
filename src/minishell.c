@@ -86,10 +86,11 @@ int main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
+	procs = NULL;
 	g_exitval = 0;
-	env = copy_env(envp);
-	//increase_shlvl(&env);
 	init_signals();
+	env = copy_env(envp);
+//	//increase_shlvl(&env);
 
 	while (1)
 	{
@@ -98,8 +99,7 @@ int main(int ac, char **av, char **envp)
 		if (!line) // EOF. readline can't fail (cf. man readline)
 		{
 			write(2, "exit\n", 5);
-			rl_clear_history();
-			exit(g_exitval);
+			exit_minishell(procs);
 		}
 		else if (*line)
 		{
