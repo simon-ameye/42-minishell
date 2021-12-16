@@ -96,6 +96,7 @@ typedef struct	s_proc
 /*                                                                            */
 /******************************************************************************/
 
+void	new_exit_minishell(t_proc *procs, char ***env);
 void	exit_minishell(t_proc *procs);
 void	builtin_cd(t_proc *proc);
 void	builtin_exit(t_proc *procs, t_proc *proc);

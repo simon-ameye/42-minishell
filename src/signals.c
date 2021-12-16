@@ -67,5 +67,4 @@ void	init_signals(void)
 	sigemptyset(&act.sa_mask);
 	sigaction(SIGINT, &act, NULL);
 	sigaction(SIGQUIT, &act, NULL);
-	rl_outstream = stderr; // see: bash 2> file (rien a faire la)
 }

@@ -68,6 +68,20 @@ void	exit_minishell(t_proc *procs)
 	exit(g_exitval);
 }
 
+// - add char *line ?
+// - add char *msg ?
+void	new_exit_minishell(t_proc *procs, char ***env)
+{
+	free_env(env);
+	close_saved_fd_and_streams(procs);
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
+	close(STDERR_FILENO);
+	free_procs(procs);
+	rl_clear_history();
+	exit(g_exitval);
+}
+
 static void	exit_too_many_arguments(t_proc *proc)
 {
 	if (proc->pid)

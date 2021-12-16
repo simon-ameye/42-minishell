@@ -6,11 +6,13 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 11:08:48 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/15 20:17:13 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/16 13:29:45 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+unsigned char	g_exitval;
 
 static void init_tokens(t_token *tokens, int len)
 {
@@ -151,15 +153,23 @@ void get_tokens(t_proc *procs)
 			procs[i].tokens = malloc(sizeof(t_token) * (ft_strlen(procs[i].str) + 1));
 			if (!procs[i].tokens)
 			{
-				free_procs(procs);
-				exit(EXIT_FAILURE);
+			//	free_env(procs->env);
+			//	free_procs(procs);
+			//	exit(EXIT_FAILURE);
+				ft_putstr_fd("minishell: error: malloc fail\n", STDERR_FILENO);
+				g_exitval = EXIT_FAILURE;
+				new_exit_minishell(procs, procs->env);
 			}
 			init_tokens(procs[i].tokens, ft_strlen(procs[i].str) + 1);
 			init_word(&word);
 			if (get_words(procs[i].tokens, procs[i].str, word))
 			{
-				free_procs(procs);
-				exit(EXIT_FAILURE);
+			//	free_env(procs->env);
+			//	free_procs(procs);
+			//	exit(EXIT_FAILURE);
+				ft_putstr_fd("minishell: error: malloc fail\n", STDERR_FILENO);
+				g_exitval = EXIT_FAILURE;
+				new_exit_minishell(procs, procs->env);
 			}
 			i++;
 		}
