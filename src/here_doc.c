@@ -1,14 +1,15 @@
 #include "minishell.h"
 
-static char *random_heredoc_name(void)
+void random_heredoc_name(char *filename)
 {
 	char	randomlist[10];
 	int		fd;
 	int		i;
 
+	ft_strcpy(filename, "minish-thd42-");
 	fd = open("/dev/random", O_RDONLY);
 	if (fd == -1)
-		return (NULL);
+		return ;
 	read(fd, randomlist, 9);
 	close(fd);
 	i = 0;
@@ -18,7 +19,7 @@ static char *random_heredoc_name(void)
 		i++;
 	}
 	randomlist[i] = '\0';
-	return (ft_strjoin("minish-thd42-", randomlist));
+	ft_strcpy(filename + ft_strlen(filename), randomlist);
 }
 
 static char	*get_delimiter(t_token token)
@@ -47,19 +48,16 @@ static	int	exit_heredoc(int *fd, char *filename, char *delimiter, char *line)
 	close(*fd);
 	*fd = open(filename, O_RDONLY);
 	unlink(filename);
-	free(filename);
 	free(delimiter);
 	return (EXIT_SUCCESS);
 }
 
-static	int	init_heredoc(int *fd, t_token token, char **filename, char **delimiter)
+static	int	init_heredoc(int *fd, t_token token, char *filename, char **delimiter)
 {
-	*filename = random_heredoc_name();
-	if (!*filename)
-		return (EXIT_FAILURE);// exit
-	*fd = open(*filename, O_CREAT | O_APPEND | O_RDWR, 0600);
+	random_heredoc_name(filename);
+	*fd = open(filename, O_CREAT | O_APPEND | O_RDWR, 0600);
 	if (*fd == -1)
-		return (heredoc_open_error(*filename));
+		return (heredoc_open_error(filename));
 	*delimiter = get_delimiter(token);
 	return (EXIT_SUCCESS);
 }
@@ -69,10 +67,10 @@ int	get_proc_here_doc(int *fd, t_token token, char **env)
 {
 	char	*tmp;
 	char	*line;
-	char	*filename;
+	char	filename[23];
 	char	*delimiter;
 	
-	init_heredoc(fd, token, &filename, &delimiter);
+	init_heredoc(fd, token, filename, &delimiter);
 //	printf("word: %s\n", token.word);
 //	printf("expanded: %s\n", token.expanded);
 //	printf("delimiter: %s\n", delimiter);
