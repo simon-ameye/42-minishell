@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 16:18:04 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/15 20:59:56 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/16 15:37:54 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,8 @@ static void threat_dollar(char **res, char **str, char **env)
 {
 	if ((*str)[1] == '?')
 		threat_dollar_quest_mark(res, str);
+	else if ((*str)[1] == '"' || (*str)[1] == '\'')
+		*str += 1;
 	else if ((*str)[1] >= '0' && (*str)[1] <= '9')
 		*str += 2;
 	else if (!ft_isalnum((*str)[1]))
