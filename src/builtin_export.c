@@ -32,7 +32,14 @@ static void	print_env_declare(char *str)
 			ft_putchar_fd(*str, STDOUT_FILENO);
 			str++;
 			ft_putchar_fd('"', STDOUT_FILENO);
-			ft_putstr_fd(str, STDOUT_FILENO);
+			while (*str)
+			{
+
+				if (*str == '$' || *str == '"')
+					ft_putchar_fd('\\', STDOUT_FILENO);
+				ft_putchar_fd(*str, STDOUT_FILENO);
+				str++;
+			}
 			ft_putchar_fd('"', STDOUT_FILENO);
 		}
 		ft_putstr_fd("\n", STDOUT_FILENO);
@@ -78,15 +85,28 @@ static int	get_varnamelen(char *str)
 	return(i);
 }
 
+void	export_var(char ***env, char *word)
+{
+	int	varnamelen;
+	int	line;
+	
+	varnamelen = get_varnamelen(word);
+	line = find_var_in_env(*env, word, varnamelen);
+	if (line >= 0)
+	{
+		free((*env)[line]);
+		(*env)[line] = ft_strdup(word);
+	}
+	else
+		add_line_in_env(env, word);
+}
+
 void	builtin_export(t_proc *proc)
 {
 	int i;
 	int no_argument;
-	int	varnamelen;
-	int	line;
-	int	error_occured;
 
-	error_occured = 0;
+	g_exitval = 0;
 	i = 0;
 	no_argument = 1;
 	while (proc->tokens[i].word)
@@ -95,20 +115,10 @@ void	builtin_export(t_proc *proc)
 		{
 			no_argument = 0;
 			if (is_correct_export_name(proc->tokens[i].word))
-			{
-				varnamelen = get_varnamelen(proc->tokens[i].word);
-				line = find_var_in_env(*proc->env, proc->tokens[i].word, varnamelen);
-				if (line >= 0)
-				{
-					free((*proc->env)[line]);
-					(*proc->env)[line] = ft_strdup(proc->tokens[i].word);
-				}
-				else
-					add_line_in_env(proc->env, proc->tokens[i].word);
-			}
+				export_var(proc->env, proc->tokens[i].word);
 			else
 			{
-				error_occured = 1;
+				g_exitval = 1;
 				ft_putstr_fd("export: ", STDERR_FILENO);
 				ft_putstr_fd(proc->tokens[i].word, STDERR_FILENO);
 				ft_putstr_fd(": not a valid identifier\n", STDERR_FILENO);
@@ -118,5 +128,4 @@ void	builtin_export(t_proc *proc)
 	}
 	if (no_argument)
 		print_env_sort(*proc->env);
-	g_exitval = error_occured;
 }
