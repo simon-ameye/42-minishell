@@ -6,13 +6,13 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 11:08:48 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/16 13:29:45 by trobin           ###   ########.fr       */
+/*   Updated: 2021/12/16 15:56:36 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-unsigned char	g_exitval;
+extern unsigned char	g_exitval;
 
 static void init_tokens(t_token *tokens, int len)
 {
