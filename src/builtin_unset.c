@@ -27,10 +27,18 @@ static void	free_line_and_stack(char **env, int line)
 	}
 }
 
+static void	remove_line(t_proc *proc, char *word)
+{
+	int line;
+
+	line = find_var_in_env(*proc->env, word, ft_strlen(word));
+	if (line >= 0)
+		free_line_and_stack(*proc->env, line);
+}
+
 void	builtin_unset(t_proc *proc)
 {
 	int i;
-	int line;
 	int	error_occured;
 
 	error_occured = 0;
@@ -40,11 +48,7 @@ void	builtin_unset(t_proc *proc)
 		if (proc->tokens[i].type == WORD)
 		{
 			if (is_correct_export_name(proc->tokens[i].word))
-			{
-				line = find_var_in_env(*proc->env, proc->tokens[i].word, ft_strlen(proc->tokens[i].word));
-				if (line >= 0)
-					free_line_and_stack(*proc->env, line);
-			}
+				remove_line(proc, proc->tokens[i].word);
 			else
 			{
 				error_occured = 1;
