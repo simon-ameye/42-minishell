@@ -34,11 +34,8 @@ static t_ftype	get_fnct_type_from_token(t_token *tokens)
 	return (EXECVE);
 }
 
-int	get_fnct_type(t_proc *proc)
+void	get_fnct_type(t_proc *proc)
 {
 	if (proc->tokens)
-	{
 		proc->ftype = get_fnct_type_from_token(proc->tokens);
-	}
-	return (EXIT_SUCCESS);
 }

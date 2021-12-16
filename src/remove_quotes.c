@@ -8,7 +8,7 @@ char	*remove_quotes_str(char *str)
 
 	res = malloc(sizeof(char) * (ft_strlen(str) + 1));
 	if (res == NULL)
-		return (NULL); //free + exit
+		return (NULL);
 	quote = 0;
 	i = 0;
 	while (*str)

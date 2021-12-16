@@ -60,6 +60,8 @@ commandes qui font bugger l'historique:
 ____________________________________________
 TODO
 
+- supprimer du header 'prev_stream_out' et 'next_stream_in'
+- verifier la valeur de 'errno' en cas de 'open' fail --> pb de permissions ou autre ?
 - tester 'multi' et 'syntax'
 - chevron perd siginfication into both s and d quotes
 - dollar  perd signification into s quotes

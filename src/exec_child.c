@@ -2,39 +2,30 @@
 
 extern unsigned char	g_exitval;
 
-static void	run_execve(t_proc *proc)
+static void	run_execve(t_proc *proc, t_proc *procs)
 {
 	int		i;
-	int		len;
+	int		j;
 	char	**arg;
-	int		count;
 
-	len = 0;
-	while (proc->tokens[len].word)
-		len++;
-
-	arg = malloc(sizeof(char *) * (len + 1));
-	if (!arg)
-		exit(222); // tmp
-
-	count = 0;
 	i = 0;
+	while (proc->tokens[i].word)
+		i++;
+	arg = malloc(sizeof(char *) * (i + 1));
+	if (!arg)
+		exit_minishell(procs, procs->env);
+	i = 0;
+	j = 0;
 	while (proc->tokens[i].word)
 	{
 		if (proc->tokens[i].type == WORD
 		|| proc->tokens[i].type == FUNCTION)
-		{
-			 arg[count] = proc->tokens[i].word;
-			 count++;
-		}
+			 arg[j++] = proc->tokens[i].word;
 		i++;
 	}
-	arg[count] = NULL;
-	if (proc->path)
-	{
-		if (execve(proc->path, arg, *proc->env) == -1)
-			perror("Error");
-	}
+	arg[j] = NULL;
+	if (proc->path && execve(proc->path, arg, *proc->env) == -1)
+		perror("minishell");
 	free(arg);
 }
 
@@ -57,7 +48,7 @@ static void	exec_proc(t_proc *proc, t_proc *procs)
 		else if (proc->ftype == EXPORT)
 			builtin_export(proc);
 		else
-			run_execve(proc);
+			run_execve(proc, procs);
 	}
 }
 

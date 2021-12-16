@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	set_ignored_tokens(t_proc *proc)
+void	set_ignored_tokens(t_proc *proc)
 {
 	int i;
 
@@ -14,5 +14,4 @@ int	set_ignored_tokens(t_proc *proc)
 			i++;
 		}
 	}
-	return (EXIT_SUCCESS);
 }

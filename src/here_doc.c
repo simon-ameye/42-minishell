@@ -1,9 +1,5 @@
 #include "minishell.h"
 
-/*
- * todo : gestion des erreurs
- */
-
 static char *random_heredoc_name(void)
 {
 	char	randomlist[10];
@@ -60,7 +56,7 @@ static	int	init_heredoc(int *fd, t_token token, char **filename, char **delimite
 {
 	*filename = random_heredoc_name();
 	if (!*filename)
-		return (EXIT_FAILURE);
+		return (EXIT_FAILURE);// exit
 	*fd = open(*filename, O_CREAT | O_APPEND | O_RDWR, 0600);
 	if (*fd == -1)
 		return (heredoc_open_error(*filename));

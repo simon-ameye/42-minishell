@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 11:08:48 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/16 15:56:36 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/16 20:43:46 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,8 +142,8 @@ static int get_words(t_token *tokens, char *line, t_word word)
 
 void get_tokens(t_proc *procs)
 {
-	int i;
-	t_word word;
+	int		i;
+	t_word	word;
 
 	if (procs)
 	{
@@ -153,23 +153,17 @@ void get_tokens(t_proc *procs)
 			procs[i].tokens = malloc(sizeof(t_token) * (ft_strlen(procs[i].str) + 1));
 			if (!procs[i].tokens)
 			{
-			//	free_env(procs->env);
-			//	free_procs(procs);
-			//	exit(EXIT_FAILURE);
 				ft_putstr_fd("minishell: error: malloc fail\n", STDERR_FILENO);
 				g_exitval = EXIT_FAILURE;
-				new_exit_minishell(procs, procs->env);
+				exit_minishell(procs, procs->env);
 			}
 			init_tokens(procs[i].tokens, ft_strlen(procs[i].str) + 1);
 			init_word(&word);
 			if (get_words(procs[i].tokens, procs[i].str, word))
 			{
-			//	free_env(procs->env);
-			//	free_procs(procs);
-			//	exit(EXIT_FAILURE);
 				ft_putstr_fd("minishell: error: malloc fail\n", STDERR_FILENO);
 				g_exitval = EXIT_FAILURE;
-				new_exit_minishell(procs, procs->env);
+				exit_minishell(procs, procs->env);
 			}
 			i++;
 		}

@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 17:36:49 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/13 18:16:23 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/16 21:00:45 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,44 +75,30 @@ static int	get_proc_fdout(int *fd, char *filename, t_token_type type)
 int	get_fds(t_proc *proc)
 {
 	int	i;
-	int	err;
 
-	// are these protections very useful ? ...
-	err = 0;
-	if (proc)
+	i = 0;
+	while (proc->tokens[i].word)
 	{
-		// same here
-		if (proc->tokens)
+		if (proc->tokens[i].type == AMBIGOUS_REDIRECT)
 		{
-			i = 0;
-			while (proc->tokens[i].word)
-			{
-				// 'AMBIGOUS_REDIRECT'
-				if (proc->tokens[i].type == AMBIGOUS_REDIRECT)
-				{
-					ft_putstr_fd("ambiguous redirect\n", STDERR_FILENO);
-					err += 1;
-				}
-				// '>'
-				if (proc->tokens[i].type == EXIT_FILE)
-					err += get_proc_fdout(&proc->fdout, proc->tokens[i].word, EXIT_FILE);
-				// '>>'
-				else if (proc->tokens[i].type == EXIT_FILE_RET)
-					err += get_proc_fdout(&proc->fdout, proc->tokens[i].word, EXIT_FILE_RET);
-				// '<'
-				else if (proc->tokens[i].type == OPEN_FILE)
-					err += get_proc_fdin(&proc->fdin, proc->tokens[i].word);
-				// '<<'
-				else if (proc->tokens[i].type == LIMITOR)
-					err += get_proc_here_doc(&proc->fdin, proc->tokens[i], *proc->env);
-				if (err)
-				{
-					proc->ftype = NO_FUNCTION;
-					return (EXIT_SUCCESS);
-				}
-				i++;
-			}
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
+			ft_putstr_fd(proc->tokens[i].expanded, STDERR_FILENO); // always expanded ? (vs word)
+			ft_putstr_fd(": ambiguous redirect\n", STDERR_FILENO);
+			return (EXIT_FAILURE);
 		}
+		if (proc->tokens[i].type == EXIT_FILE
+			&& get_proc_fdout(&proc->fdout, proc->tokens[i].word, EXIT_FILE))
+			return (EXIT_FAILURE);
+		else if (proc->tokens[i].type == EXIT_FILE_RET
+			&& get_proc_fdout(&proc->fdout, proc->tokens[i].word, EXIT_FILE_RET))
+			return (EXIT_FAILURE);
+		else if (proc->tokens[i].type == OPEN_FILE
+			&& get_proc_fdin(&proc->fdin, proc->tokens[i].word))
+			return (EXIT_FAILURE);
+		else if (proc->tokens[i].type == LIMITOR
+			&& get_proc_here_doc(&proc->fdin, proc->tokens[i], *proc->env))
+			return (EXIT_FAILURE);
+		i++;
 	}
 	return (EXIT_SUCCESS);
 }

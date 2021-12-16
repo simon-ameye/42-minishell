@@ -58,19 +58,9 @@ long	ft_atol(char *s)
 	return ((long)(ret * sign));
 }
 
-void	exit_minishell(t_proc *procs)
-{
-	if (procs && procs->env)
-		free_env(procs->env);
-	close_saved_fd_and_streams(procs);
-	free_procs(procs);
-	rl_clear_history();
-	exit(g_exitval);
-}
-
 // - add char *line ?
 // - add char *msg ?
-void	new_exit_minishell(t_proc *procs, char ***env)
+void	exit_minishell(t_proc *procs, char ***env)
 {
 	free_env(env);
 	close_saved_fd_and_streams(procs);
@@ -98,7 +88,7 @@ static void	exit_non_numeric_arguments(t_proc *proc, t_proc *procs)
 	ft_putstr_fd(proc->tokens[1].word, STDERR_FILENO);
 	ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
 	g_exitval = 2;
-	exit_minishell(procs);
+	exit_minishell(procs, proc->env);
 }
 
 void	builtin_exit(t_proc *proc, t_proc *procs)
@@ -111,7 +101,7 @@ void	builtin_exit(t_proc *proc, t_proc *procs)
 	{
 		if (proc->pid)
 			ft_putstr_fd("exit\n", STDERR_FILENO);
-		exit_minishell(procs);
+		exit_minishell(procs, procs->env);
 	}
 	else
 	{
@@ -123,6 +113,6 @@ void	builtin_exit(t_proc *proc, t_proc *procs)
 		if (proc->pid)
 			ft_putstr_fd("exit\n", STDERR_FILENO);
 		g_exitval = (unsigned char)exit_value;
-		return (exit_minishell(procs));
+		exit_minishell(procs, procs->env);
 	}
 }

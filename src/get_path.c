@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 18:17:57 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/10 17:09:29 by trobin           ###   ########.fr       */
+/*   Updated: 2021/12/16 20:43:04 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,7 @@ int	get_path(t_proc *proc)
 				{
 					proc->path = get_proc_path(proc->tokens[i].word, *proc->env);
 					if (!proc->path)
-						proc->ftype = NO_FUNCTION;
-					return (EXIT_SUCCESS);	
+						return (EXIT_FAILURE);
 				}
 				i++;
 			}

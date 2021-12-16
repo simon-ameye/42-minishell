@@ -161,7 +161,7 @@ void	get_procs(t_proc **procs, char *line, char ***env)
 		{
 			ft_putstr_fd("minishell: error: malloc fail\n", STDERR_FILENO);
 			free(line); // free into exit_minishell() ?
-			new_exit_minishell(*procs, env);
+			exit_minishell(*procs, env);
 		}
 		i = 0;
 		while (i < nb_procs)
@@ -173,7 +173,7 @@ void	get_procs(t_proc **procs, char *line, char ***env)
 				ft_putstr_fd("minishell: error: malloc fail\n", STDERR_FILENO);
 				free(line); // free into exit_minishell() ?
 				(*procs)[i + 1].is_last = 1;
-				new_exit_minishell(*procs, env);
+				exit_minishell(*procs, env);
 			}
 			i++;
 		}
