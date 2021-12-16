@@ -156,26 +156,27 @@ void	get_procs(t_proc **procs, char *line, char ***env)
 	nb_procs = get_nb_procs(line);
 	if (nb_procs)
 	{
-		// malloc procs
 		*procs = malloc((sizeof(t_proc) * (nb_procs + 1)));
 		if (!*procs)
-			exit(EXIT_FAILURE);
-		// fill procs
+		{
+			ft_putstr_fd("minishell: error: malloc fail\n", STDERR_FILENO);
+			free(line); // free into exit_minishell() ?
+			new_exit_minishell(*procs, env);
+		}
 		i = 0;
 		while (i < nb_procs)
 		{
-	//		create_proc(*procs, line, i);
 			init_proc(&(*procs)[i], env);
 			(*procs)[i].str = get_proc_str(line, i);
 			if ((*procs)[i].str == NULL)
 			{
-				free_procs(*procs);
-				printf("Error: malloc fail\n");
-				exit(EXIT_FAILURE);
+				ft_putstr_fd("minishell: error: malloc fail\n", STDERR_FILENO);
+				free(line); // free into exit_minishell() ?
+				(*procs)[i + 1].is_last = 1;
+				new_exit_minishell(*procs, env);
 			}
 			i++;
 		}
-		// overrides default 'false'
 		(*procs)[nb_procs].is_last = 1;
 	}
 }

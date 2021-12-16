@@ -78,6 +78,37 @@ static int	parser(t_proc *procs, char *const *env)
 }
 */
 
+static void	interpreter(t_proc **procs, char ***env, char *line)
+{
+	*procs = NULL; // ?
+	get_procs(procs, line, env);
+	free(line);
+	get_tokens(*procs);
+	if (!parser(*procs))
+	{
+		//print_procs(procs);
+		add_history(line);
+		exec(*procs);
+	}
+	else
+		new_exit_minishell(*procs, env);
+}
+
+void	init_minishell(t_proc **procs, char ***env, char **envp)
+{
+	g_exitval = 0;
+	*procs = NULL;
+	*env = copy_env(envp);
+	if (*env == NULL)
+	{
+		ft_putstr_fd("minishell: error: malloc fail\n", STDERR_FILENO);
+		new_exit_minishell(*procs, env);
+	}
+	init_signals();
+	rl_outstream = stderr;
+	//increase_shlvl(&env);
+}
+
 int main(int ac, char **av, char **envp)
 {
 	char	*line;
@@ -86,35 +117,21 @@ int main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
-	procs = NULL;
-	g_exitval = 0;
-	init_signals();
-	env = copy_env(envp);
-//	//increase_shlvl(&env);
-
+	init_minishell(&procs, &env, envp);
 	while (1)
 	{
 		line = NULL;
-		line = readline("\e[0;36mminishell\e[0;35m> \e[0m");
+		line = readline("\e[0;36mminishell\e[0;35m> \e[0m"); // define prompt
 		if (!line) // EOF. readline can't fail (cf. man readline)
 		{
 			write(2, "exit\n", 5);
-			exit_minishell(procs);
+			new_exit_minishell(NULL, &env);
+			//exit_minishell(procs);
 		}
 		else if (*line)
 		{
-			add_history(line);
-			procs = NULL;
-			get_procs(&procs, line, &env);
-			free(line);
-			get_tokens(procs);
-			if (!parser(procs))
-			{
-				//print_procs(procs);
-				exec(procs);
-			}
+			interpreter(&procs, &env, line);
 		}
 	}
-	free_env(&env); // ??
 	return (0);
 }
