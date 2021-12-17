@@ -13,13 +13,13 @@ char	*remove_quotes_str(char *str)
 	i = 0;
 	while (*str)
 	{
-		if (*str != '"' && *str != '\'') // pas une quote, on ecrit
+		if (*str != '"' && *str != '\'')
 			res[i++] = *str;
-		else if (!quote) // une quot et on etait pas dans des quotes, on zappe et on entre dans des quotes
+		else if (!quote)
 			quote = *str;
-		else if (*str == quote)//une quote et on etait dans la meme quote, on sort de la quote et on ecrit pas
+		else if (*str == quote)
 			quote = 0;
-		else if (*str != quote)//une quote et on etait pas dans la meme quote, on ecrit, c est pas une quote
+		else if (*str != quote)
 			res[i++] = *str;
 		str++;
 	}
