@@ -15,6 +15,12 @@
 #include <errno.h>
 #include <signal.h>
 
+# define DO_SKIP 0
+# define DO_EXIT 1
+# define DO_EXEC 2
+
+# define PROMPT "\e[0;36mminishell\e[0;35m> \e[0m"
+
 typedef enum e_ftype
 {
 	EXECVE,
