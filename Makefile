@@ -31,6 +31,7 @@ SRCS		=		minishell.c \
 					dollar_expand.c \
 					dollar_expand_1.c \
 					get_token_type.c \
+					get_token_type_1.c \
 					get_path.c \
 					get_fnct_type.c \
 					remove_quotes.c \

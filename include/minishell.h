@@ -123,6 +123,12 @@ void	threat_dollar_quest_mark(char **res, char **str);
 void	threat_dollar_spec_char(char **res, char **str);
 void	threat_dollar_expand(char **res, char **str, char **env);
 
+//get_token_type
+int	redir_op_to_file_type(int i);
+int	is_redir_op(int i);
+void	get_operators(t_proc *proc);
+
+
 /******************************************************************************/
 /*                                                                            */
 /*     dollar_expand.c                                                        */
