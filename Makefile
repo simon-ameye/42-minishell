@@ -38,6 +38,7 @@ SRCS		=		minishell.c \
 					exec_child.c \
 					builtin_env.c \
 					builtin_echo.c \
+					builtin_echo_1.c \
 					builtin_exit.c \
 					builtin_pwd.c \
 					builtin_cd.c \
