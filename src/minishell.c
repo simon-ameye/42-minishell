@@ -7,7 +7,7 @@
 
 unsigned char	g_exitval;
 
-static int	parser(t_proc *procs)
+static int	parser(t_proc *procs, char *line)
 {
 	int	i;
 
@@ -24,7 +24,7 @@ static int	parser(t_proc *procs)
 		if (remove_quotes(procs[i]))
 			return (EXIT);
 		get_fnct_type(&procs[i]);
-		if (get_fds(&procs[i]))
+		if (get_fds(&procs[i], procs, line))
 			procs[i].ftype = NO_FUNCTION;
 		if (get_path(&procs[i]))
 			procs[i].ftype = NO_FUNCTION;
@@ -40,7 +40,7 @@ static void	interpreter(t_proc **procs, char ***env, char *line)
 	*procs = NULL; // ?
 	get_procs(procs, line, env);
 	get_tokens(*procs);
-	action = parser(*procs);
+	action = parser(*procs, line);
 	if (action == EXIT)
 	{
 		free(line);

@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 17:36:49 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/16 21:00:45 by trobin           ###   ########.fr       */
+/*   Updated: 2021/12/17 13:34:17 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static int	get_proc_fdout(int *fd, char *filename, t_token_type type)
 	return (EXIT_SUCCESS);
 }
 
-int	get_fds(t_proc *proc)
+int	get_fds(t_proc *proc, t_proc *procs, char *line)
 {
 	int	i;
 
@@ -96,7 +96,7 @@ int	get_fds(t_proc *proc)
 			&& get_proc_fdin(&proc->fdin, proc->tokens[i].word))
 			return (EXIT_FAILURE);
 		else if (proc->tokens[i].type == LIMITOR
-			&& get_proc_here_doc(&proc->fdin, proc->tokens[i], *proc->env))
+			&& get_proc_here_doc(&proc->fdin, proc->tokens[i], procs, line))
 			return (EXIT_FAILURE);
 		i++;
 	}

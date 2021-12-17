@@ -131,7 +131,7 @@ void	switch_quote(char *quote, char c);
 /*                                                                            */
 /******************************************************************************/
 
-int	get_fds(t_proc *proc);
+int	get_fds(t_proc *proc, t_proc *procs, char *line);
 
 /******************************************************************************/
 /*                                                                            */
@@ -233,7 +233,7 @@ int		find_var_in_env(char **env, char *str, int strlen);
 /*                                                                            */
 /******************************************************************************/
 
-int		get_proc_here_doc(int *fd, t_token token, char **env);
+int		get_proc_here_doc(int *fd, t_token token, t_proc *procs, char *line);
 
 /******************************************************************************/
 /*                                                                            */

@@ -30,7 +30,7 @@ static char	*get_delimiter(t_token token)
 		return (remove_quotes_str(token.word)); /// echo bla > "'test'" donne "'test'" !!
 }
 
-static int	heredoc_open_error(char *filename)
+static void	heredoc_open_error(char *filename)
 {
 	unlink(filename);
 	ft_putstr_fd("minishell: heredoc: ", STDERR_FILENO);
@@ -38,7 +38,6 @@ static int	heredoc_open_error(char *filename)
 	ft_putstr_fd(": ", STDERR_FILENO);
 	ft_putstr_fd(filename, STDERR_FILENO);
 	ft_putstr_fd("\n", STDERR_FILENO);
-	return (EXIT_FAILURE);
 }
 
 static	int	exit_heredoc(int *fd, char *filename, char *delimiter, char *line)
@@ -46,7 +45,7 @@ static	int	exit_heredoc(int *fd, char *filename, char *delimiter, char *line)
 	if (!line)
 		write(1, "\n", 1);
 	close(*fd);
-	*fd = open(filename, O_RDONLY);
+	*fd = open(filename, O_RDONLY); // check return ?
 	unlink(filename);
 	free(delimiter);
 	return (EXIT_SUCCESS);
@@ -57,20 +56,25 @@ static	int	init_heredoc(int *fd, t_token token, char *filename, char **delimiter
 	random_heredoc_name(filename);
 	*fd = open(filename, O_CREAT | O_APPEND | O_RDWR, 0600);
 	if (*fd == -1)
-		return (heredoc_open_error(filename));
-	*delimiter = get_delimiter(token);
+		heredoc_open_error(filename); // maybe delete this function
+	*delimiter = get_delimiter(token); // maybe also delete this one ?
+	if (!*delimiter)
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
-
-int	get_proc_here_doc(int *fd, t_token token, char **env)
+int	get_proc_here_doc(int *fd, t_token token, t_proc *procs, char *ps1_line)
 {
 	char	*tmp;
 	char	*line;
 	char	filename[23];
 	char	*delimiter;
 	
-	init_heredoc(fd, token, filename, &delimiter);
+	if (init_heredoc(fd, token, filename, &delimiter))
+	{
+		free(ps1_line);
+		exit_minishell(procs, procs->env);
+	}
 //	printf("word: %s\n", token.word);
 //	printf("expanded: %s\n", token.expanded);
 //	printf("delimiter: %s\n", delimiter);
@@ -86,7 +90,13 @@ int	get_proc_here_doc(int *fd, t_token token, char **env)
 		}
 		else
 		{
-			tmp = dollar_expand_str(line, env, 1);
+			tmp = dollar_expand_str(line, *procs->env, 1);
+			if (!tmp)
+			{
+				free(ps1_line);
+				exit_heredoc(fd, filename, delimiter, line);
+				exit_minishell(procs, procs->env);
+			}
 			ft_putstr_fd(tmp, *fd);
 			ft_putstr_fd("\n", *fd);
 			free(tmp);
