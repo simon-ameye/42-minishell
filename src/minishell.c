@@ -1,9 +1,16 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: trobin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/17 17:25:13 by trobin            #+#    #+#             */
+/*   Updated: 2021/12/17 17:25:16 by trobin           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-# define SKIP 0
-# define EXIT 1
-# define EXEC 2
-# define PROMPT "\e[0;36mminishell\e[0;35m> \e[0m"
+#include "minishell.h"
 
 unsigned char	g_exitval;
 
@@ -17,12 +24,12 @@ static int	parser(t_proc *procs, char *line)
 	while (!procs[i].is_last)
 	{
 		if (dollar_expand(procs[i]))
-			return (EXIT);
+			return (DO_EXIT);
 		set_ignored_tokens(&procs[i]);
 		if (get_token_type(&procs[i]))
-			return (SKIP);
+			return (DO_SKIP);
 		if (remove_quotes(procs[i]))
-			return (EXIT);
+			return (DO_EXIT);
 		get_fnct_type(&procs[i]);
 		if (get_fds(&procs[i], procs, line))
 			procs[i].ftype = NO_FUNCTION;
@@ -30,72 +37,72 @@ static int	parser(t_proc *procs, char *line)
 			procs[i].ftype = NO_FUNCTION;
 		i++;
 	}
-	return (EXEC);
+	return (DO_EXEC);
 }
 
-static void	interpreter(t_proc **procs, char ***env, char *line)
+static void	interpreter(t_proc *procs, char ***env, char *line)
 {
 	int	action;
 
-	*procs = NULL; // ?
-	get_procs(procs, line, env);
-	get_tokens(*procs);
-	action = parser(*procs, line);
-	if (action == EXIT)
+	get_procs(&procs, line, env);
+	get_tokens(procs);
+	action = parser(procs, line);
+	if (action == DO_EXIT)
 	{
 		free(line);
-		exit_minishell(*procs, env);
+		exit_minishell(procs, env);
 	}
-	if (action == SKIP)
+	if (action == DO_SKIP)
 	{
 		add_history(line);
 		free(line);
-		free_procs(*procs);
+		free_procs(procs);
 		return ;
 	}
-	if (action == EXEC)
+	if (action == DO_EXEC)
 	{
 		add_history(line);
 		free(line);
-		exec(*procs);
+		exec(procs);
 	}
 }
 
-void	init_minishell(t_proc **procs, char ***env, char **envp)
+void	init_minishell(int ac, char **av, char ***env, char **envp)
 {
+	(void)ac;
+	(void)av;
 	g_exitval = 0;
-	*procs = NULL;
 	*env = copy_env(envp);
 	if (*env == NULL)
 	{
 		ft_putstr_fd("minishell: error: malloc fail\n", STDERR_FILENO);
-		exit_minishell(*procs, env);
+		exit_minishell(NULL, env);
 	}
 	init_signals();
-	rl_outstream = stderr; // we should redirect input also !...
-	//increase_shlvl(&env);
+	rl_outstream = stderr;
 }
 
-int main(int ac, char **av, char **envp)
+int	main(int ac, char **av, char **envp)
 {
 	char	*line;
 	char	**env;
 	t_proc	*procs;
 
-	(void)ac;
-	(void)av;
-	init_minishell(&procs, &env, envp);
+	init_minishell(ac, av, &env, envp);
 	while (1)
 	{
 		line = NULL;
 		line = readline(PROMPT);
-		if (!line) // EOF. readline can't fail (cf. man readline)
+		if (!line)
 		{
 			ft_putstr_fd("exit\n", STDERR_FILENO);
 			exit_minishell(NULL, &env);
 		}
 		else if (*line)
-			interpreter(&procs, &env, line);
+		{
+			procs = NULL;
+			interpreter(procs, &env, line);
+		}
 	}
 	return (0);
 }
