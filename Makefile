@@ -48,6 +48,7 @@ SRCS		=		minishell.c \
 					builtin_unset.c \
 					builtin_export.c \
 					builtin_export_1.c \
+					builtin_utils.c \
 					env.c \
 					here_doc.c \
 					set_ignored_tokens.c \

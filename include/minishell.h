@@ -14,6 +14,7 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <signal.h>
+#include <limits.h> /* LONG_MAX, LONG_MIN */
 
 # define DO_SKIP 0
 # define DO_EXIT 1
@@ -102,7 +103,7 @@ typedef struct	s_proc
 /*                                                                            */
 /******************************************************************************/
 
-void	exit_minishell(t_proc *procs, char ***env);
+void	exit_minishell(t_proc *procs, char ***env); // move ?
 void	builtin_cd(t_proc *proc);
 void	builtin_exit(t_proc *procs, t_proc *proc);
 void	builtin_pwd(void);
@@ -117,23 +118,26 @@ void	builtin_export(t_proc *proc);
 /*                                                                            */
 /******************************************************************************/
 
-//builtin_echo
+//		builtin_utils.c
+long	ft_atol(char *s);
+int		get_nb_args(t_token *tokens);
+
+//		builtin_echo_1.c
 void	skip_n_options(t_token *tokens, int *i, int *n_option);
 
-//builtin_export
+//		builtin_export_1.c
 void	print_env_sort(char **env);
 
-//dollar_expand
+//		dollar_expand_1.c
 char	*join_char_free(char *str, char c);
 void	threat_dollar_quest_mark(char **res, char **str);
 void	threat_dollar_spec_char(char **res, char **str);
 void	threat_dollar_expand(char **res, char **str, char **env);
 
-//get_token_type
-int	redir_op_to_file_type(int i);
-int	is_redir_op(int i);
+//		get_token_type_1.c
+int		redir_op_to_file_type(int i);
+int		is_redir_op(int i);
 void	get_operators(t_proc *proc);
-
 
 /******************************************************************************/
 /*                                                                            */

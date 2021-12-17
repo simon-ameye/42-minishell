@@ -1,22 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_pwd.c                                      :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trobin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/17 19:44:53 by trobin            #+#    #+#             */
-/*   Updated: 2021/12/17 19:45:18 by trobin           ###   ########.fr       */
+/*   Created: 2020/08/10 11:03:03 by sameye            #+#    #+#             */
+/*   Updated: 2021/12/17 19:40:44 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-extern unsigned char	g_exitval;
-
-void	builtin_pwd(void)
+char	*ft_strndup(char *s, int n)
 {
-	ft_putstr_fd(getcwd(NULL, 0), STDOUT_FILENO);
-	ft_putstr_fd("\n", STDOUT_FILENO);
-	g_exitval = 0;
+	char	*ret;
+
+	ret = NULL;
+	if (s)
+	{
+		ret = malloc(sizeof(char) * (n + 1));
+		if (ret)
+		{
+			ft_strncpy(ret, s, n);
+			ret[n] = '\0';
+		}
+	}
+	return (ret);
 }
