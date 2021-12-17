@@ -6,14 +6,19 @@ void secure_close(int fd)
 		close(fd);
 }
 
+void close_std_streams(void)
+{
+	secure_close(0);
+	secure_close(1);
+}
+
 void close_saved_fd_and_streams(t_proc *procs)
 {
 	if (procs)
 	{
 		secure_close(procs->saved_std[0]);
 		secure_close(procs->saved_std[1]);
-		secure_close(0);
-		secure_close(1);
+		close_std_streams();
 	}
 }
 

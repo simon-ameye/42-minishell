@@ -29,6 +29,7 @@ SRCS		=		minishell.c \
 					get_tokens.c \
 					string.c \
 					dollar_expand.c \
+					dollar_expand_1.c \
 					get_token_type.c \
 					get_path.c \
 					get_fnct_type.c \
@@ -44,10 +45,12 @@ SRCS		=		minishell.c \
 					builtin_cd.c \
 					builtin_unset.c \
 					builtin_export.c \
+					builtin_export_1.c \
 					env.c \
 					here_doc.c \
 					set_ignored_tokens.c \
 					signals.c \
+					run_execve.c\
 					fd_tools.c
 
 SOURCES		=		$(addprefix $(SRCS_DIR)/,$(SRCS))

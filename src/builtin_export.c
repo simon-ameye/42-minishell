@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_export.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/17 12:37:34 by sameye            #+#    #+#             */
+/*   Updated: 2021/12/17 12:50:59 by sameye           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 extern unsigned char	g_exitval;
@@ -17,79 +29,21 @@ static int	is_correct_export_name(char *str)
 	return (1);
 }
 
-static void	print_env_declare(char *str)
-{
-	if (str)
-	{
-		ft_putstr_fd("export ", STDOUT_FILENO);
-		while (*str && *str != '=')
-		{
-			ft_putchar_fd(*str, STDOUT_FILENO);
-			str++;
-		}
-		if (*str == '=')
-		{
-			ft_putchar_fd(*str, STDOUT_FILENO);
-			str++;
-			ft_putchar_fd('"', STDOUT_FILENO);
-			while (*str)
-			{
-
-				if (*str == '$' || *str == '"')
-					ft_putchar_fd('\\', STDOUT_FILENO);
-				ft_putchar_fd(*str, STDOUT_FILENO);
-				str++;
-			}
-			ft_putchar_fd('"', STDOUT_FILENO);
-		}
-		ft_putstr_fd("\n", STDOUT_FILENO);
-	}
-}
-
-static void	print_env_sort(char **env)
-{
-	int i;
-	int j;
-	char *previous;
-	char *actual;
-
-	if (env && *env)
-	{
-		previous = NULL;
-		i = 0;
-		while (env[i])
-		{
-			j = 0;
-			actual = NULL;
-			while (env[j])
-			{
-				if ((!previous || ft_strcmp(env[j], previous) > 0)
-					&& (!actual || ft_strcmp(env[j], actual) < 0))
-					actual = env[j];
-				j++;
-			}
-			print_env_declare(actual);
-			previous = actual;
-			i++;
-		}
-	}
-}
-
 static int	get_varnamelen(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i] && str[i] != '=')
 		i++;
-	return(i);
+	return (i);
 }
 
 void	export_var(char ***env, char *word)
 {
 	int	varnamelen;
 	int	line;
-	
+
 	varnamelen = get_varnamelen(word);
 	line = find_var_in_env(*env, word, varnamelen);
 	if (line >= 0)
@@ -103,8 +57,8 @@ void	export_var(char ***env, char *word)
 
 void	builtin_export(t_proc *proc)
 {
-	int i;
-	int no_argument;
+	int	i;
+	int	no_argument;
 
 	g_exitval = 0;
 	i = 0;

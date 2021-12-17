@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/17 13:31:07 by sameye            #+#    #+#             */
+/*   Updated: 2021/12/17 13:40:39 by sameye           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 extern unsigned char	g_exitval;
@@ -18,14 +30,14 @@ static void	do_pipes(t_proc *procs)
 		}
 		procs[i].stream_in = pipefd[0];
 		procs[i - 1].stream_out = pipefd[1];
-		procs[i].prev_stream_out =  pipefd[1];
+		procs[i].prev_stream_out = pipefd[1];
 		procs[i - 1].next_stream_in = pipefd[0];
 		i++;
 	}
 	procs[i - 1].stream_out = dup(STDOUT_FILENO);
 }
 
-static void do_redirs(t_proc *procs)
+static void	do_redirs(t_proc *procs)
 {
 	int	i;
 
@@ -68,8 +80,7 @@ static void	do_forks(t_proc *procs)
 			close_all_streams_except_current(procs, i);
 			exec_child(&procs[i], procs);
 			free_procs(procs);
-			close(0);
-			close(1);
+			close_std_streams();
 			exit(g_exitval);
 		}
 		secure_close(procs[i].stream_in);
@@ -107,7 +118,7 @@ void	exec(t_proc *procs)
 	if (procs)
 	{
 		if (procs[0].ftype == EXECVE
-		|| (!procs[0].is_last && !procs[1].is_last))
+			|| (!procs[0].is_last && !procs[1].is_last))
 		{
 			do_pipes(procs);
 			do_redirs(procs);

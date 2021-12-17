@@ -111,8 +111,17 @@ void	builtin_export(t_proc *proc);
 /*                                                                            */
 /******************************************************************************/
 
-void skip_n_options(t_token *tokens, int *i, int *n_option);
+//builtin_echo
+void	skip_n_options(t_token *tokens, int *i, int *n_option);
 
+//builtin_export
+void	print_env_sort(char **env);
+
+//dollar_expand
+char	*join_char_free(char *str, char c);
+void	threat_dollar_quest_mark(char **res, char **str);
+void	threat_dollar_spec_char(char **res, char **str);
+void	threat_dollar_expand(char **res, char **str, char **env);
 
 /******************************************************************************/
 /*                                                                            */
@@ -136,7 +145,7 @@ void	switch_quote(char *quote, char c);
 
 /******************************************************************************/
 /*                                                                            */
-/*     get_redirs.c                                                           */
+/*     get_fds.c                                                              */
 /*                                                                            */
 /******************************************************************************/
 
@@ -263,6 +272,14 @@ void	signal_handler(int signum, siginfo_t *siginfo, void *context);
 
 /******************************************************************************/
 /*                                                                            */
+/*     run_execve.c                                                           */
+/*                                                                            */
+/******************************************************************************/
+
+void	run_execve(t_proc *proc, t_proc *procs);
+
+/******************************************************************************/
+/*                                                                            */
 /*     fd_tools                                                               */
 /*                                                                            */
 /******************************************************************************/
@@ -270,5 +287,6 @@ void	signal_handler(int signum, siginfo_t *siginfo, void *context);
 void close_saved_fd_and_streams(t_proc *procs);
 void secure_close(int fd);
 void close_all_streams_except_current(t_proc *procs, int i);
+void close_std_streams(void);
 
 # endif

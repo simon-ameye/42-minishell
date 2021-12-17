@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_unset.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/17 12:59:39 by sameye            #+#    #+#             */
+/*   Updated: 2021/12/17 12:59:58 by sameye           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 extern unsigned char	g_exitval;
@@ -29,7 +41,7 @@ static void	free_line_and_stack(char **env, int line)
 
 static void	remove_line(t_proc *proc, char *word)
 {
-	int line;
+	int	line;
 
 	line = find_var_in_env(*proc->env, word, ft_strlen(word));
 	if (line >= 0)
@@ -38,7 +50,7 @@ static void	remove_line(t_proc *proc, char *word)
 
 void	builtin_unset(t_proc *proc)
 {
-	int i;
+	int	i;
 	int	error_occured;
 
 	error_occured = 0;
