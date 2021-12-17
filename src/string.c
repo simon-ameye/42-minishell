@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 17:30:28 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/15 20:17:40 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/17 17:43:08 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	free_str_tab(char **tab)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (tab)
@@ -29,8 +29,6 @@ void	free_str_tab(char **tab)
 	}
 }
 
-//This version of ft_strjoin is able to
-//join a str to (null) and frees s1  and s2
 static void	strjoin_iter(char **str, char **s1, char **s2)
 {
 	int	i;
@@ -73,7 +71,7 @@ char	*ft_strjoinfree(char *s1, char *s2)
 
 int	str_tab_len(char *const *env)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (env[i])
@@ -81,7 +79,7 @@ int	str_tab_len(char *const *env)
 	return (i);
 }
 
-void switch_quote(char *quote, char c)
+void	switch_quote(char *quote, char c)
 {
 	if (c == '"' || c == '\'')
 	{

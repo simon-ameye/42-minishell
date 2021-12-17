@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 18:17:57 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/16 20:43:04 by trobin           ###   ########.fr       */
+/*   Updated: 2021/12/17 17:54:04 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ static char	*get_proc_path(char *cmd, char **env)
 				ft_putstr_fd("No such file or directory: ", STDERR_FILENO);
 				ft_putstr_fd(cmd, STDERR_FILENO);
 				ft_putstr_fd("\n", STDERR_FILENO);
+				g_exitval = 127;
 				return (NULL);
 			}
 			return (ft_strdup(cmd));

@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 11:15:23 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/17 16:42:57 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/17 18:40:27 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,18 @@ extern unsigned char	g_exitval;
 static int	print_error_near_token(char *word)
 {
 	ft_putstr_fd("syntax error near unexpected token ", STDERR_FILENO);
-	ft_putstr_fd(word, STDOUT_FILENO);
-	ft_putstr_fd("\n", STDOUT_FILENO);
+	if (word)
+		ft_putstr_fd(word, STDERR_FILENO);
+	ft_putstr_fd("\n", STDERR_FILENO);
+	g_exitval = 2;
 	return (EXIT_FAILURE);
 }
 
 static int	print_syntax_error(void)
 {
 	ft_putstr_fd("syntax error near unexpected token ", STDERR_FILENO);
-	ft_putstr_fd("'newline'\n", STDOUT_FILENO);
+	ft_putstr_fd("'newline'\n", STDERR_FILENO);
+	g_exitval = 2;
 	return (EXIT_FAILURE);
 }
 
@@ -40,7 +43,7 @@ static int	get_filenames_type(t_proc *proc)
 		{
 			if (is_redir_op(proc->tokens[i].type))
 			{
-				if (!proc->tokens[i + 1].word)
+				if (!proc->tokens[i + 1].word || is_redir_op(proc->tokens[i + 1].type))
 					return (print_syntax_error());
 				else if (proc->tokens[i].type == HERE_DOC)
 					proc->tokens[i + 1].type = LIMITOR;
