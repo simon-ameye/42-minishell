@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/17 13:57:20 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/17 14:00:49 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/17 20:25:35 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	find_function_token(t_token *tokens, int *i)
 			tokens[*i].type = FUNCTION;
 			break ;
 		}
-		i++;
+		(*i)++;
 	}
 }
 
