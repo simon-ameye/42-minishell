@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/17 12:37:37 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/17 12:53:56 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/17 16:09:25 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,10 @@ static void	print_env_declare(char *str)
 			ft_putchar_fd('"', STDOUT_FILENO);
 			while (*str)
 			{
+				
 				if (*str == '$' || *str == '"')
 					ft_putchar_fd('\\', STDOUT_FILENO);
+				
 				ft_putchar_fd(*str, STDOUT_FILENO);
 				str++;
 			}

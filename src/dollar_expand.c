@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 16:18:04 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/17 13:21:39 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/17 16:22:47 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ static void	threat_dollar(char **res, char **str, char **env)
 		threat_dollar_expand(res, str, env);
 }
 
-static int	specific_case(char **res)
-{
-	*res = join_char_free(*res, '$');
-	return (3);
-}
+//static int	specific_case(char **res)
+//{
+//	*res = join_char_free(*res, '$');
+//	return (3);
+//}
 
 static void	add_single_char(char **res, char **str)
 {
@@ -52,8 +52,8 @@ char	*dollar_expand_str(char *str, char **env, int heredoc)
 	while (*str)
 	{
 		switch_quote(&quote, *str);
-		if (!ft_strncmp("\"$\"", str, 3) && (quote != '\'' || heredoc))
-			str += specific_case(&res);
+		//if (!ft_strncmp("\"$\"", str, 3) && (quote != '\'' || heredoc))
+		//	str += specific_case(&res);
 		if (*str == '$' && (quote != '\'' || heredoc))
 			threat_dollar(&res, &str, env);
 		else
