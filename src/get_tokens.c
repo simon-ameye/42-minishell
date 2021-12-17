@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 11:08:48 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/16 20:43:46 by trobin           ###   ########.fr       */
+/*   Updated: 2021/12/17 17:23:10 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static int separator_len(char *line)
 	int i;
 
 	i = 0;
-	while (line[i] && ft_isblank(line[i]))
+	while (line[i] && line[i] == ' ')
 		i++;
 	return (i);
 }
