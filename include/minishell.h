@@ -45,7 +45,7 @@ typedef enum e_token_type
 	OPEN_FILE,		// word following '<'
 	LIMITOR,		// word following '<<'
 	EXIT_FILE,		// word following '>'
-	EXIT_FILE_RET,	// word following '>>'
+	EXIT_FILE_A,	// word following '>>'
 	IGNORED,		//ignored because is empty
 	AMBIGOUS_REDIRECT
 }	t_token_type;

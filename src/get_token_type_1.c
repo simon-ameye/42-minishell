@@ -50,5 +50,5 @@ int	redir_op_to_file_type(int i)
 	return ((i == FILE_IN) * OPEN_FILE
 		+ (i == HERE_DOC) * LIMITOR
 		+ (i == FILE_OUT) * EXIT_FILE
-		+ (i == FILE_OUT_SUR) * EXIT_FILE_RET);
+		+ (i == FILE_OUT_SUR) * EXIT_FILE_A);
 }
