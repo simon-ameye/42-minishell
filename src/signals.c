@@ -1,7 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signals.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: trobin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/17 15:59:19 by trobin            #+#    #+#             */
+/*   Updated: 2021/12/17 16:17:36 by trobin           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 extern unsigned char	g_exitval;
 
+/*
+ *
+ *	In bash, SIGQUIT do _not_ print "Quit (core dumped)" on stdout nor stderr.
+ *	For minishell, we arbitrarily decided to print it on stderr.
+ *
+ */
 void	signal_handler(int signum, siginfo_t *siginfo, void *context)
 {
 	(void)context;
@@ -18,7 +36,7 @@ void	signal_handler(int signum, siginfo_t *siginfo, void *context)
 	{
 		if (siginfo->si_pid == 0)
 		{
-			ft_putstr_fd("Quit (core dumped)\n", STDOUT_FILENO); // stderr ?
+			ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
 			g_exitval = 131;
 		}
 		else
