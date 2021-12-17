@@ -24,6 +24,7 @@ INCLUDE		=		-I include \
 
 SRCS		=		minishell.c \
 					get_procs.c \
+					get_procs_1.c \
 					print_procs.c \
 					free_procs.c \
 					get_tokens.c \
