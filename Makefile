@@ -24,6 +24,7 @@ INCLUDE		=		-I include \
 
 SRCS		=		minishell.c \
 					get_procs.c \
+					get_procs_1.c \
 					print_procs.c \
 					free_procs.c \
 					get_tokens.c \
@@ -47,6 +48,7 @@ SRCS		=		minishell.c \
 					builtin_unset.c \
 					builtin_export.c \
 					builtin_export_1.c \
+					builtin_utils.c \
 					env.c \
 					here_doc.c \
 					set_ignored_tokens.c \

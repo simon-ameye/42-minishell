@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 01:53:08 by sameye            #+#    #+#             */
-/*   Updated: 2021/11/22 11:34:40 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/17 19:40:09 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,6 @@ void			ft_lstiter(t_list *lst, void (*f)(void *));
 t_list			*ft_lstmap(t_list *lst, void *(*f)(void *),
 					void (*del)(void *));
 int				ft_strcmp(const char *s1, const char *s2);
+char			*ft_strndup(char *s, int n);
 
 #endif

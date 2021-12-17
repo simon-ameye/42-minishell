@@ -1,65 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_exit.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: trobin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/17 19:46:28 by trobin            #+#    #+#             */
+/*   Updated: 2021/12/17 20:14:31 by trobin           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
-#include <limits.h> /* LONG_MAX, LONG_MIN */
 
 extern unsigned char	g_exitval;
 
-// move
-static int	get_nb_args(t_token *tokens)
-{
-	int	i;
-	int	ret;
-
-	ret = 0;
-	if (tokens)
-	{
-		i = 0;
-		while (tokens[i].word)
-		{
-			if (tokens[i].type == WORD)
-				ret++;
-			i++;
-		}
-	}
-	return (ret);
-}
-
-// move
-long	ft_atol(char *s)
-{
-	unsigned long	ret;
-	int				i;
-	int				sign;
-
-	if (!s)
-		return (-2);
-	i = 0;
-	while (s[i] == ' ')
-		i++;
-	if (!s[i])
-		return (-2);
-	sign = 1;
-	if (s[i] == '+' || s[i] == '-')
-	{
-		if (s[i] == '-')
-			sign = -1;
-		i++;
-	}
-	ret = 0;
-	while (ft_isdigit(s[i]))
-	{
-		ret = ret * 10 + s[i] - 48;
-		if ((sign == 1 && ret > LONG_MAX)
-		|| (sign == -1 && ret > (unsigned long)(LONG_MAX + 1UL)))
-			return (-2);
-		i++;
-	}
-	if (s[i])
-		return (-2);
-	return ((long)(ret * sign));
-}
-
-// - add char *line ?
-// - add char *msg ?
 void	exit_minishell(t_proc *procs, char ***env)
 {
 	free_env(env);
@@ -106,7 +60,7 @@ void	builtin_exit(t_proc *proc, t_proc *procs)
 	else
 	{
 		exit_value = ft_atol(proc->tokens[1].word);
-		if (exit_value == -2)
+		if (exit_value == -1)
 			return (exit_non_numeric_arguments(proc, procs));
 		if (exit_args > 1)
 			return (exit_too_many_arguments(proc));

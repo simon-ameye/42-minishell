@@ -1,29 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_cd.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: trobin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/17 19:44:18 by trobin            #+#    #+#             */
+/*   Updated: 2021/12/17 20:10:13 by trobin           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-extern	unsigned char	g_exitval;
-
-/*
- * redefined int builtin_exit.c
- *
- */
-static int	get_nb_args(t_token *tokens)
-{
-	int	i;
-	int	ret;
-
-	ret = 0;
-	if (tokens)
-	{
-		i = 0;
-		while (tokens[i].word)
-		{
-			if (tokens[i].type == WORD)
-				ret++;
-			i++;
-		}
-	}
-	return (ret);
-}
+extern unsigned char	g_exitval;
 
 void	try_chdir(char *path)
 {

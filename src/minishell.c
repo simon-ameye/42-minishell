@@ -6,7 +6,7 @@
 /*   By: trobin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/17 17:25:13 by trobin            #+#    #+#             */
-/*   Updated: 2021/12/17 17:25:16 by trobin           ###   ########.fr       */
+/*   Updated: 2021/12/17 18:25:40 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	parser(t_proc *procs, char *line)
 	int	i;
 
 	if (!procs)
-		return (EXIT_FAILURE);
+		return (DO_SKIP);
 	i = 0;
 	while (!procs[i].is_last)
 	{

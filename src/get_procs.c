@@ -1,23 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_procs.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: trobin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/17 19:37:00 by trobin            #+#    #+#             */
+/*   Updated: 2021/12/17 19:41:32 by trobin           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
-
-extern unsigned char	g_exitval;
-
-static char	*ft_strndup(char *s, int n)
-{
-	char	*ret;
-
-	ret = NULL;
-	if (s)
-	{
-		ret = malloc(sizeof(char) * (n + 1));
-		if (ret)
-		{
-			ft_strncpy(ret, s, n);
-			ret[n] = '\0';
-		}
-	}
-	return (ret);
-}
 
 static void	init_proc(t_proc *proc, char ***env)
 {
@@ -41,6 +34,13 @@ static void	init_proc(t_proc *proc, char ***env)
 	}
 }
 
+static void	go_to_next_quote(char *line, int *hi, char *quote)
+{
+	*quote = line[(*hi)++];
+	while (line[(*hi)] && line[(*hi)] != *quote)
+		(*hi)++;
+}
+
 static char	*get_proc_str(char *line, int proc_index)
 {
 	int		lo;
@@ -51,24 +51,12 @@ static char	*get_proc_str(char *line, int proc_index)
 	lo = 0;
 	hi = 0;
 	current_proc_index = -1;
-	//current_proc_index = 0;
 	while (line[hi])
 	{
 		if (line[hi] == '\'' || line[hi] == '"')
-		{
-			// all this section in a function
-			quote = line[hi++];
-			while (line[hi] && line[hi] != quote)
-				hi++;
-			// open quote : already check into 'get_nb_procs()'
-			if (!line[hi])
-				return (NULL);
-		}
+			go_to_next_quote(line, &hi, &quote);
 		else if (line[hi] == '|')
 		{
-		//	if (current_proc_index++ == proc_index)
-		//		break ;
-		//	lo = hi + 1;
 			current_proc_index++;
 			if (current_proc_index == proc_index)
 				break ;
@@ -80,72 +68,11 @@ static char	*get_proc_str(char *line, int proc_index)
 	return (ft_strndup(&line[lo], hi - lo));
 }
 
-static int	syntax_error_pipe(char *line, int i)
+static void	exit_get_procs(t_proc *procs, char ***env, char *line)
 {
-	int	j;
-
-	if (line)
-	{
-		if (i == 0)
-			return (1);
-		// check before line[i]
-		j = i - 1;
-		while (line[j] == ' ')
-			j--;
-		//if (!line[j] || line[j] == '|')
-		//if (!line[j] || line[j] == '|' || line[j] == '<' || line[j] == '>')
-		if (!line[j] || line[j] == '|' || line[i] == '<' || line[i] == '>')
-			return (1);
-		// check after line[i]
-		j = i + 1;
-		while (line[j] == ' ')
-			j++;
-		if (!line[j] || line[j] == '|' || line[i] == '<' || line[i] == '>')
-			return (1);
-	}
-	return (0);
-}
-
-static int	get_nb_procs(char *line)
-{
-	int		i;
-	int		ret;
-	char	quote;
-
-	i = 0;
-	ret = 1;
-	while (line[i])
-	{
-		// when we encouter a quote,
-		// continue until finding the same one
-		if (line[i] == '\'' || line[i] == '"')
-		{
-			quote = line[i++];
-			while (line[i] && line[i] != quote)
-				i++;
-			if (!line[i])
-			{
-				if (quote == '\'')
-					ft_putstr_fd("Error: simple quote not closed\n", STDERR_FILENO);
-				else
-					ft_putstr_fd("Error: double quote not closed\n", STDERR_FILENO);
-				g_exitval = 2;
-				return (0);
-			}
-		}
-		else if (line[i] == '|')
-		{
-			if (syntax_error_pipe(line, i))
-			{
-				ft_putstr_fd("minishell: syntax error near unexpected token '|'\n", STDERR_FILENO);
-				g_exitval = 2;
-				return (0);
-			}
-			ret++;
-		}
-		i++;
-	}
-	return (ret);
+	ft_putstr_fd("minishell: error: malloc fail\n", STDERR_FILENO);
+	free(line);
+	exit_minishell(procs, env);
 }
 
 void	get_procs(t_proc **procs, char *line, char ***env)
@@ -158,11 +85,7 @@ void	get_procs(t_proc **procs, char *line, char ***env)
 	{
 		*procs = malloc((sizeof(t_proc) * (nb_procs + 1)));
 		if (!*procs)
-		{
-			ft_putstr_fd("minishell: error: malloc fail\n", STDERR_FILENO);
-			free(line); // free into exit_minishell() ?
-			exit_minishell(*procs, env);
-		}
+			exit_get_procs(NULL, env, line);
 		i = 0;
 		while (i < nb_procs)
 		{
@@ -170,10 +93,8 @@ void	get_procs(t_proc **procs, char *line, char ***env)
 			(*procs)[i].str = get_proc_str(line, i);
 			if ((*procs)[i].str == NULL)
 			{
-				ft_putstr_fd("minishell: error: malloc fail\n", STDERR_FILENO);
-				free(line); // free into exit_minishell() ?
 				(*procs)[i + 1].is_last = 1;
-				exit_minishell(*procs, env);
+				exit_get_procs(NULL, env, line);
 			}
 			i++;
 		}
