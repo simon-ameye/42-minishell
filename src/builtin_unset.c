@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/17 12:59:39 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/17 12:59:58 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/18 13:15:25 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,9 @@ void	builtin_unset(t_proc *proc)
 			else
 			{
 				error_occured = 1;
-				ft_putstr_fd("unset: ", STDOUT_FILENO);
-				ft_putstr_fd(proc->tokens[i].word, STDOUT_FILENO);
-				ft_putstr_fd(": not a valid identifier\n", STDOUT_FILENO);
+				ft_putstr_fd("unset: ", STDERR_FILENO);
+				ft_putstr_fd(proc->tokens[i].word, STDERR_FILENO);
+				ft_putstr_fd(": not a valid identifier\n", STDERR_FILENO);
 			}
 		}
 		i++;
