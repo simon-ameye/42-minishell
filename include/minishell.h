@@ -67,14 +67,13 @@ typedef struct	s_word
 	char quote;
 }	t_word;
 
-/*
-typedef struct	s_io
+typedef struct s_heredoc
 {
-	int		fd;
-	char	*filename;
-	void	*next;
-}	t_io;
-*/
+	//int		*fd;
+	char	*line;
+	char	*delimiter;
+	char	filename[23];
+}	t_heredoc ;
 
 typedef struct	s_proc
 {
@@ -83,15 +82,12 @@ typedef struct	s_proc
 	char			***env;
 	t_token			*tokens;
 	t_ftype			ftype;
-//	t_io			in;
-//	t_io			out;
 	int				fdin; // fd_in
 	int				fdout; //fd_out
 	int				stream_in;
 	int				stream_out;
 	int				prev_stream_out;
 	int				next_stream_in;
-//	bool			is_child; // `cd /` vs `cd / | cd /`
 	pid_t			pid;
 	int				is_last;
 	int				saved_std[2];
