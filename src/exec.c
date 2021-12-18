@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/17 13:31:07 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/17 13:40:39 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/18 14:20:44 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ static void	do_forks(t_proc *procs)
 				g_exitval = 0;
 			close_all_streams_except_current(procs, i);
 			exec_child(&procs[i], procs);
+			free_env(procs->env);
 			free_procs(procs);
 			close_std_streams();
 			exit(g_exitval);
