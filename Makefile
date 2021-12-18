@@ -34,6 +34,7 @@ SRCS		=		minishell.c \
 					get_token_type.c \
 					get_token_type_1.c \
 					get_path.c \
+					get_path_1.c \
 					get_fnct_type.c \
 					remove_quotes.c \
 					get_fds.c \
@@ -92,6 +93,7 @@ $(LIBFT):
 
 clean:
 					@echo Cleaning minishell objects...
+					@$(MAKE) clean --no-print-directory -C $(LIBFT_DIR)
 					@rm -f $(OBJECTS)
 
 fclean:				clean

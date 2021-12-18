@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 18:17:57 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/18 16:25:22 by trobin           ###   ########.fr       */
+/*   Updated: 2021/12/18 19:23:59 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,31 @@
 
 extern unsigned char	g_exitval;
 
-static char	**find_paths(char **env)
+static void	print_command_not_found(char *fnct)
 {
-	int	i;
+	ft_putstr_fd("minishell: command not found: ", STDERR_FILENO);
+	ft_putstr_fd(fnct, STDERR_FILENO);
+	ft_putstr_fd("\n", STDERR_FILENO);
+	g_exitval = 127;
+}
 
-	i = 0;
-	while (env[i])
-	{
-		if (!ft_strncmp(env[i], "PATH=", 5))
-			return (ft_split(env[i] + 5, ':'));
-		i++;
-	}
-	return (NULL);
+static char	*get_test_path(char *path, char *fnct)
+{
+	char	*testpath1;
+	char	*testpath2;
+
+	testpath1 = ft_strjoin(path, "/");
+	testpath2 = ft_strjoin(testpath1, fnct);
+	if (testpath1)
+		free(testpath1);
+	return (testpath2);
 }
 
 static char	*get_path_env(char *fnct, char **env)
 {
 	int		i;
 	char	**paths;
-	char	*testpath1;
-	char	*testpath2;
+	char	*testpath;
 
 	paths = find_paths(env);
 	if (paths)
@@ -41,25 +46,19 @@ static char	*get_path_env(char *fnct, char **env)
 		i = 0;
 		while (paths[i])
 		{
-			testpath1 = ft_strjoin(paths[i], "/");
-			testpath2 = ft_strjoin(testpath1, fnct);
-			if (testpath1)
-				free(testpath1);
-			if (access(testpath2, F_OK) == 0)
+			testpath = get_test_path(paths[i], fnct);
+			if (!testpath || access(testpath, F_OK) == 0)
 			{
 				free_str_tab(paths);
-				return (testpath2);
+				return (testpath);
 			}
-			if (testpath2)
-				free(testpath2);
+			if (testpath)
+				free(testpath);
 			i++;
 		}
 		free_str_tab(paths);
 	}
-	ft_putstr_fd("minishell: command not found: ", STDERR_FILENO);
-	ft_putstr_fd(fnct, STDERR_FILENO);
-	ft_putstr_fd("\n", STDERR_FILENO);
-	g_exitval = 127;
+	print_command_not_found(fnct);
 	return (NULL);
 }
 
@@ -89,22 +88,19 @@ int	get_path(t_proc *proc)
 {
 	int	i;
 
-	if (proc)
+	if (proc->tokens)
 	{
-		if (proc->tokens)
+		i = 0;
+		while (proc->tokens[i].word)
 		{
-			i = 0;
-			while (proc->tokens[i].word)
+			if (proc->tokens[i].type == FUNCTION
+				&& proc->ftype == EXECVE)
 			{
-				if (proc->tokens[i].type == FUNCTION
-					&& proc->ftype == EXECVE)
-				{
-					proc->path = get_proc_path(proc->tokens[i].word, *proc->env);
-					if (!proc->path)
-						return (EXIT_FAILURE);
-				}
-				i++;
+				proc->path = get_proc_path(proc->tokens[i].word, *proc->env);
+				if (!proc->path)
+					return (EXIT_FAILURE);
 			}
+			i++;
 		}
 	}
 	return (EXIT_SUCCESS);
