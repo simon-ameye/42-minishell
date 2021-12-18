@@ -6,25 +6,13 @@
 /*   By: trobin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/17 19:46:28 by trobin            #+#    #+#             */
-/*   Updated: 2021/12/17 20:14:31 by trobin           ###   ########.fr       */
+/*   Updated: 2021/12/18 12:10:46 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 extern unsigned char	g_exitval;
-
-void	exit_minishell(t_proc *procs, char ***env)
-{
-	free_env(env);
-	close_saved_fd_and_streams(procs);
-	close(STDIN_FILENO);
-	close(STDOUT_FILENO);
-	close(STDERR_FILENO);
-	free_procs(procs);
-	rl_clear_history();
-	exit(g_exitval);
-}
 
 static void	exit_too_many_arguments(t_proc *proc)
 {
@@ -45,6 +33,45 @@ static void	exit_non_numeric_arguments(t_proc *proc, t_proc *procs)
 	exit_minishell(procs, proc->env);
 }
 
+static void	get_sign(char *s, int *sign, int *i)
+{
+	*sign = 1;
+	if (s[*i] == '+' || s[*i] == '-')
+	{
+		if (s[*i] == '-')
+			*sign = -1;
+		(*i)++;
+	}
+}
+
+static unsigned long	get_exit_value(char *s, t_proc *proc, t_proc *procs)
+{
+	unsigned long	ret;
+	int				i;
+	int				sign;
+
+	if (!s)
+		exit_non_numeric_arguments(proc, procs);
+	i = 0;
+	while (s[i] == ' ')
+		i++;
+	if (!s[i])
+		exit_non_numeric_arguments(proc, procs);
+	get_sign(s, &sign, &i);
+	ret = 0;
+	while (ft_isdigit(s[i]))
+	{
+		ret = ret * 10 + s[i] - 48;
+		if ((sign == 1 && ret > LONG_MAX)
+			|| (sign == -1 && ret > (unsigned long)(LONG_MAX + 1UL)))
+			exit_non_numeric_arguments(proc, procs);
+		i++;
+	}
+	if (s[i])
+		exit_non_numeric_arguments(proc, procs);
+	return ((long)(ret * sign));
+}
+
 void	builtin_exit(t_proc *proc, t_proc *procs)
 {
 	int		exit_args;
@@ -59,9 +86,7 @@ void	builtin_exit(t_proc *proc, t_proc *procs)
 	}
 	else
 	{
-		exit_value = ft_atol(proc->tokens[1].word);
-		if (exit_value == -1)
-			return (exit_non_numeric_arguments(proc, procs));
+		exit_value = get_exit_value(proc->tokens[1].word, proc, procs);
 		if (exit_args > 1)
 			return (exit_too_many_arguments(proc));
 		if (proc->pid)

@@ -6,13 +6,25 @@
 /*   By: trobin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/17 17:25:13 by trobin            #+#    #+#             */
-/*   Updated: 2021/12/17 18:25:40 by trobin           ###   ########.fr       */
+/*   Updated: 2021/12/18 12:11:37 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 unsigned char	g_exitval;
+
+void	exit_minishell(t_proc *procs, char ***env)
+{
+	free_env(env);
+	close_saved_fd_and_streams(procs);
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
+	close(STDERR_FILENO);
+	free_procs(procs);
+	rl_clear_history();
+	exit(g_exitval);
+}
 
 static int	parser(t_proc *procs, char *line)
 {
@@ -67,7 +79,7 @@ static void	interpreter(t_proc *procs, char ***env, char *line)
 	}
 }
 
-void	init_minishell(int ac, char **av, char ***env, char **envp)
+static void	init_minishell(int ac, char **av, char ***env, char **envp)
 {
 	(void)ac;
 	(void)av;

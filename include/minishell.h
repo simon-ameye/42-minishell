@@ -99,11 +99,18 @@ typedef struct	s_proc
 
 /******************************************************************************/
 /*                                                                            */
+/*     minishell.c                                                            */
+/*                                                                            */
+/******************************************************************************/
+
+void	exit_minishell(t_proc *procs, char ***env);
+
+/******************************************************************************/
+/*                                                                            */
 /*     builtins                                                               */
 /*                                                                            */
 /******************************************************************************/
 
-void	exit_minishell(t_proc *procs, char ***env); // move ?
 void	builtin_cd(t_proc *proc);
 void	builtin_exit(t_proc *procs, t_proc *proc);
 void	builtin_pwd(void);
@@ -119,7 +126,6 @@ void	builtin_export(t_proc *proc);
 /******************************************************************************/
 
 //		builtin_utils.c
-long	ft_atol(char *s);
 int		get_nb_args(t_token *tokens);
 
 //		builtin_echo_1.c
