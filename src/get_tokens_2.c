@@ -6,15 +6,15 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 16:58:48 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/18 17:12:32 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/18 18:12:05 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int tokens_nb(t_token *tokens)
+int	tokens_nb(t_token *tokens)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (tokens[i].word)
@@ -22,7 +22,7 @@ int tokens_nb(t_token *tokens)
 	return (i);
 }
 
-static int operator_len(char *line)
+static int	operator_len(char *line)
 {
 	if (line[0])
 	{
@@ -38,9 +38,9 @@ static int operator_len(char *line)
 	return (0);
 }
 
-static int separator_len(char *line)
+static int	separator_len(char *line)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (line[i] && line[i] == ' ')

@@ -6,15 +6,15 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 16:58:44 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/18 17:05:29 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/18 18:11:53 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int add_word(t_token *tokens, char *line, int start, int len)
+static int	add_word(t_token *tokens, char *line, int start, int len)
 {
-	int index;
+	int	index;
 
 	if (!len)
 		return (EXIT_SUCCESS);
@@ -47,7 +47,7 @@ static int	operator_spotted(t_token *tokens, char *line, t_word *word)
 	return (EXIT_SUCCESS);
 }
 
-int get_words(t_token *tokens, char *line, t_word word)
+int	get_words(t_token *tokens, char *line, t_word word)
 {
 	while (1)
 	{
@@ -66,7 +66,7 @@ int get_words(t_token *tokens, char *line, t_word word)
 		{
 			if (add_word(tokens, line, word.start, word.len))
 				return (EXIT_FAILURE);
-			break;
+			break ;
 		}
 		else
 			word.len++;

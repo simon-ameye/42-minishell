@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/20 11:08:48 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/18 17:03:51 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/18 18:13:05 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 extern unsigned char	g_exitval;
 
-static void init_tokens(t_token *tokens, int len)
+static void	init_tokens(t_token *tokens, int len)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i <= len - 1)
@@ -28,7 +28,7 @@ static void init_tokens(t_token *tokens, int len)
 	}
 }
 
-static void init_word(t_word *word)
+static void	init_word(t_word *word)
 {
 	word->start = 0;
 	word->len = 0;
@@ -42,7 +42,7 @@ static void	malloc_fail(t_proc *procs)
 	exit_minishell(procs, procs->env);
 }
 
-void get_tokens(t_proc *procs)
+void	get_tokens(t_proc *procs)
 {
 	int		i;
 	t_word	word;
@@ -52,7 +52,8 @@ void get_tokens(t_proc *procs)
 		i = 0;
 		while (!procs[i].is_last)
 		{
-			procs[i].tokens = malloc(sizeof(t_token) * (ft_strlen(procs[i].str) + 1));
+			procs[i].tokens = malloc(sizeof(t_token)
+					* (ft_strlen(procs[i].str) + 1));
 			if (!procs[i].tokens)
 				malloc_fail(procs);
 			init_tokens(procs[i].tokens, ft_strlen(procs[i].str) + 1);
