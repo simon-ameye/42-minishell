@@ -18,7 +18,6 @@ INCLUDE_DIR	=		include
 
 INCLUDE		=		-I include \
 					-I libft \
-					-I /opt/homebrew/opt/readline/include/
 
 #################	SOURCE FILES	#################
 
@@ -63,7 +62,6 @@ SOURCES		=		$(addprefix $(SRCS_DIR)/,$(SRCS))
 #################	OBJECT FILES	#################
 
 OBJS		=		$(addsuffix .o, $(basename $(SRCS)))
-
 OBJECTS		=		$(addprefix $(OBJS_DIR)/,$(OBJS))
 
 ################	BINARIES		#################
@@ -73,14 +71,16 @@ NAME		=		minishell
 ################	LIBFT			#################
 
 LIBFT		=		$(LIBFT_DIR)/libft.a
-LINK		=		-L $(LIBFT_DIR) -l ft -L /opt/homebrew/opt/readline/lib
+LINK		=		-L $(LIBFT_DIR) -l ft
+
+################	TARGETS			#################
 
 all:				$(NAME)
 
 $(OBJS_DIR):
-					@mkdir -p $@
+					mkdir -p $@
 
-$(OBJS_DIR)/%.o:	$(SRCS_DIR)/%.c $(OBJS_DIR)
+$(OBJECTS):			$(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
 					@$(CC) $(INCLUDE) -c $< -o $@
 
 $(NAME):			$(LIBFT) $(OBJECTS)
@@ -102,38 +102,4 @@ fclean:				clean
 
 re:					fclean all
 
-.PHONY:				all clean fclean re debug test_get_procs test_expand test_get_words
-
-################	TESTS			#################
-
-#RELINK!
-test_get_procs:		$(LIBFT)
-					@$(CC) $(TESTS_DIR)/main_get_procs.c \
-					src/get_procs.c src/get_words.c src/dollar_expand_utils.c \
-					$(INCLUDE) $(LINK) -o main_get_procs
-					@valgrind ./main_get_procs
-
-#UNUSABLE!			UNABLE TO ADD ENV VAR
-test_expand:		$(LIBFT)
-					@$(CC) $(TESTS_DIR)/main_dollar_expand.c \
-					src/dollar_expand.c src/dollar_expand_utils.c \
-					$(INCLUDE) $(LINK) -o main_dollar_expand
-					@echo Please do 'export TESTVAR=/cust/path'
-#					$(shell export TESTVAR=/cust/path) # HERE
-					@valgrind ./main_dollar_expand
-
-#RELINK!
-test_get_words:		$(LIBFT)
-					@$(CC) $(TESTS_DIR)/main_get_words.c \
-					src/get_words.c src/dollar_expand_utils.c \
-					$(INCLUDE) $(LINK) -o main_get_words
-					@valgrind ./main_get_words
-
-
-################	TARGETS			#################
-
-debug:
-					$(info $(SRCS))
-					$(info $(OBJS))
-					$(info $(SOURCES))
-					$(info $(OBJECTS))
+.PHONY:				all clean fclean re
