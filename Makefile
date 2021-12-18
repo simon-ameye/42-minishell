@@ -28,6 +28,8 @@ SRCS		=		minishell.c \
 					print_procs.c \
 					free_procs.c \
 					get_tokens.c \
+					get_tokens_1.c \
+					get_tokens_2.c \
 					string.c \
 					dollar_expand.c \
 					dollar_expand_1.c \

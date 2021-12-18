@@ -125,34 +125,22 @@ void	builtin_export(t_proc *proc);
 /*                                                                            */
 /******************************************************************************/
 
-//		builtin_utils.c
 int		get_nb_args(t_token *tokens);
-
-//		builtin_echo_1.c
 void	skip_n_options(t_token *tokens, int *i, int *n_option);
-
-//		builtin_export_1.c
 void	print_env_sort(char **env);
-
-//		dollar_expand_1.c
-char	*join_char_free(char *str, char c);
-void	threat_dollar_quest_mark(char **res, char **str);
-void	threat_dollar_spec_char(char **res, char **str);
-void	threat_dollar_expand(char **res, char **str, char **env);
-
-//		get_token_type_1.c
-int		redir_op_to_file_type(int i);
-int		is_redir_op(int i);
-void	get_operators(t_proc *proc);
 
 /******************************************************************************/
 /*                                                                            */
-/*     dollar_expand.c                                                        */
+/*     dollar_expand.c dollar_expand_1.c                                      */
 /*                                                                            */
 /******************************************************************************/
 
 char	*dollar_expand_str(char *str, char **env, int heredoc);
 int		dollar_expand(t_proc proc);
+char	*join_char_free(char *str, char c);
+void	threat_dollar_quest_mark(char **res, char **str);
+void	threat_dollar_spec_char(char **res, char **str);
+void	threat_dollar_expand(char **res, char **str, char **env);
 
 /******************************************************************************/
 /*                                                                            */
@@ -175,11 +163,14 @@ int	get_fds(t_proc *proc, t_proc *procs, char *line);
 
 /******************************************************************************/
 /*                                                                            */
-/*     get_token_type.c                                                       */
+/*     get_token_type.c get_token_type_1.c                                    */
 /*                                                                            */
 /******************************************************************************/
 
 int    get_token_type(t_proc *proc);
+int		redir_op_to_file_type(int i);
+int		is_redir_op(int i);
+void	get_operators(t_proc *proc);
 
 /******************************************************************************/
 /*                                                                            */
@@ -199,11 +190,15 @@ int    get_path(t_proc *procs);
 
 /******************************************************************************/
 /*                                                                            */
-/*     get_tokens.c                                                           */
+/*     get_tokens.c get_tokens_1.c get_tokens_2.c                             */
 /*                                                                            */
 /******************************************************************************/
 
 void    get_tokens(t_proc *procs);
+int get_words(t_token *tokens, char *line, t_word word);
+int tokens_nb(t_token *tokens);
+void	get_quote_operator_separator(char *line, t_word *word);
+
 
 /******************************************************************************/
 /*                                                                            */
