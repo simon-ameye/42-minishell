@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/17 12:59:39 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/18 13:15:25 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/18 14:37:18 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 extern unsigned char	g_exitval;
 
-static int	is_correct_export_name(char *str)
+static int	is_correct_unset_name(char *str)
 {
 	if (!str)
 		return (0);
 	if (!(ft_isalpha(*str) || *str == '_'))
 		return (0);
-	while (*str && *str != '=')
+	while (*str)
 	{
 		if (!(ft_isalnum(*str) || *str == '_'))
 			return (0);
@@ -59,7 +59,7 @@ void	builtin_unset(t_proc *proc)
 	{
 		if (proc->tokens[i].type == WORD)
 		{
-			if (is_correct_export_name(proc->tokens[i].word))
+			if (is_correct_unset_name(proc->tokens[i].word))
 				remove_line(proc, proc->tokens[i].word);
 			else
 			{
