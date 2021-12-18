@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 12:34:01 by sameye            #+#    #+#             */
-/*   Updated: 2021/05/21 13:11:32 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/18 18:55:28 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	isinset(char c, char const *set)
 	return (0);
 }
 
-char	*ft_write_res (int i, int j, char *res, char const *s1)
+char	*ft_write_res(int i, int j, char *res, char const *s1)
 {
 	unsigned int	size;
 
