@@ -1,25 +1,35 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/18 18:16:20 by sameye            #+#    #+#             */
+/*   Updated: 2021/12/18 18:19:17 by sameye           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-
-#include "libft.h"
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <sys/wait.h>
-#include <fcntl.h>
-#include <errno.h>
-#include <signal.h>
-#include <limits.h> /* LONG_MAX, LONG_MIN */
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include "libft.h"
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <sys/wait.h>
+# include <fcntl.h>
+# include <errno.h>
+# include <signal.h>
+# include <limits.h>
 
 # define DO_SKIP 0
 # define DO_EXIT 1
 # define DO_EXEC 2
-
 # define PROMPT "\e[0;36mminishell\e[0;35m> \e[0m"
 
 typedef enum e_ftype
@@ -37,53 +47,52 @@ typedef enum e_ftype
 
 typedef enum e_token_type
 {
-	WORD,			//word
-	FUNCTION,		//function
-	FILE_IN,		//'<'
-	HERE_DOC,		//<<'
-	FILE_OUT,		//'>'
-	FILE_OUT_SUR,	//'>>'
-	OPEN_FILE,		// word following '<'
-	LIMITOR,		// word following '<<'
-	EXIT_FILE,		// word following '>'
-	EXIT_FILE_A,	// word following '>>'
-	IGNORED,		//ignored because is empty
+	WORD,
+	FUNCTION,
+	FILE_IN,
+	HERE_DOC,
+	FILE_OUT,
+	FILE_OUT_SUR,
+	OPEN_FILE,
+	LIMITOR,
+	EXIT_FILE,
+	EXIT_FILE_A,
+	IGNORED,
 	AMBIGOUS_REDIRECT
 }	t_token_type;
 
-typedef struct	s_token
+typedef struct s_token
 {
 	char	*word;
 	int		type;
 	char	*expanded;
 }	t_token;
 
-typedef struct	s_word
+typedef struct s_word
 {
-	int len;
-	int start;
-	int op_len;
-	int sp_len;
-	char quote;
+	int		len;
+	int		start;
+	int		op_len;
+	int		sp_len;
+	char	quote;
 }	t_word;
 
 typedef struct s_heredoc
 {
-	//int		*fd;
 	char	*line;
 	char	*delimiter;
 	char	filename[23];
-}	t_heredoc ;
+}	t_heredoc;
 
-typedef struct	s_proc
+typedef struct s_proc
 {
 	char			*str;
 	char			*path;
 	char			***env;
 	t_token			*tokens;
 	t_ftype			ftype;
-	int				fdin; // fd_in
-	int				fdout; //fd_out
+	int				fdin;
+	int				fdout;
 	int				stream_in;
 	int				stream_out;
 	int				prev_stream_out;
@@ -155,7 +164,7 @@ void	switch_quote(char *quote, char c);
 /*                                                                            */
 /******************************************************************************/
 
-int	get_fds(t_proc *proc, t_proc *procs, char *line);
+int		get_fds(t_proc *proc, t_proc *procs, char *line);
 
 /******************************************************************************/
 /*                                                                            */
@@ -163,7 +172,7 @@ int	get_fds(t_proc *proc, t_proc *procs, char *line);
 /*                                                                            */
 /******************************************************************************/
 
-int    get_token_type(t_proc *proc);
+int		get_token_type(t_proc *proc);
 int		redir_op_to_file_type(int i);
 int		is_redir_op(int i);
 void	get_operators(t_proc *proc);
@@ -182,7 +191,7 @@ void	get_fnct_type(t_proc *proc);
 /*                                                                            */
 /******************************************************************************/
 
-int    get_path(t_proc *procs);
+int		get_path(t_proc *procs);
 
 /******************************************************************************/
 /*                                                                            */
@@ -190,11 +199,10 @@ int    get_path(t_proc *procs);
 /*                                                                            */
 /******************************************************************************/
 
-void    get_tokens(t_proc *procs);
-int get_words(t_token *tokens, char *line, t_word word);
-int tokens_nb(t_token *tokens);
+void	get_tokens(t_proc *procs);
+int		get_words(t_token *tokens, char *line, t_word word);
+int		tokens_nb(t_token *tokens);
 void	get_quote_operator_separator(char *line, t_word *word);
-
 
 /******************************************************************************/
 /*                                                                            */
@@ -298,9 +306,9 @@ void	run_execve(t_proc *proc, t_proc *procs);
 /*                                                                            */
 /******************************************************************************/
 
-void close_saved_fd_and_streams(t_proc *procs);
-void secure_close(int fd);
-void close_all_streams_except_current(t_proc *procs, int i);
-void close_std_streams(void);
+void	close_saved_fd_and_streams(t_proc *procs);
+void	secure_close(int fd);
+void	close_all_streams_except_current(t_proc *procs, int i);
+void	close_std_streams(void);
 
-# endif
+#endif
