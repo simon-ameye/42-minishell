@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free_procs.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: trobin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/18 14:26:18 by trobin            #+#    #+#             */
+/*   Updated: 2021/12/18 14:26:39 by trobin           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	free_tokens(t_token *tokens)
@@ -10,7 +22,7 @@ void	free_tokens(t_token *tokens)
 		while (tokens[i].word)
 		{
 			free(tokens[i].word);
-			if (tokens[i].expanded) //Il suffisait de free le .expanded
+			if (tokens[i].expanded)
 				free(tokens[i].expanded);
 			i++;
 		}
@@ -25,7 +37,7 @@ void	free_procs(t_proc *procs)
 	i = 0;
 	if (procs)
 	{
-		while(!procs[i].is_last)
+		while (!procs[i].is_last)
 		{
 			if (procs[i].str)
 				free(procs[i].str);

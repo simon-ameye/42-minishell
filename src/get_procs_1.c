@@ -6,7 +6,7 @@
 /*   By: trobin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/17 19:33:46 by trobin            #+#    #+#             */
-/*   Updated: 2021/12/17 19:41:29 by trobin           ###   ########.fr       */
+/*   Updated: 2021/12/18 14:25:59 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ static int	syntax_error_pipe(char *line, int i)
 		error = 1;
 	if (error)
 	{
-		ft_putstr_fd("minishell: syntax error near unexpected token '|'\n", STDERR_FILENO);
+		ft_putstr_fd("minishell: syntax error near unexpected token '|'\n",
+			STDERR_FILENO);
 		g_exitval = 2;
 		return (1);
 	}

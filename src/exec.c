@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/17 13:31:07 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/18 14:20:44 by trobin           ###   ########.fr       */
+/*   Updated: 2021/12/18 14:48:41 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,7 @@ static void	do_forks(t_proc *procs)
 	{
 		procs[i].pid = fork();
 		if (procs[i].pid == -1)
-		{
-			free_procs(procs);
-			exit(EXIT_FAILURE);
-		}
+			break ;
 		if (procs[i].pid == 0)
 		{
 			if (!(procs[i].ftype == NO_FUNCTION || procs[i].ftype == EXIT))

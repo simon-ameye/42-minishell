@@ -6,7 +6,7 @@
 /*   By: trobin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/17 19:37:00 by trobin            #+#    #+#             */
-/*   Updated: 2021/12/17 19:41:32 by trobin           ###   ########.fr       */
+/*   Updated: 2021/12/18 14:44:41 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	init_proc(t_proc *proc, char ***env)
 		proc->next_stream_in = -1;
 		proc->is_last = 0;
 		proc->env = env;
-		proc->pid = 1; // father == 1, childs == 0 (will be overwritten by fork())
+		proc->pid = -1;
 		proc->saved_std[0] = -1;
 		proc->saved_std[1] = -1;
 	}

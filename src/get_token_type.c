@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 11:15:23 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/17 19:10:48 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/18 14:24:34 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ static int	get_filenames_type(t_proc *proc)
 	{
 		if (is_redir_op(proc->tokens[i].type))
 		{
-			if (!proc->tokens[i + 1].word || is_redir_op(proc->tokens[i + 1].type))
+			if (!proc->tokens[i + 1].word
+				|| is_redir_op(proc->tokens[i + 1].type))
 				return (print_syntax_error());
 			else if (proc->tokens[i].type == HERE_DOC)
 				proc->tokens[i + 1].type = LIMITOR;

@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 18:17:57 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/17 17:54:04 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/18 16:25:22 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ static char	*get_path_env(char *fnct, char **env)
 	char	*testpath2;
 
 	paths = find_paths(env);
-
 	if (paths)
 	{
 		i = 0;
