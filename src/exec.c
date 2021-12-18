@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/17 13:31:07 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/18 14:48:41 by trobin           ###   ########.fr       */
+/*   Updated: 2021/12/18 19:11:37 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ static void	do_pipes(t_proc *procs)
 		}
 		procs[i].stream_in = pipefd[0];
 		procs[i - 1].stream_out = pipefd[1];
-		procs[i].prev_stream_out = pipefd[1];
-		procs[i - 1].next_stream_in = pipefd[0];
 		i++;
 	}
 	procs[i - 1].stream_out = dup(STDOUT_FILENO);

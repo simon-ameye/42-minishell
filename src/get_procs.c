@@ -6,7 +6,7 @@
 /*   By: trobin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/17 19:37:00 by trobin            #+#    #+#             */
-/*   Updated: 2021/12/18 14:44:41 by trobin           ###   ########.fr       */
+/*   Updated: 2021/12/18 19:10:36 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ static void	init_proc(t_proc *proc, char ***env)
 		proc->fdout = -1;
 		proc->stream_in = -1;
 		proc->stream_out = -1;
-		proc->prev_stream_out = -1;
-		proc->next_stream_in = -1;
 		proc->is_last = 0;
 		proc->env = env;
 		proc->pid = -1;

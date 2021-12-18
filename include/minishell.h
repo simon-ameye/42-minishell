@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 18:16:20 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/18 19:01:29 by trobin           ###   ########.fr       */
+/*   Updated: 2021/12/18 19:10:42 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,6 @@ typedef struct s_proc
 	int				fdout;
 	int				stream_in;
 	int				stream_out;
-	int				prev_stream_out;
-	int				next_stream_in;
 	pid_t			pid;
 	int				is_last;
 	int				saved_std[2];
