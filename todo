@@ -1,79 +1,10 @@
-Gros RELINK
 
-
-____________________________________________
-HEREDOC
-
-- sigaux custom
-- expand en toutes circonstances (meme dans les single quotes)
-- supprimer fichier temporaire (meme en cas de C-c C-v !)
-____________________________________________
-EXIT
-
-- sleep 2 puis Ctr-C --> check exit value
-- set g_exitval after each command (builtin or not)
-- define possible exit values in header file ? (via macros/enum)
-
-Comparer
-
-1.
-minishell: hghgg
-minishell: exit
-minishell: echo $?
-
-2.
-minishell: hghgg
-minishell: exit | exit
-minishell: echo $?
-
-3.
-minishell: hghgg | exit
-minishell: echo $?
-
-4.
-minishell: hghgg
-minishell: ls hghgg | exit
-minishell: echo $?
-
-____________________________________________
-GLOBAL VARIABLE
-
-- exit value
-- environnement (?)
-- shlvl (?)
-____________________________________________
-VALGRIND
-
-warning: invalid file descriptor -1 in syscall close()
---> avec 'ls' par ex.
-
-leaks de fd
---> valgrind --track-fds=yes
-____________________________________________
-ENV/EXPORT
-
-- env n affiche pas les vars sans =
-- ordre alphabetique (cf. tester export)
 ____________________________________________
 HISTORIQUE
 
 commandes qui font bugger l'historique:
 - export A=a B=b C=c D=d E=e F=f G=g H=h I=i J=j K=k L=l
 - echo $A$B$C$D$E$F$G$H$I$J$K$L$M$N$O$P$Q$R$S$T$U$V$W$X$Y$Z
-____________________________________________
-TODO
-
-- supprimer du header 'prev_stream_out' et 'next_stream_in'
-- verifier la valeur de 'errno' en cas de 'open' fail --> pb de permissions ou autre ?
-- tester 'multi' et 'syntax'
-- chevron perd siginfication into both s and d quotes
-- dollar  perd signification into s quotes
-____________________________________________
-TESTS
-
-cat | cat | ls
-cat < Makefile > out | grep all
-cd / | cd /
 
 Warning ! ouble auotes from env expand should be kept, ex :
 arg='"hello"'
@@ -81,10 +12,6 @@ arg='"hello"'
 I hope that : execve(ECHOPATH, {["arg"], [], []}) returns "hello"
 <asxsax asx as sx| dkmsc | sx |> bugue !!
 
-var='<'
-echo $var file
-
-cat < bar | echo "<" | cat <  | echo < bar
 ___________________________________________
 
 digraph G
