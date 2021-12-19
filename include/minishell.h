@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 18:16:20 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/19 18:23:46 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/19 20:56:30 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,9 +152,9 @@ void	print_env_sort(char **env);
 /******************************************************************************/
 
 void	free_str_tab(char **tab);
-char	*ft_strjoinfree(char *s1, char *s2);
 int		str_tab_len(char *const *env);
 int		switch_quote(char *quote, char c);
+char	*str_join_size(char *s1, char *s2, int size);
 
 /******************************************************************************/
 /*                                                                            */
@@ -304,15 +304,13 @@ void	close_std_streams(void);
 
 /******************************************************************************/
 /*                                                                            */
-/*     remove_quotes_and_expand.c                                             */
+/*     remove_quotes_and_expand.c remove_quotes_and_expand_1.c                */
 /*                                                                            */
 /******************************************************************************/
-int	remove_quotes_and_expand(t_proc proc);
 
-
-
-
-void	print_procs(t_proc *procs);
-
+int		remove_quotes_and_expand(t_proc proc);
+char	*quotes_expand_str(t_token *token, char **env,
+	int force_expand, int quote_keep);
+void	dollar_expand(char **res, char **word, char **env);
 
 #endif

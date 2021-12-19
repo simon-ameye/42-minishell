@@ -49,16 +49,11 @@ SRCS		=		minishell.c \
 					builtin_utils.c \
 					env.c \
 					here_doc.c \
-					set_ignored_tokens.c \
 					signals.c \
 					run_execve.c\
 					fd_tools.c\
 					remove_quotes_and_expand.c\
-					print_procs.c
-
-#					dollar_expand.c \
-#					dollar_expand_1.c \
-#					remove_quotes.c \
+					remove_quotes_and_expand_1.c
 
 SOURCES		=		$(addprefix $(SRCS_DIR)/,$(SRCS))
 
@@ -86,7 +81,7 @@ $(OBJS_DIR):
 $(OBJECTS):			$(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
 					@$(CC) $(INCLUDE) -c $< -o $@
 
-$(NAME):			$(LIBFT) $(OBJECTS)
+$(NAME):			$(OBJS_DIR) $(LIBFT) $(OBJECTS)
 					@echo Building minishell...
 					@$(CC) $(INCLUDE) $(OBJECTS) -o $(NAME) $(LINK) -lreadline
 

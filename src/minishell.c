@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/17 17:25:13 by trobin            #+#    #+#             */
-/*   Updated: 2021/12/19 18:41:44 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/19 20:52:52 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,26 +37,13 @@ static int	parser(t_proc *procs, char *line)
 	{
 		if (get_token_type(&procs[i]))
 			return (DO_SKIP);
-		//if (remove_quotes(procs[i]))
-		//	return (DO_EXIT);
-		//if (dollar_expand(procs[i]))
-		//	return (DO_EXIT);
 		if (remove_quotes_and_expand(procs[i]))
 			return (DO_EXIT);
-
-					fprintf(stderr, "before get_fnct_type\n");
-		//set_ignored_tokens(&procs[i]);
-
 		get_fnct_type(&procs[i]);
-
-					fprintf(stderr, "before get_fds\n");
 		if (get_fds(&procs[i], procs, line))
 			procs[i].ftype = NO_FUNCTION;
-
-					fprintf(stderr, "before get_path\n");
 		if (get_path(&procs[i]))
 			procs[i].ftype = NO_FUNCTION;
-		//print_procs(procs);
 		i++;
 	}
 	return (DO_EXEC);
@@ -69,8 +56,6 @@ static void	interpreter(t_proc *procs, char ***env, char *line)
 	get_procs(&procs, line, env);
 	get_tokens(procs);
 	action = parser(procs, line);
-					fprintf(stderr, "PARSER OK action %i\n", action);
-
 	if (action == DO_EXIT)
 	{
 		free(line);
@@ -85,11 +70,8 @@ static void	interpreter(t_proc *procs, char ***env, char *line)
 	}
 	if (action == DO_EXEC)
 	{
-							fprintf(stderr, "LETD DO EXEC %i\n", action);
-
 		add_history(line);
 		free(line);
-		fprintf(stderr, "before exec\n");
 		exec(procs);
 	}
 }
