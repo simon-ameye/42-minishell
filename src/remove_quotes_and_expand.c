@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/19 13:49:53 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/19 17:10:12 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/19 20:06:31 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,57 +14,11 @@
 
 extern unsigned char	g_exitval;
 
-static char	*join_char_free(char *str, char c)
+
+static void	add_char(char *res, char **word)
 {
-	char	*res;
-
-	if (!str)
-		return (NULL);
-	res = malloc(sizeof(char) * (ft_strlen(str) + 2));
-	if (res == NULL)
-	{
-		free(str);
-		return (NULL);
-	}
-	ft_strcpy(res, str);
-	res[ft_strlen(str)] = c;
-	res[ft_strlen(str) + 1] = '\0';
-	free(str);
-	return (res);
-}
-
-static char	*find_var(char *str, int len, char **env)
-{
-	char	*ret;
-
-	ret = NULL;
-	if (env)
-	{
-		while (*env)
-		{
-			if (!ft_strncmp(*env, str, len) && *(*env + len) == '=')
-				return (*env + len + 1);
-			env++;
-		}
-	}
-	return (ret);
-}
-
-static void	threat_dollar_quest_mark(char **res, int *i, char **word)
-{
-	char	*varval;
-
-	varval = ft_itoa(g_exitval);
-	*res = ft_strjoinfree(*res, varval);
-	*i = ft_strlen(*res);
+	res[ft_strlen(res)] = **word;
 	*word += 1;
-}
-
-static void	threat_dollar_spec_char(char **res, int *i, char **word)
-{
-	*res = join_char_free(*res, **word);
-	*word += 1;
-	*i += 1;
 }
 
 static char	*str_join_size(char *s1, char *s2, int size)
@@ -99,7 +53,41 @@ static char	*str_join_size(char *s1, char *s2, int size)
 	return (str);
 }
 
-static void	threat_dollar_expand(char **res, int *i, char **word, char **env)
+static char	*find_var(char *str, int len, char **env)
+{
+	char	*ret;
+
+	ret = NULL;
+	if (env)
+	{
+		while (*env)
+		{
+			if (!ft_strncmp(*env, str, len) && *(*env + len) == '=')
+				return (*env + len + 1);
+			env++;
+		}
+	}
+	return (ret);
+}
+
+static void	threat_dollar_quest_mark(char **res, char **word)
+{
+	char	*varval;
+	char	*tmp;
+
+	varval = ft_itoa(g_exitval);
+	if (varval)
+	{
+		tmp = str_join_size(*res, varval, ft_strlen(*res) + ft_strlen(*word) + ft_strlen(varval) + 1);
+		if (*res)
+			free(*res);
+		*res = tmp;
+		free(varval);
+	}
+	*word += 1;
+}
+
+static void	threat_dollar_expand(char **res, char **word, char **env)
 {
 	char	*varval;
 	int		len;
@@ -109,58 +97,91 @@ static void	threat_dollar_expand(char **res, int *i, char **word, char **env)
 	while ((*word)[len] && ft_isalnum((*word)[len]))
 		len++;
 	varval = find_var(*word, len, env);
-	tmp = str_join_size(*res, varval, ft_strlen(*res) + ft_strlen(*word) + len + 1);
+	fprintf(stderr, "varval %s\n", varval);
+	if (varval)
+	{
+		tmp = str_join_size(*res, varval, ft_strlen(*res) + ft_strlen(*word) + ft_strlen(varval) + 1);
+		if (*res)
+			free(*res);
+		*res = tmp;
+	}
+	*word += len;
+}
+
+static void	threat_dollar_special_char(char **res, char **word)
+{
+	char	*tmp;
+
+	(*res)[ft_strlen(*res)] = '$';
+	tmp = str_join_size(*res, "=", ft_strlen(*res) + ft_strlen(*word) + 2);
+	if (tmp)
+		tmp[ft_strlen(*res)] = **word;
 	if (*res)
 		free(*res);
 	*res = tmp;
-	*word += len;
-	*i = ft_strlen(*res);
+	*word += 1;
 }
 
-static void	dollar_expand(char **res, int *i, char **word, char **env)
+static void	dollar_expand(char **res, char **word, char **env)
 {
-	if (**word == '?')
-		threat_dollar_quest_mark(res, i, word);
+	*word += 1;
+	if (!**word || **word == ' ')
+		(*res)[ft_strlen(*res)] = '$';
+	else if (**word == '?')
+		threat_dollar_quest_mark(res, word);
 	else if (**word == '"' || **word == '\'')
 		*word += 0;
 	else if (**word >= '0' && **word <= '9')
 		*word += 1;
 	else if (!ft_isalnum(**word))
-		threat_dollar_spec_char(res, i, word);
+		threat_dollar_special_char(res, word);
 	else
-		threat_dollar_expand(res, i, word, env);
+		threat_dollar_expand(res, word, env);
 }
 
-static char *remove_quotes_and_expand_str(char *word, char **env)
+static int	init_res(char **res, char *word)
 {
-	int		i;
-	char	*res;
-	char	quote;
 	int		word_len;
 
 	word_len = ft_strlen(word);
-	res = malloc(sizeof(char) * (word_len + 1));
-	if (res == NULL)
+	*res = malloc(sizeof(char) * (word_len + 1));
+	if (*res == NULL)
+		return (EXIT_FAILURE);
+	ft_bzero(*res, word_len + 1);
+	return (EXIT_SUCCESS);
+}
+
+static void	threat_silent_quote(char **word, int *quotes_spotted)
+{
+	*quotes_spotted = 1;
+	*word += 1;
+}
+
+static char	*remove_quotes_and_expand_str(t_token *token, char **env, int force_single_quote_expand, int force_quote_keep)
+{
+	char	*res;
+	char	quote;
+	char	*word;
+	int		quotes_spotted;
+
+	word = token->word;
+	if (init_res(&res, word))
 		return (NULL);
-	ft_bzero(res, word_len + 1);
 	quote = 0;
-	i = 0;
+	quotes_spotted = 0;
 	while (*word)
 	{
-		if (switch_quote(&quote, *word))
-			word++;
-		else if (*word == '$' && quote != '\'')
-		{
-			word++;
-			dollar_expand(&res, &i, &word, env);
-		}
+		if (switch_quote(&quote, *word) && !force_quote_keep)
+			threat_silent_quote(&word, &quotes_spotted);
+		else if (*word == '$' && (quote != '\'' || force_single_quote_expand))
+			dollar_expand(&res, &word, env);
 		else
-		{
-			res[i] = *word;
-			i++;
-			word++;
-		}
+			add_char(res, &word);
+		if (!res)
+			return (NULL);
 	}
+	if (!ft_strlen(res) && !quotes_spotted)
+		token->type = IGNORED;
 	return (res);
 }
 
@@ -177,8 +198,8 @@ int	remove_quotes_and_expand(t_proc proc)
 			if (proc.tokens[i].type != LIMITOR)
 			{
 				fprintf(stderr, "before remove_quotes_and_expand_str %s\n", proc.tokens[i].word);
-				tmp = remove_quotes_and_expand_str(proc.tokens[i].word, *proc.env);
-				fprintf(stderr, "before remove_quotes_and_expand_str %s\n", tmp);
+				tmp = remove_quotes_and_expand_str(&proc.tokens[i], *proc.env, 0, 0);
+				fprintf(stderr, "after  remove_quotes_and_expand_str %s, len %i\n", tmp, (int)ft_strlen(tmp));
 				if (!tmp)
 					return (EXIT_FAILURE);
 				if (ft_strcmp(tmp, proc.tokens[i].word)

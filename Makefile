@@ -53,7 +53,8 @@ SRCS		=		minishell.c \
 					signals.c \
 					run_execve.c\
 					fd_tools.c\
-					remove_quotes_and_expand.c
+					remove_quotes_and_expand.c\
+					print_procs.c
 
 #					dollar_expand.c \
 #					dollar_expand_1.c \

@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 18:16:20 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/19 15:02:12 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/19 18:23:46 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -308,5 +308,11 @@ void	close_std_streams(void);
 /*                                                                            */
 /******************************************************************************/
 int	remove_quotes_and_expand(t_proc proc);
+
+
+
+
+void	print_procs(t_proc *procs);
+
 
 #endif
