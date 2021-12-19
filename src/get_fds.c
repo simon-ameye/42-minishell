@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 17:36:49 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/17 16:37:59 by trobin           ###   ########.fr       */
+/*   Updated: 2021/12/19 16:45:19 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,14 @@ static int	get_proc_fdout(int *fd, char *filename, t_token_type type)
 	return (EXIT_SUCCESS);
 }
 
+static int	is_redir_file(int i)
+{
+	return (i == OPEN_FILE
+		|| i == LIMITOR
+		|| i == EXIT_FILE
+		|| i == EXIT_FILE_A);
+}
+
 int	get_fds(t_proc *proc, t_proc *procs, char *line)
 {
 	int	i;
@@ -73,7 +81,12 @@ int	get_fds(t_proc *proc, t_proc *procs, char *line)
 	i = 0;
 	while (proc->tokens[i].word)
 	{
-		if (proc->tokens[i].type == AMBIGOUS_REDIRECT)
+		//if (proc->tokens[i].type == AMBIGOUS_REDIRECT)
+		//{
+		//	print_ambiguous_redirect(proc->tokens[i].expanded);
+		//	return (EXIT_FAILURE);
+		//}
+		if (is_redir_file(proc->tokens[i].type) && proc->tokens[i].word[0] == '\0')
 		{
 			print_ambiguous_redirect(proc->tokens[i].expanded);
 			return (EXIT_FAILURE);

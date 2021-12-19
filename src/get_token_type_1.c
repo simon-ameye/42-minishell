@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/17 16:36:40 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/17 16:44:12 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/19 13:14:01 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,17 @@ void	get_operators(t_proc *proc)
 		i = 0;
 		while (proc->tokens[i].word)
 		{
-			if (!proc->tokens[i].expanded)
-			{
-				if (!ft_strcmp(proc->tokens[i].word, "<"))
-					proc->tokens[i].type = FILE_IN;
-				else if (!ft_strcmp(proc->tokens[i].word, "<<"))
-					proc->tokens[i].type = HERE_DOC;
-				else if (!ft_strcmp(proc->tokens[i].word, ">"))
-					proc->tokens[i].type = FILE_OUT;
-				else if (!ft_strcmp(proc->tokens[i].word, ">>"))
-					proc->tokens[i].type = FILE_OUT_SUR;
-			}
+			//if (!proc->tokens[i].expanded)
+			//{
+			if (!ft_strcmp(proc->tokens[i].word, "<"))
+				proc->tokens[i].type = FILE_IN;
+			else if (!ft_strcmp(proc->tokens[i].word, "<<"))
+				proc->tokens[i].type = HERE_DOC;
+			else if (!ft_strcmp(proc->tokens[i].word, ">"))
+				proc->tokens[i].type = FILE_OUT;
+			else if (!ft_strcmp(proc->tokens[i].word, ">>"))
+				proc->tokens[i].type = FILE_OUT_SUR;
+			//}
 			i++;
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 11:20:09 by sameye            #+#    #+#             */
-/*   Updated: 2021/05/21 16:45:09 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/19 15:32:39 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	str = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!(str))
 		return (NULL);
+	ft_bzero(str, (ft_strlen(s1) + ft_strlen(s2) + 1));
 	while (s1[i] != '\0')
 	{
 		str[i] = s1[i];

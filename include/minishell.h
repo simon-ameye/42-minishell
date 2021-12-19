@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 18:16:20 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/18 19:20:55 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/19 15:02:12 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,12 +138,12 @@ void	print_env_sort(char **env);
 /*                                                                            */
 /******************************************************************************/
 
-char	*dollar_expand_str(char *str, char **env, int heredoc);
-int		dollar_expand(t_proc proc);
-char	*join_char_free(char *str, char c);
-void	threat_dollar_quest_mark(char **res, char **str);
-void	threat_dollar_spec_char(char **res, char **str);
-void	threat_dollar_expand(char **res, char **str, char **env);
+//char	*dollar_expand_str(char *str, char **env, int heredoc);
+//int		dollar_expand(t_proc proc);
+//char	*join_char_free(char *str, char c);
+//void	threat_dollar_quest_mark(char **res, char **str);
+//void	threat_dollar_spec_char(char **res, char **str);
+//void	threat_dollar_expand(char **res, char **str, char **env);
 
 /******************************************************************************/
 /*                                                                            */
@@ -154,7 +154,7 @@ void	threat_dollar_expand(char **res, char **str, char **env);
 void	free_str_tab(char **tab);
 char	*ft_strjoinfree(char *s1, char *s2);
 int		str_tab_len(char *const *env);
-void	switch_quote(char *quote, char c);
+int		switch_quote(char *quote, char c);
 
 /******************************************************************************/
 /*                                                                            */
@@ -209,8 +209,8 @@ void	get_quote_operator_separator(char *line, t_word *word);
 /*                                                                            */
 /******************************************************************************/
 
-char	*remove_quotes_str(char *str);
-int		remove_quotes(t_proc proc);
+//char	*remove_quotes_str(char *str);
+//int		remove_quotes(t_proc proc);
 
 /******************************************************************************/
 /*                                                                            */
@@ -301,5 +301,12 @@ void	close_saved_fd_and_streams(t_proc *procs);
 void	secure_close(int fd);
 void	close_all_streams_except_current(t_proc *procs, int i);
 void	close_std_streams(void);
+
+/******************************************************************************/
+/*                                                                            */
+/*     remove_quotes_and_expand.c                                             */
+/*                                                                            */
+/******************************************************************************/
+int	remove_quotes_and_expand(t_proc proc);
 
 #endif

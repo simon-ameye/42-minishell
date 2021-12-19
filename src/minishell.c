@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trobin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/17 17:25:13 by trobin            #+#    #+#             */
-/*   Updated: 2021/12/18 12:11:37 by trobin           ###   ########.fr       */
+/*   Updated: 2021/12/19 15:16:38 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,14 @@ static int	parser(t_proc *procs, char *line)
 	i = 0;
 	while (!procs[i].is_last)
 	{
-		if (dollar_expand(procs[i]))
-			return (DO_EXIT);
-		set_ignored_tokens(&procs[i]);
 		if (get_token_type(&procs[i]))
 			return (DO_SKIP);
-		if (remove_quotes(procs[i]))
+		//if (remove_quotes(procs[i]))
+		//	return (DO_EXIT);
+		//if (dollar_expand(procs[i]))
+		//	return (DO_EXIT);
+		//set_ignored_tokens(&procs[i]);
+		if (remove_quotes_and_expand(procs[i]))
 			return (DO_EXIT);
 		get_fnct_type(&procs[i]);
 		if (get_fds(&procs[i], procs, line))

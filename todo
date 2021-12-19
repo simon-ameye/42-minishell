@@ -1,4 +1,4 @@
-
+A priori Make ne recompille pas la libft si il y a eu des modifs dessus
 ____________________________________________
 HISTORIQUE
 
@@ -17,71 +17,81 @@ ___________________________________________
 digraph G
 {
 
-    subgraph cluster_lexer
-    {
-        label = "LEXER\n";
-        
-        l1 [label="GET_PROCS :\ncreate `t_proc` array (nb of pipes + 1)\n"]
-        l2 [label="GET_TOKENS : \nDetect words thx to spaces and quotes \n Do not removes quotes"]
-    }
+	subgraph cluster_lexer
+	{
+		label = "LEXER\n";
+		
+		l1 [label="GET_PROCS :\ncreate `t_proc` array (nb of pipes + 1)\n"]
+		l2 [label="GET_TOKENS : \nDetect words thx to spaces and quotes \n Do not removes quotes"]
+	}
 
-    subgraph cluster_parser
-    {
-        label = "PARSER\nIretates upon `procs` and `tokens`";
-        p1 [label="GET_TOKEN_TYPE : \nDetect word, '<', word following '<'... < \n"]
-        p2 [label="DOLLAR_EXPAND :\nreplace $text by value in env\nSet token IS_EXPENDED to avoid redirecting expended <\n"]
-        p3 [label="REMOVE_QUOTES : \nUOTEsRemove quotes)"]
-        p4 [label="GET_FDs :\nOoen + parse files names\n Open all files, set FDs in tokens\n"]
-        p5 [label="GET_FUNCTION_TYPE : \ndetect function : 0 for execve, 1 for echo...\n"]
-        p6 [label="GET_PATH : \ndetect function path\n only for 0 execve\n"]
-    }
-    
-    subgraph cluster_exec
-    {
-        label = "EXEC\nExecute functions";
-        x0 [label="CREATE_PIPES : \nCreate table of pipes\nSet stream_in and stream_out for procs n and n+1\nSet first proc stream input to 0 and last stream output to 1\n(Pipe() + copy ints in procs)"]
-        x1 [label="CREATE_CHILDS : \nLaunch continues in forks or in father based on number of procs and ftype + kill childs\n(Fork())\n waitpid()"]
-    
-        subgraph cluster_exec_child
-        {
-            label = "EXEC_CHILD\nExecute functions";
-            x2 [label="REDIRECT_IO : \nMaybe there is redirect ? Redirects IO based on Imput and Output (for Childs only)\nClose useless fd\n(Dup2)"]
-            x3 [label="EXEC_PROC :\nBased of ftype, launches BUILD_IN or EXEC_PROGRAM\n"]
-            x33 [label="BUILD_IN :\nAny build in\n  "]
-            x4 [label="EXEC_PROGRAM : \nSets the args according to execve requirements and launches(Execve)"]
-        }
-    }
+	subgraph cluster_parser
+	{
+		label = "PARSER\nIretates upon `procs` and `tokens`";
+		p1 [label="DOLLAR_EXPAND :\nreplace $text by value in env\nSet token IS_EXPENDED to avoid redirecting expended <\n"]
+		p2 [label="SET_IGNORED_TOKENS :\nSet token type = IGNORED for empty words <\n"]
+		p3 [label="GET_TOKEN_TYPE : \nDetect word, '<', word following '<'... < \n"]
+		p4 [label="REMOVE_QUOTES : \nUOTEsRemove quotes)"]
+		p5 [label="GET_FUNCTION_TYPE : \ndetect function : 0 for execve, 1 for echo...\n"]
+		p6 [label="GET_FDs :\nOoen + parse files names\n Open all files, set FDs in tokens\n"]
+		p7 [label="GET_PATH : \ndetect function path\n only for 0 execve\n"]
+	}
+	
+	subgraph cluster_exec
+	{
+		label = "EXEC\nExecute functions";
+		x  [label="EXEC_CHILDS : \nIf only one builtin, execute builtin in father"]
+		x0 [label="DO_PIPES : \nCreate table of pipes and set it in proc data   "]
+		x1 [label="DO_REDIRS : \nSet stream in/out to pipes or to openes fds\n Closes useless fds"]
+		x2 [label="DO_FORK : \ncreate childs\ncloses useless fds in childs and father"]
+		x3 [label="DO_WAIT : \nWaits childs\nSet exit global to exit val of the last child"]
 
-        process_data [label="PROCESS_DATA\n\
-        string\n\
-        tab of tokens\n\
-        path (as requested by execve)\n\
-        func_type\n\
-        fd_in\n\
-        fd_out\n\
-        stream_in\n\
-        stream_out\n\
-        is_last\n"]
-        
-        tokens [label="TOKENS\n\
-        Null terminated pointer tab\l\
-        char    *word\l\
-        int     *is_expanded\l\
-        \n\
-        "]
+	
+		subgraph cluster_exec_child
+		{
+		label = "EXEC_CHILD\nExecute functions";
+		c0  [label="SAVE_STREAM_STATUS \n Saves streams before redirect, to reset it later"]
+		c2  [label="REDIRECT_IO : \nMaybe there is redirect ? Redirects IO based on Imput and Output (for Childs only)\nClose useless fd\n(Dup2)"]
+		c3  [label="EXEC_PROC :\nBased of ftype, launches BUILD_IN or EXEC_PROGRAM\n"]
+		c51 [label="BUILD_IN :\nAny build in\n  "]
+		c52 [label="EXEC_PROGRAM : \nSets the args according to execve requirements and launches(Execve)"]
+		c6  [label="RESTORE_STREAM_STATUS \n Restore streams (Useful for father, but done anyway on childs)"]
+		c61 [label="FREE_ENV :\n"]
+		c7  [label="FREE_PROCS :\n"]
+		}
+	}
 
-    l1 -> l2 -> p1
-    p1 -> p2 -> p3 ->p4 -> p5 -> p6
-    p6 -> x0
-    x0 ->x1 -> x2 -> x3 -> x4
-    x3 -> x33
-    process_data -> tokens
+	process_data [label="PROCESS_DATA\n\
+	string\n\
+	tab of tokens\n\
+	path (as requested by execve)\n\
+	func_type\n\
+	fd_in\n\
+	fd_out\n\
+	stream_in\n\
+	stream_out\n\
+	is_last\n"]
+	
+	tokens [label="TOKENS\n\
+	Null terminated pointer tab\l\
+	char    *word\l\
+	int     *is_expanded\l\
+	\n\
+	"]
+
+	l1 -> l2 -> p1
+	p1 -> p2 -> p3 ->p4 -> p5 -> p6 -> p7 -> x
+	x -> x0
+	x -> c51
+	x0 ->x1 -> x2 -> x3
+	x2 -> c0
+	c0 -> c2 -> c3
+	c3 -> c51 -> c6
+	c3 -> c52 -> c6
+	c6 -> c61 -> c7
+	x3 -> c7
+	process_data -> tokens
 }
-
-
-
-
-
 set ignored token doit etre avant remove quotes pour ne pas ignorer :
 sameye@e2r4p1:~/temp/msh_tester$ echo A  >>  "$USERR"
 bash: : No such file or directory
@@ -104,7 +114,20 @@ IMPOSSIBLE! get_token_type doit etre avant dollar_expand pour ne pas considerer 
 Ou alors il faut retenir "has_been_expand" dans le token
 
 get_path doit etre apres get_function_type OBVIOUSLY
+
 get_fds doit etre apres get_token_type OBVIOUSLY
+
+
+A priori Dollar expand doit etre apres 	remove quotes pour ne pas remove les quotes expanded
+###############TEST#################
+GET_TOKEN_TYPE
+//SET_IGNORED_TOKENS
+REMOVE_QUOTES
+DOLLAR_EXPAND : 
+GET_FUNCTION_TYPE		apres REMOVE_QUOTES DOLLAR_EXPAND
+GET_FDs 				apres GET_TOKEN_TYPE
+GET_PATH				apres GET_FUNCTION_TYPE
+
 
 
 ATTENTION un chevron expand perd sa signification

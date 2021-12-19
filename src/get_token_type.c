@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 11:15:23 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/18 14:24:34 by trobin           ###   ########.fr       */
+/*   Updated: 2021/12/19 13:16:56 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,10 @@ static int	get_filenames_type(t_proc *proc)
 			if (!proc->tokens[i + 1].word
 				|| is_redir_op(proc->tokens[i + 1].type))
 				return (print_syntax_error());
-			else if (proc->tokens[i].type == HERE_DOC)
-				proc->tokens[i + 1].type = LIMITOR;
-			else if (proc->tokens[i + 1].type == IGNORED)
-				proc->tokens[i + 1].type = AMBIGOUS_REDIRECT;
+			//else if (proc->tokens[i].type == HERE_DOC)
+			//	proc->tokens[i + 1].type = LIMITOR;
+			//else if (proc->tokens[i + 1].type == IGNORED)
+			//	proc->tokens[i + 1].type = AMBIGOUS_REDIRECT;
 			else if (proc->tokens[i + 1].type == WORD)
 				proc->tokens[i + 1].type
 					= redir_op_to_file_type(proc->tokens[i].type);

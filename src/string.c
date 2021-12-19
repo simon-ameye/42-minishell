@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 17:30:28 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/17 17:43:08 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/19 14:02:14 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,23 @@ int	str_tab_len(char *const *env)
 	return (i);
 }
 
-void	switch_quote(char *quote, char c)
+int	switch_quote(char *quote, char c)
 {
+	int switched;
+
+	switched = 0;
 	if (c == '"' || c == '\'')
 	{
 		if (!*quote)
+		{
 			*quote = c;
+			switched = 1;
+		}
 		else if (c == *quote)
+		{
 			*quote = 0;
+			switched = 1;
+		}
 	}
+	return (switched);
 }
