@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 18:16:20 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/20 20:30:21 by trobin           ###   ########.fr       */
+/*   Updated: 2021/12/20 22:33:40 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,21 +134,6 @@ void	print_env_sort(char **env);
 
 /******************************************************************************/
 /*                                                                            */
-/*     dollar_expand.c dollar_expand_1.c                                      */
-/*                                                                            */
-/******************************************************************************/
-
-//char	*dollar_expand_str(char *str, char **env, int heredoc);
-//int		dollar_expand(t_proc proc);
-//char	*join_char_free(char *str, char c);
-//void	threat_dollar_quest_mark(char **res, char **str);
-//void	threat_dollar_spec_char(char **res, char **str);
-//void	threat_dollar_expand(char **res, char **str, char **env);
-char	*hd_quotes_expand_str(char *s, char **env,
-	int force_expand, int quote_keep);
-
-/******************************************************************************/
-/*                                                                            */
 /*     string.c                                                               */
 /*                                                                            */
 /******************************************************************************/
@@ -262,8 +247,6 @@ int		get_proc_here_doc(int *fd, t_token token, t_proc *procs, char *line);
 
 /*		here_doc_1.c	*/
 char	*remove_quotes_str(char *str);
-char	*hd_quotes_expand_str(char *s, char **env, int force_expand,
-								int quote_keep);
 
 /******************************************************************************/
 /*                                                                            */
@@ -307,8 +290,8 @@ void	close_std_streams(void);
 /*                                                                            */
 /******************************************************************************/
 
-char	*quotes_expand_str(t_token *token, char **env,
-int		force_expand, int quote_keep);
+char	*quotes_expand_str(char *word, char **env,
+	int keep_quotes_force_expands, int *type);
 void	dollar_expand(char **res, char **word, char **env);
 int		init_res(char **res, char *word);
 void	add_char(char *res, char **word);

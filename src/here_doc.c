@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 16:32:07 by trobin            #+#    #+#             */
-/*   Updated: 2021/12/20 20:27:17 by trobin           ###   ########.fr       */
+/*   Updated: 2021/12/20 22:29:12 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static void	process_line(t_heredoc *hd, int *fd, t_proc *procs, char *ps1_line)
 {
 	char	*tmp;
 
-	tmp = hd_quotes_expand_str(hd->line, *procs->env, 1, 1);
+	tmp = quotes_expand_str(hd->line, *procs->env, 1, NULL);
 	if (tmp == NULL)
 	{
 		free(ps1_line);
