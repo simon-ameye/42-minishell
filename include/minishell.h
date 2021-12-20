@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 18:16:20 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/19 20:56:30 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/20 20:30:21 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,8 @@ void	print_env_sort(char **env);
 //void	threat_dollar_quest_mark(char **res, char **str);
 //void	threat_dollar_spec_char(char **res, char **str);
 //void	threat_dollar_expand(char **res, char **str, char **env);
+char	*hd_quotes_expand_str(char *s, char **env,
+	int force_expand, int quote_keep);
 
 /******************************************************************************/
 /*                                                                            */
@@ -205,15 +207,6 @@ void	get_quote_operator_separator(char *line, t_word *word);
 
 /******************************************************************************/
 /*                                                                            */
-/*     remove_quotes.c                                                        */
-/*                                                                            */
-/******************************************************************************/
-
-//char	*remove_quotes_str(char *str);
-//int		remove_quotes(t_proc proc);
-
-/******************************************************************************/
-/*                                                                            */
 /*     get_procs.c, get_procs_1.c                                             */
 /*                                                                            */
 /******************************************************************************/
@@ -260,11 +253,17 @@ int		find_var_in_env(char **env, char *str, int strlen);
 
 /******************************************************************************/
 /*                                                                            */
-/*     here_doc.c                                                             */
+/*     here_doc.c, here_doc_1.c                                               */
 /*                                                                            */
 /******************************************************************************/
 
+/*		here_doc.c		*/
 int		get_proc_here_doc(int *fd, t_token token, t_proc *procs, char *line);
+
+/*		here_doc_1.c	*/
+char	*remove_quotes_str(char *str);
+char	*hd_quotes_expand_str(char *s, char **env, int force_expand,
+								int quote_keep);
 
 /******************************************************************************/
 /*                                                                            */
@@ -308,9 +307,12 @@ void	close_std_streams(void);
 /*                                                                            */
 /******************************************************************************/
 
-int		remove_quotes_and_expand(t_proc proc);
 char	*quotes_expand_str(t_token *token, char **env,
-	int force_expand, int quote_keep);
+int		force_expand, int quote_keep);
 void	dollar_expand(char **res, char **word, char **env);
+int		init_res(char **res, char *word);
+void	add_char(char *res, char **word);
+void	threat_silent_quote(char **word, int *quotes_spotted);
+int		remove_quotes_and_expand(t_proc proc);
 
 #endif

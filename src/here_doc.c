@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 16:32:07 by trobin            #+#    #+#             */
-/*   Updated: 2021/12/19 15:17:41 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/20 20:27:17 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,18 +49,15 @@ static void	process_line(t_heredoc *hd, int *fd, t_proc *procs, char *ps1_line)
 {
 	char	*tmp;
 
-	/*
-	tmp = dollar_expand_str(hd->line, *procs->env, 1);
-	if (!tmp)
+	tmp = hd_quotes_expand_str(hd->line, *procs->env, 1, 1);
+	if (tmp == NULL)
 	{
 		free(ps1_line);
 		exit_heredoc(hd, fd);
 		exit_minishell(procs, procs->env);
 	}
-	*/
 	(void)procs;
 	(void)ps1_line;
-	tmp = hd->line;
 	ft_putstr_fd(tmp, *fd);
 	ft_putstr_fd("\n", *fd);
 	free(tmp);
@@ -79,17 +76,11 @@ static	int	init_heredoc(t_heredoc *hd, t_token token, int *fd)
 		ft_putstr_fd(hd->filename, STDERR_FILENO);
 		ft_putstr_fd("\n", STDERR_FILENO);
 	}
-	/*
 	if (token.expanded)
 		hd->delimiter = remove_quotes_str(token.expanded);
 	else
 		hd->delimiter = remove_quotes_str(token.word);
-	*/
-	if (token.expanded)
-		hd->delimiter = ft_strdup(token.expanded);
-	else
-		hd->delimiter = ft_strdup(token.word);
-	if (!hd->delimiter)
+	if (hd->delimiter == NULL)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
@@ -98,11 +89,10 @@ int	get_proc_here_doc(int *fd, t_token token, t_proc *procs, char *ps1_line)
 {
 	t_heredoc	hd;
 
-	hd.delimiter = NULL;
 	if (init_heredoc(&hd, token, fd) == EXIT_FAILURE)
 	{
 		free(ps1_line);
-		exit_minishell(procs, procs->env);
+		exit_heredoc(&hd, fd);
 	}
 	while (1)
 	{

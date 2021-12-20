@@ -49,6 +49,7 @@ SRCS		=		minishell.c \
 					builtin_utils.c \
 					env.c \
 					here_doc.c \
+					here_doc_1.c \
 					signals.c \
 					run_execve.c\
 					fd_tools.c\

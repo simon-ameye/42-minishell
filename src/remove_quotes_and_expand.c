@@ -6,19 +6,19 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/19 13:49:53 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/19 20:55:49 by sameye           ###   ########.fr       */
+/*   Updated: 2021/12/20 20:26:57 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	add_char(char *res, char **word)
+void	add_char(char *res, char **word)
 {
 	res[ft_strlen(res)] = **word;
 	*word += 1;
 }
 
-static int	init_res(char **res, char *word)
+int	init_res(char **res, char *word)
 {
 	int		word_len;
 
@@ -30,7 +30,7 @@ static int	init_res(char **res, char *word)
 	return (EXIT_SUCCESS);
 }
 
-static void	threat_silent_quote(char **word, int *quotes_spotted)
+void	threat_silent_quote(char **word, int *quotes_spotted)
 {
 	*quotes_spotted = 1;
 	*word += 1;
@@ -64,6 +64,7 @@ char	*quotes_expand_str(t_token *token, char **env,
 		token->type = IGNORED;
 	return (res);
 }
+
 
 int	remove_quotes_and_expand(t_proc proc)
 {
