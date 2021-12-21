@@ -6,7 +6,7 @@
 /*   By: trobin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/17 19:44:18 by trobin            #+#    #+#             */
-/*   Updated: 2021/12/17 20:10:13 by trobin           ###   ########.fr       */
+/*   Updated: 2021/12/21 15:10:12 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,22 +31,22 @@ void	try_chdir(char *path)
 
 void	builtin_cd(t_proc *proc)
 {
-	int		args;
-	char	*path;
+	int	args;
+	int	index;
 
 	if (proc && proc->tokens)
 	{
 		args = get_nb_args(proc->tokens);
 		if (args == 0)
 		{
-			path = getenv("HOME");
-			if (path == NULL)
+			index = find_var_in_env(*proc->env, "HOME", 4);
+			if (index == -1)
 			{
 				ft_putstr_fd("minishell: cd: HOME not set\n", STDERR_FILENO);
 				g_exitval = 0;
 			}
 			else
-				try_chdir(path);
+				try_chdir((*proc->env)[index] + 5);
 		}
 		else if (args > 1)
 		{

@@ -6,7 +6,7 @@
 /*   By: trobin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/17 19:46:28 by trobin            #+#    #+#             */
-/*   Updated: 2021/12/18 12:10:46 by trobin           ###   ########.fr       */
+/*   Updated: 2021/12/21 14:39:43 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	exit_non_numeric_arguments(t_proc *proc, t_proc *procs)
 	ft_putstr_fd(proc->tokens[1].word, STDERR_FILENO);
 	ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
 	g_exitval = 2;
-	exit_minishell(procs, proc->env);
+	return (exit_minishell(procs, proc->env));
 }
 
 static void	get_sign(char *s, int *sign, int *i)
