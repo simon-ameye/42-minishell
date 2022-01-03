@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 18:17:57 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/18 19:23:59 by sameye           ###   ########.fr       */
+/*   Updated: 2022/01/03 17:04:39 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ extern unsigned char	g_exitval;
 
 static void	print_command_not_found(char *fnct)
 {
-	ft_putstr_fd("minishell: command not found: ", STDERR_FILENO);
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd(fnct, STDERR_FILENO);
-	ft_putstr_fd("\n", STDERR_FILENO);
+	ft_putstr_fd(": command not found\n", STDERR_FILENO);
 	g_exitval = 127;
 }
 
@@ -66,13 +66,18 @@ static char	*get_proc_path(char *cmd, char **env)
 {
 	if (cmd != NULL)
 	{
-		if (cmd[0] == '/' || cmd[0] == '.' || cmd[0] == '~')
+		if (cmd[0] == '/' || cmd[0] == '.' || cmd[0] == '~' || cmd[0] == '\0')
 		{
-			if (access(cmd, F_OK) != 0)
+			if (!ft_strcmp(cmd, ".") || !ft_strcmp(cmd, ".."))
 			{
-				ft_putstr_fd("No such file or directory: ", STDERR_FILENO);
+				print_command_not_found(cmd);
+				return (NULL);
+			}
+			else if (cmd[0] == '\0' || access(cmd, F_OK) != 0)
+			{
+				ft_putstr_fd("minishell: ", STDERR_FILENO);
 				ft_putstr_fd(cmd, STDERR_FILENO);
-				ft_putstr_fd("\n", STDERR_FILENO);
+				ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
 				g_exitval = 127;
 				return (NULL);
 			}
