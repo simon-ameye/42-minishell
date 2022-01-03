@@ -6,17 +6,11 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/19 13:49:53 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/20 22:34:54 by sameye           ###   ########.fr       */
+/*   Updated: 2022/01/03 14:37:37 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	add_char(char *res, char **word)
-{
-	res[ft_strlen(res)] = **word;
-	*word += 1;
-}
 
 int	init_res(char **res, char *word)
 {
@@ -30,10 +24,15 @@ int	init_res(char **res, char *word)
 	return (EXIT_SUCCESS);
 }
 
-void	threat_silent_quote(char **word, int *quotes_spotted)
+static void	set_ignored_tokens(char *res, int quotes_spotted, int *type)
 {
-	*quotes_spotted = 1;
-	*word += 1;
+	if (!ft_strlen(res) && !quotes_spotted)
+	{
+		if (is_file(*type))
+			*type = AMBIGOUS_REDIRECT;
+		else
+			*type = IGNORED;
+	}
 }
 
 char	*quotes_expand_str(char *word, char **env,
@@ -59,8 +58,8 @@ char	*quotes_expand_str(char *word, char **env,
 		if (!res)
 			return (NULL);
 	}
-	if (type && !ft_strlen(res) && !quotes_spotted)
-		*type = IGNORED;
+	if (type)
+		set_ignored_tokens(res, quotes_spotted, type);
 	return (res);
 }
 

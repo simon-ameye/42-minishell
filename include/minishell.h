@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/18 18:16:20 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/20 22:33:40 by sameye           ###   ########.fr       */
+/*   Updated: 2022/01/03 14:51:32 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,7 @@ char	*str_join_size(char *s1, char *s2, int size);
 /******************************************************************************/
 
 int		get_fds(t_proc *proc, t_proc *procs, char *line);
+int		is_file(int i);
 
 /******************************************************************************/
 /*                                                                            */
@@ -250,14 +251,6 @@ char	*remove_quotes_str(char *str);
 
 /******************************************************************************/
 /*                                                                            */
-/*     set_ignored_tokens.c                                                   */
-/*                                                                            */
-/******************************************************************************/
-
-void	set_ignored_tokens(t_proc *proc);
-
-/******************************************************************************/
-/*                                                                            */
 /*     signals.c                                                              */
 /*                                                                            */
 /******************************************************************************/
@@ -287,15 +280,17 @@ void	close_std_streams(void);
 /******************************************************************************/
 /*                                                                            */
 /*     remove_quotes_and_expand.c remove_quotes_and_expand_1.c                */
-/*                                                                            */
+/*     remove_quotes_and_expand_2.c                                           */
 /******************************************************************************/
 
 char	*quotes_expand_str(char *word, char **env,
-	int keep_quotes_force_expands, int *type);
+			int keep_quotes_force_expands, int *type);
 void	dollar_expand(char **res, char **word, char **env);
 int		init_res(char **res, char *word);
 void	add_char(char *res, char **word);
 void	threat_silent_quote(char **word, int *quotes_spotted);
 int		remove_quotes_and_expand(t_proc proc);
+void	threat_silent_quote(char **word, int *quotes_spotted);
+void	add_char(char *res, char **word);
 
 #endif

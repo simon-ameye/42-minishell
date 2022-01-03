@@ -55,7 +55,8 @@ SRCS		=		minishell.c \
 					run_execve.c\
 					fd_tools.c\
 					remove_quotes_and_expand.c\
-					remove_quotes_and_expand_1.c
+					remove_quotes_and_expand_1.c\
+					remove_quotes_and_expand_2.c
 
 SOURCES		=		$(addprefix $(SRCS_DIR)/,$(SRCS))
 

@@ -6,20 +6,13 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 17:36:49 by sameye            #+#    #+#             */
-/*   Updated: 2021/12/19 20:51:07 by sameye           ###   ########.fr       */
+/*   Updated: 2022/01/03 14:50:18 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 extern unsigned char	g_exitval;
-
-static void	print_ambiguous_redirect(char*s)
-{
-	ft_putstr_fd("minishell: ", STDERR_FILENO);
-	ft_putstr_fd(s, STDERR_FILENO);
-	ft_putstr_fd(": ambiguous redirect\n", STDERR_FILENO);
-}
 
 static int	get_proc_fdin(int *fd, char *filename)
 {
@@ -66,12 +59,31 @@ static int	get_proc_fdout(int *fd, char *filename, t_token_type type)
 	return (EXIT_SUCCESS);
 }
 
-static int	is_file(int i)
+int	is_file(int i)
 {
 	return (i == OPEN_FILE
 		|| i == LIMITOR
 		|| i == EXIT_FILE
 		|| i == EXIT_FILE_A);
+}
+
+int	check_fd(t_token token)
+{
+	if (token.type == AMBIGOUS_REDIRECT)
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(token.expanded, STDERR_FILENO);
+		ft_putstr_fd(": ambiguous redirect\n", STDERR_FILENO);
+		return (EXIT_FAILURE);
+	}
+	else if (is_file(token.type) && token.word[0] == '\0')
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(token.word, STDERR_FILENO);
+		ft_putstr_fd(": no such file or directory\n", STDERR_FILENO);
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
 }
 
 int	get_fds(t_proc *proc, t_proc *procs, char *line)
@@ -81,12 +93,9 @@ int	get_fds(t_proc *proc, t_proc *procs, char *line)
 	i = 0;
 	while (proc->tokens[i].word)
 	{
-		if (is_file(proc->tokens[i].type) && proc->tokens[i].word[0] == '\0')
-		{
-			print_ambiguous_redirect(proc->tokens[i].expanded);
+		if (check_fd(proc->tokens[i]))
 			return (EXIT_FAILURE);
-		}
-		if (proc->tokens[i].type == EXIT_FILE
+		else if (proc->tokens[i].type == EXIT_FILE
 			&& get_proc_fdout(&proc->fdout, proc->tokens[i].word, EXIT_FILE))
 			return (EXIT_FAILURE);
 		else if (proc->tokens[i].type == EXIT_FILE_A
