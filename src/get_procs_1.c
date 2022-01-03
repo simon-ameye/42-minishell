@@ -6,7 +6,7 @@
 /*   By: trobin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/17 19:33:46 by trobin            #+#    #+#             */
-/*   Updated: 2021/12/18 14:25:59 by trobin           ###   ########.fr       */
+/*   Updated: 2022/01/03 16:08:53 by trobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,12 @@ static int	syntax_error_pipe(char *line, int i)
 	j = i - 1;
 	while (line[j] == ' ')
 		j--;
-	if (!line[j] || line[j] == '|' || line[j] == '<' || line[j] == '>')
+	if (!line[j] || line[j] == '|')
 		error = 1;
 	j = i + 1;
 	while (line[j] == ' ')
 		j++;
-	if (!line[j] || line[j] == '|' || line[j] == '<' || line[j] == '>')
+	if (!line[j] || line[j] == '|')
 		error = 1;
 	if (error)
 	{
