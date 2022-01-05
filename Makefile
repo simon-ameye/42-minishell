@@ -10,8 +10,6 @@ OBJS_DIR	=		obj
 
 LIBFT_DIR	=		libft
 
-TESTS_DIR	=		testmains
-
 INCLUDE_DIR	=		include
 
 #################	HEADER FILES	#################
@@ -78,15 +76,15 @@ LINK		=		-L $(LIBFT_DIR) -l ft -L /opt/homebrew/opt/readline/lib
 
 all:				$(NAME)
 
+$(NAME):			$(OBJS_DIR) $(LIBFT) $(OBJECTS)
+					@echo Building minishell...
+					@$(CC) $(INCLUDE) $(OBJECTS) -o $(NAME) $(LINK) -lreadline
+
 $(OBJS_DIR):
 					mkdir -p $@
 
 $(OBJECTS):			$(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
 					@$(CC) $(INCLUDE) -c $< -o $@
-
-$(NAME):			$(OBJS_DIR) $(LIBFT) $(OBJECTS)
-					@echo Building minishell...
-					@$(CC) $(INCLUDE) $(OBJECTS) -o $(NAME) $(LINK) -lreadline
 
 $(LIBFT):
 					@echo Building libft...
