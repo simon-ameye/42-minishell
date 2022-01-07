@@ -9,11 +9,12 @@ We pass all our tester tests :
 
 ## Usage
 On Linux only !
-Do ```make```
 
-Run ```./minishell```
+- Do ```make```
 
-Try ```Whatever you want, it's a Shell !```
+- Run ```./minishell```
+
+- Try ```Whatever you want, it's a Shell !```
 
 
 ## Graph
