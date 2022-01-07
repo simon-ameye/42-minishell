@@ -6,7 +6,7 @@
 /*   By: sameye <sameye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 17:36:49 by sameye            #+#    #+#             */
-/*   Updated: 2022/01/03 14:50:18 by sameye           ###   ########.fr       */
+/*   Updated: 2022/01/07 17:55:29 by sameye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int	get_proc_fdout(int *fd, char *filename, t_token_type type)
 		if (type == EXIT_FILE)
 			*fd = open(filename, O_CREAT | O_TRUNC | O_RDWR, 0644);
 		else
-			*fd = open(filename, O_CREAT | O_RDWR, 0644);
+			*fd = open(filename, O_CREAT | O_APPEND | O_RDWR, 0644);
 		if (*fd == -1)
 		{
 			ft_putstr_fd("minishell: ", STDERR_FILENO);
