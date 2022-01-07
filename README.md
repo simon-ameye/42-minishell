@@ -13,7 +13,7 @@ Do ```make```
 
 Run ```./minishell```
 
-Try ```Whatever you want, it's a Shell !``
+Try ```Whatever you want, it's a Shell !```
 
 
 ## Graph
