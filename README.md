@@ -11,9 +11,7 @@ We pass all our tester tests :
 On Linux only !
 
 - Do ```make```
-
 - Run ```./minishell```
-
 - Try ```Whatever you want, it's a Shell !```
 
 
