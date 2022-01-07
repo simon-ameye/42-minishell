@@ -10,8 +10,11 @@ We pass all our tester tests :
 ## Usage
 On Linux only !
 Do ```make```
+
 Run ```./minishell```
+
 Try ```Whatever you want, it's a Shell !``
+
 
 ## Graph
 All you need to know :
